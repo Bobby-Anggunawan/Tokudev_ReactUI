@@ -15,6 +15,14 @@ import MailIcon from '@mui/icons-material/Mail';
 import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import MenuBookIcon from '@mui/icons-material/MenuBook';
+import AdbIcon from '@mui/icons-material/Adb';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
+import HomeIcon from '@mui/icons-material/Home';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import ImageToku from '../component/image';
+import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 
 const drawerWidth = 240;
 
@@ -117,7 +125,45 @@ function BlogPost(props) {
         component="main"
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
       >
+        {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
         <Toolbar />
+        <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
+          <Link
+            underline="hover"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="inherit"
+            href="/"
+          >
+            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Tokudev
+          </Link>
+          <Link
+            underline="hover"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="inherit"
+            href="/"
+          >
+            <MenuBookIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Tutorial
+          </Link>
+          <Link
+            underline="hover"
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="inherit"
+            href="/"
+          >
+            <AdbIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Android
+          </Link>
+          <Typography
+            sx={{ display: 'flex', alignItems: 'center' }}
+            color="text.primary">
+            <CatchingPokemonIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+            Paging Tutorial
+          </Typography>
+        </Breadcrumbs>
+
+        <Typography variant="h1">Lorem Ipsum</Typography>
         <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -132,6 +178,7 @@ function BlogPost(props) {
           consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
           sapien faucibus et molestie ac.
         </Typography>
+        <Typography variant="h2">Lorem</Typography>
         <Typography paragraph align="justify">
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
           eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
@@ -145,6 +192,7 @@ function BlogPost(props) {
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography>
+        <ImageToku image="https://blog.amartha.com/wp-content/uploads/2021/02/Lorem-Ipsum-alternatives.png" caption="Gambar tentang Lorem Ipsum dengan latar pink" alt="Lorem Ipsum"/>
         <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -159,6 +207,7 @@ function BlogPost(props) {
           consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
           sapien faucibus et molestie ac.
         </Typography>
+        <Typography variant="h2">Ipsum</Typography>
         <Typography paragraph align="justify">
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
           eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
