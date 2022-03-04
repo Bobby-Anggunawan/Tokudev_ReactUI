@@ -23,8 +23,26 @@ import HomeIcon from '@mui/icons-material/Home';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ImageToku from '../component/image';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
+import ListSubheader from '@mui/material/ListSubheader';
+
 
 const drawerWidth = 240;
+
+var sideBarJson = `
+{
+  "headerName": ["satu", "dua", "tiga", "empat", "lima", "enam", "tujuh"],
+  "headerChild": [
+    ["a", "b"],
+    ["c", "d", "e", "f"],
+    ["g"],
+    ["h", "i", "j"],
+    ["k", "l", "m", "n", "o", "p"],
+    ["q", "r", "s", "t"],
+    ["u", "v"]
+  ]
+}
+`;
+const sideBarObj = JSON.parse(sideBarJson);
 
 function BlogPost(props) {
   const { window } = props;
@@ -33,7 +51,7 @@ function BlogPost(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-
+/*
   const drawer = (
     <div>
       <Toolbar />
@@ -60,6 +78,40 @@ function BlogPost(props) {
         ))}
       </List>
     </div>
+  );*/
+  const drawer = (
+    <div>
+      <Toolbar>
+        <Typography>Tutorial React</Typography>
+      </Toolbar>
+      <Divider />
+      {/*65px di List maxHeight adalah tinggi toolbar. maxHeight nya emang harus di set dan gak boleh 100% karena kalo begitu efek stickynya gak kelihatan*/}
+      <List
+      sx={{
+        width: '100%',
+        maxWidth: 360,
+        bgcolor: 'background.paper',
+        position: 'relative',
+        overflow: 'auto',
+        maxHeight: `calc(100vh - 65px)`,
+        '& ul': { padding: 0 },
+      }}
+      subheader={<li />}
+    >
+      {sideBarObj.headerName.map((sectionId, indeks) => (
+        <li key={`section-${sectionId}`}>
+          <ul>
+            <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
+            {sideBarObj.headerChild[indeks].map((item) => (
+              <ListItem key={`item-${sectionId}-${item}`}>
+                <ListItemText primary={`Item ${item}`} />
+              </ListItem>
+            ))}
+          </ul>
+        </li>
+      ))}
+    </List>
+    </div>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
@@ -85,7 +137,7 @@ function BlogPost(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div">
-            Responsive drawer
+            TokuDev
           </Typography>
         </Toolbar>
       </AppBar>
