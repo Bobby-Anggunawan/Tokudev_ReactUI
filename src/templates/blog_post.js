@@ -24,6 +24,9 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import ImageToku from '../component/image';
 import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import ListSubheader from '@mui/material/ListSubheader';
+import BlogArticleExample from './blog_article_example';
+import { Container, Grid, ListItemButton } from '@mui/material';
+import { height } from '@mui/system';
 
 
 const drawerWidth = 240;
@@ -116,8 +119,9 @@ function BlogPost(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box>
       <CssBaseline />
       <AppBar
         position="fixed"
@@ -141,138 +145,133 @@ function BlogPost(props) {
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box
-        component="nav"
-        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-        aria-label="mailbox folders"
-      >
-        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-        <Drawer
-          container={container}
-          variant="temporary"
-          open={mobileOpen}
-          onClose={handleDrawerToggle}
-          ModalProps={{
-            keepMounted: true, // Better open performance on mobile.
-          }}
-          sx={{
-            display: { xs: 'block', sm: 'none' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
+      {/*Sidebar dan main content container*/}
+      <Box sx={{ display: 'flex'}}>
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+          aria-label="Tutorial List"
         >
-          {drawer}
-        </Drawer>
-        <Drawer
-          variant="permanent"
-          sx={{
-            display: { xs: 'none', sm: 'block' },
-            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-          }}
-          open
+          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+          <Drawer
+            container={container}
+            variant="temporary"
+            open={mobileOpen}
+            onClose={handleDrawerToggle}
+            ModalProps={{
+              keepMounted: true, // Better open performance on mobile.
+            }}
+            sx={{
+              display: { xs: 'block', sm: 'none' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            }}
+          >
+            {drawer}
+          </Drawer>
+          <Drawer
+            variant="permanent"
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+              position: 'sticky',
+              top: 0,
+              '& .MuiPaper-root': {
+                  position: 'sticky'
+              }
+            }}
+            open
+          >
+            {drawer}
+          </Drawer>
+        </Box>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
         >
-          {drawer}
-        </Drawer>
-      </Box>
-      <Box
-        component="main"
-        sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
-      >
-        {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
-        <Toolbar />
-        <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
-          <Link
-            underline="hover"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            color="inherit"
-            href="/"
-          >
-            <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Tokudev
-          </Link>
-          <Link
-            underline="hover"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            color="inherit"
-            href="/"
-          >
-            <MenuBookIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Tutorial
-          </Link>
-          <Link
-            underline="hover"
-            sx={{ display: 'flex', alignItems: 'center' }}
-            color="inherit"
-            href="/"
-          >
-            <AdbIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Android
-          </Link>
-          <Typography
-            sx={{ display: 'flex', alignItems: 'center' }}
-            color="text.primary">
-            <CatchingPokemonIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-            Paging Tutorial
-          </Typography>
-        </Breadcrumbs>
+          {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
+          <Toolbar />
+          <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
+            <Link
+              underline="hover"
+              sx={{ display: 'flex', alignItems: 'center' }}
+              color="inherit"
+              href="/"
+            >
+              <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+              Tokudev
+            </Link>
+            <Link
+              underline="hover"
+              sx={{ display: 'flex', alignItems: 'center' }}
+              color="inherit"
+              href="/"
+            >
+              <MenuBookIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+              Tutorial
+            </Link>
+            <Link
+              underline="hover"
+              sx={{ display: 'flex', alignItems: 'center' }}
+              color="inherit"
+              href="/"
+            >
+              <AdbIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+              Android
+            </Link>
+            <Typography
+              sx={{ display: 'flex', alignItems: 'center' }}
+              color="text.primary">
+              <CatchingPokemonIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+              Paging Tutorial
+            </Typography>
+          </Breadcrumbs>
 
-        <Typography variant="h1">Lorem Ipsum</Typography>
-        <Typography paragraph align="justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography variant="h2">Lorem</Typography>
-        <Typography paragraph align="justify">
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
-        <ImageToku image="https://blog.amartha.com/wp-content/uploads/2021/02/Lorem-Ipsum-alternatives.png" caption="Gambar tentang Lorem Ipsum dengan latar pink" alt="Lorem Ipsum"/>
-        <Typography paragraph align="justify">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography>
-        <Typography variant="h2">Ipsum</Typography>
-        <Typography paragraph align="justify">
-          Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
-          eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
-          neque volutpat ac tincidunt. Ornare suspendisse sed nisi lacus sed viverra
-          tellus. Purus sit amet volutpat consequat mauris. Elementum eu facilisis
-          sed odio morbi. Euismod lacinia at quis risus sed vulputate odio. Morbi
-          tincidunt ornare massa eget egestas purus viverra accumsan in. In hendrerit
-          gravida rutrum quisque non tellus orci ac. Pellentesque nec nam aliquam sem
-          et tortor. Habitant morbi tristique senectus et. Adipiscing elit duis
-          tristique sollicitudin nibh sit. Ornare aenean euismod elementum nisi quis
-          eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
-          posuere sollicitudin aliquam ultrices sagittis orci a.
-        </Typography>
+          <BlogArticleExample/>
+        </Box>
+      </Box>
+
+      <Box component="footer" sx={{backgroundColor: 'primary.main'}}>
+        <Grid container>
+          <Grid item xs={6}>
+            <List subheader={
+              <ListSubheader sx={{backgroundColor: 'primary.main'}}>
+                Resources
+              </ListSubheader>
+            }>
+              <ListSubheader></ListSubheader>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="About" />
+              </ListItemButton>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="Contact" />
+              </ListItemButton>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="Sitemap" />
+              </ListItemButton>
+            </List>
+          </Grid>
+
+          <Grid item xs={6}>
+            <List subheader={
+              <ListSubheader sx={{backgroundColor: 'primary.main'}}>
+                Legal
+              </ListSubheader>
+            }>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="Privacy Policy" />
+              </ListItemButton>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="Terms of Use" />
+              </ListItemButton>
+            </List>
+          </Grid>
+
+          <Grid item xs={12}>
+            <Typography align="center" sx={{backgroundColor: 'primary.dark'}}>
+              Copyright © 2022 Link
+            </Typography>
+          </Grid>
+        </Grid>
       </Box>
     </Box>
   );
