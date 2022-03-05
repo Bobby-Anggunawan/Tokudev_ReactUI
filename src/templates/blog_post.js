@@ -54,34 +54,6 @@ function BlogPost(props) {
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-/*
-  const drawer = (
-    <div>
-      <Toolbar />
-      <Divider />
-      <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
-      <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>
-              {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-            </ListItemIcon>
-            <ListItemText primary={text} />
-          </ListItem>
-        ))}
-      </List>
-    </div>
-  );*/
   const drawer = (
     <div>
       <Toolbar>
@@ -234,40 +206,40 @@ function BlogPost(props) {
         <Grid container>
           <Grid item xs={6}>
             <List subheader={
-              <ListSubheader sx={{backgroundColor: 'primary.main'}}>
+              <ListSubheader sx={{backgroundColor: 'primary.main', textAlign: "center", color: 'primary.contrastText'}}>
                 Resources
               </ListSubheader>
             }>
               <ListSubheader></ListSubheader>
               <ListItemButton component="a" href="#">
-                <ListItemText primary="About" />
+                <ListItemText primary="About" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
               <ListItemButton component="a" href="#">
-                <ListItemText primary="Contact" />
+                <ListItemText primary="Contact" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
               <ListItemButton component="a" href="#">
-                <ListItemText primary="Sitemap" />
+                <ListItemText primary="Sitemap" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
             </List>
           </Grid>
 
           <Grid item xs={6}>
             <List subheader={
-              <ListSubheader sx={{backgroundColor: 'primary.main'}}>
+              <ListSubheader sx={{backgroundColor: 'primary.main', textAlign: "center", color: 'primary.contrastText'}}>
                 Legal
               </ListSubheader>
             }>
               <ListItemButton component="a" href="#">
-                <ListItemText primary="Privacy Policy" />
+                <ListItemText primary="Privacy Policy" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
               <ListItemButton component="a" href="#">
-                <ListItemText primary="Terms of Use" />
+                <ListItemText primary="Terms of Use" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
             </List>
           </Grid>
 
           <Grid item xs={12}>
-            <Typography align="center" sx={{backgroundColor: 'primary.dark'}}>
+            <Typography align="center" sx={{backgroundColor: 'info.dark', color: 'info.contrastText'}}>
               Copyright © 2022 Link
             </Typography>
           </Grid>

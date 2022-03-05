@@ -2,13 +2,14 @@ import React from 'react';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import ImageToku from '../component/image';
+import HeadingToku from '../component/heading';
 
 
 function BlogArticleExample() {
     return ( 
         <React.Fragment>
-            <Typography variant="h1">Lorem Ipsum</Typography>
-        <Typography paragraph align="justify">
+          <HeadingToku variant="h1" title="Lorem Ipsum"/>
+          <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
           enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
