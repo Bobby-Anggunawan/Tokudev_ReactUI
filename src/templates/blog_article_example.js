@@ -8,7 +8,7 @@ import HeadingToku from '../component/heading';
 function BlogArticleExample() {
     return ( 
         <React.Fragment>
-          <HeadingToku variant="h1" title="Lorem Ipsum"/>
+          <HeadingToku variant={1} title="Lorem Ipsum"/>
           <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
@@ -23,7 +23,7 @@ function BlogArticleExample() {
           consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
           sapien faucibus et molestie ac.
         </Typography>
-        <Typography variant="h2">Lorem</Typography>
+        <HeadingToku variant={2} title="Lorem"/>
         <Typography paragraph align="justify">
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
           eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim
@@ -52,7 +52,7 @@ function BlogArticleExample() {
           consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
           sapien faucibus et molestie ac.
         </Typography>
-        <Typography variant="h2">Ipsum</Typography>
+        <HeadingToku variant={2} title="Ipsum"/>
         <Typography paragraph align="justify">
           Consequat mauris nunc congue nisi vitae suscipit. Fringilla est ullamcorper
           eget nulla facilisi etiam dignissim diam. Pulvinar elementum integer enim

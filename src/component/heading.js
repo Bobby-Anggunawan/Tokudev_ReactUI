@@ -17,12 +17,23 @@ const MyHeading = styled(Typography)({
 
 function HeadingToku(props) {
     return (
-        <MyHeading variant={props.variant}>
-            <Typography component="span" variant={props.variant}>{props.title}</Typography>
-            <IconButton sx={{visibility: "hidden"}} onClick={() => {navigator.clipboard.writeText(props.title)}}>
-                <LinkIcon/>
-            </IconButton>
-        </MyHeading>
+        <React.Fragment>
+            {
+                /*Dirender dengan ternary operator untuk hilangin tombol salin link di H1 saja*/
+                (props.variant>1)?
+
+                /*Yang dirender kalo bukan h1*/
+                <MyHeading variant={`h${props.variant}`}>
+                    <Typography component="span" variant={`h${props.variant+2}`} sx={{fontWeight: "normal"}}>{props.title}</Typography>
+                    <IconButton sx={{visibility: "hidden"}} onClick={() => {navigator.clipboard.writeText(props.title)}}>
+                        <LinkIcon/>
+                    </IconButton>
+                </MyHeading>:
+
+                /*untuk render h1 */
+                <Typography component="h1" variant="h2" sx={{fontWeight: "normal"}}>{props.title}</Typography>
+            }
+        </React.Fragment>
     );
 }
 
