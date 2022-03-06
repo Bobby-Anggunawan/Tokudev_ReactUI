@@ -158,46 +158,10 @@ function BlogPost(props) {
         </Box>
         <Box
           component="main"
-          sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+          sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
         >
           {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
           <Toolbar />
-          <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />}>
-            <Link
-              underline="hover"
-              sx={{ display: 'flex', alignItems: 'center' }}
-              color="inherit"
-              href="/"
-            >
-              <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Tokudev
-            </Link>
-            <Link
-              underline="hover"
-              sx={{ display: 'flex', alignItems: 'center' }}
-              color="inherit"
-              href="/"
-            >
-              <MenuBookIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Tutorial
-            </Link>
-            <Link
-              underline="hover"
-              sx={{ display: 'flex', alignItems: 'center' }}
-              color="inherit"
-              href="/"
-            >
-              <AdbIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Android
-            </Link>
-            <Typography
-              sx={{ display: 'flex', alignItems: 'center' }}
-              color="text.primary">
-              <CatchingPokemonIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-              Paging Tutorial
-            </Typography>
-          </Breadcrumbs>
-
           <BlogArticleExample/>
         </Box>
       </Box>

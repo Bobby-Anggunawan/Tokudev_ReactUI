@@ -3,12 +3,14 @@ import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 import ImageToku from '../component/image';
 import HeadingToku from '../component/heading';
+import PostHeaderToku from '../component/post_header';
 
 
 function BlogArticleExample() {
     return ( 
         <React.Fragment>
-          <HeadingToku variant={1} title="Lorem Ipsum"/>
+          <PostHeaderToku title="Lorem Ipsum" imgAlt="Lorem Ipsum" imgUrl="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"/>
+
           <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
