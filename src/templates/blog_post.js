@@ -27,6 +27,7 @@ import ListSubheader from '@mui/material/ListSubheader';
 import BlogArticleExample from './blog_article_example';
 import { Container, Grid, ListItemButton } from '@mui/material';
 import { height } from '@mui/system';
+import { contentHorizontalPadding } from '../constant';
 
 
 const drawerWidth = 240;
@@ -158,7 +159,7 @@ function BlogPost(props) {
         </Box>
         <Box
           component="main"
-          sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+          sx={{ flexGrow: 1, width: {  sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}
         >
           {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
           <Toolbar />

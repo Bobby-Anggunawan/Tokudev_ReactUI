@@ -1,16 +1,13 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import React from 'react';
+import { contentHorizontalPadding } from '../constant';
 import BreadcrumbsToku from './breadcrumbs';
 import HeadingToku from './heading';
 
 function PostHeaderToku(props) {
 
-    //variable drawerWidth dicopy dari file blog_post.js
-    const drawerWidth = 240;
-
     return (
-        //note calc(100vw - ${drawerWidth+17}px) di box di bawah, 17nya gak tahu dari mana
-        <Box component="header" sx={{position: "relative", height: "200px", width: {xs: "100vw", sm: `calc(100vw - ${drawerWidth+17}px)`}, color: "primary.contrastText"}}>
+        <Box component="header" sx={{position: "relative", left: "-"+contentHorizontalPadding, height: "200px", width: {xs: `calc(100% + ${parseInt(contentHorizontalPadding)*2}px)`}, color: "primary.contrastText"}}>
 
             {/*Header Featured Image*/}
             <Box sx={{height: "100%", width:"100%"}}>
@@ -23,6 +20,7 @@ function PostHeaderToku(props) {
                 <BreadcrumbsToku/>
                 <Box sx={{flexGrow:1}}></Box>
                 <HeadingToku variant={1} title={props.title}/>
+                <Typography>Last update {props.date}</Typography>
             </Box>
         </Box>
     );

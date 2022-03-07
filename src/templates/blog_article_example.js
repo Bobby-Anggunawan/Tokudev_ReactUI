@@ -9,7 +9,7 @@ import PostHeaderToku from '../component/post_header';
 function BlogArticleExample() {
     return ( 
         <React.Fragment>
-          <PostHeaderToku title="Lorem Ipsum" imgAlt="Lorem Ipsum" imgUrl="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"/>
+          <PostHeaderToku title="Lorem Ipsum" date="7 March 2022" imgAlt="Lorem Ipsum" imgUrl="https://helpx.adobe.com/content/dam/help/en/photoshop/using/convert-color-image-black-white/jcr_content/main-pars/before_and_after/image-before/Landscape-Color.jpg"/>
 
           <Typography paragraph align="justify">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
