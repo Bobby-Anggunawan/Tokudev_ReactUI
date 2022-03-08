@@ -159,7 +159,7 @@ function BlogPost(props) {
         </Box>
         <Box
           component="main"
-          sx={{ flexGrow: 1, width: {  sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}
+          sx={{ flexGrow: 1, width: {  sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding}}
         >
           {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
           <Toolbar />
@@ -203,9 +203,12 @@ function BlogPost(props) {
             </List>
           </Grid>
 
-          <Grid item xs={12}>
-            <Typography align="center" sx={{backgroundColor: 'info.dark', color: 'info.contrastText'}}>
+          <Grid item xs={12} sx={{backgroundColor: 'info.dark', color: 'info.contrastText'}}>
+            <Typography align="center">
               Copyright © 2022 Link
+            </Typography>
+            <Typography align="center">
+              Build with <Link href="https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0">ASP.NET</Link> as backend and <Link href="https://mui.com/">MUI</Link>, the <Link href="https://reactjs.org/">React</Link> UI library ~ Based on <Link href="https://material.io/">Google Material Design</Link> ~ Hosted on <Link href="https://cloud.google.com/">Google Cloud</Link>
             </Typography>
           </Grid>
         </Grid>
