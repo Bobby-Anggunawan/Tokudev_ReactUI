@@ -28,6 +28,7 @@ import BlogArticleExample from './blog_article_example';
 import { Container, Grid, ListItemButton } from '@mui/material';
 import { height } from '@mui/system';
 import { contentHorizontalPadding } from '../constant';
+import AppBarToku from '../component/general/app_bar';
 
 
 const drawerWidth = 240;
@@ -96,28 +97,8 @@ function BlogPost(props) {
   return (
     <Box>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" noWrap component="div">
-            TokuDev
-          </Typography>
-        </Toolbar>
-      </AppBar>
+      <AppBarToku appBarType="blogPost" drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle}></AppBarToku>
+
       {/*Sidebar dan main content container*/}
       <Box sx={{ display: 'flex'}}>
         <Box

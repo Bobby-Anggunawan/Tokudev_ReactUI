@@ -2,13 +2,14 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Notes from './pages/Notes'
 import Create from './pages/Create'
 import BlogPost from './templates/blog_post';
+import Home from './pages/Home';
 
 function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Notes />
+          <Home />
         </Route>
         <Route path="/create">
           <Create />
