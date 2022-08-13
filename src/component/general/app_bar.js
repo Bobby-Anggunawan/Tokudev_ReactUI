@@ -4,9 +4,24 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import Typography from '@mui/material/Typography';
-import { Link } from '@mui/material';
+import { Link, Box, Button } from '@mui/material';
+import Switch from '@mui/material/Switch';
+import App from '../../App';
+import { useTheme, ThemeProvider, createTheme } from '@mui/material/styles';
+import { ColorModeContext } from '../../App';
 
 function AppBarToku(props){
+
+  const theme = useTheme();
+  const colorMode = React.useContext(ColorModeContext);
+
+  const [checked, setChecked] = React.useState(true);
+
+  const handleChange = (event) => {
+    setChecked(event.target.checked);
+    colorMode.toggleColorMode();
+  };
+
     if(props.appBarType == "blogPost"){
         return(
             <AppBar
@@ -35,9 +50,27 @@ function AppBarToku(props){
     <AppBar position="fixed">
         <Toolbar>
             <Link href="/" variant="h6" underline="none" color="primary.contrastText">TokuDev</Link>
+
+            <Box sx={{ flexGrow: 1 }}></Box>
+
+            <Button color="inherit">Home</Button>
+            <Button color="inherit">About</Button>
+            <Button color="inherit">Contact</Button>
+
+            <Box sx={{ flexGrow: 1 }}></Box>
+
+            <Typography>{checked? 'Dark' : 'Light'} Mode</Typography>
+            <Switch
+              checked={checked}
+              onChange={handleChange}
+              inputProps={{ 'aria-label': 'controlled' }}
+              color="secondary"
+            />
+
         </Toolbar>
     </AppBar>
     );
 }
+
 
 export default AppBarToku;
