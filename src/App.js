@@ -13,7 +13,9 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function App() {
 
-  const [mode, setMode] = React.useState('light');
+  var myVar = localStorage['DarkModeValue'] || 'light';
+
+  const [mode, setMode] = React.useState(myVar);
   const colorMode = React.useMemo(
     () => ({
       toggleColorMode: () => {
