@@ -38,36 +38,63 @@ function PageBuilder(props) {
             if(prev_arg[0] == "p"){
                 prev_arg = [];
                 hasil.push(
-                    <Typography paragraph align="justify">
+                    <Typography paragraph align="justify" key={counter}>
                         {data[counter]}
                     </Typography>
                 );
             }
             else if(prev_arg[0] == "h1" || prev_arg[0] == "h2" || prev_arg[0] == "h3" || prev_arg[0] == "h4"){
+                var hasil2 = [];
+                
                 if(prev_arg[0] == "h1"){
                     prev_arg = [];
-                    hasil.push(
-                        <HeadingToku variant={1} title={data[counter]}/>
+                    hasil2.push(
+                        <HeadingToku variant={1} title={data[counter]} key={counter}/>
                     );
                 }
-                if(prev_arg[0] == "h2"){
+                else if(prev_arg[0] == "h2"){
                     prev_arg = [];
-                    hasil.push(
-                        <HeadingToku variant={2} title={data[counter]}/>
+                    hasil2.push(
+                        <HeadingToku variant={2} title={data[counter]} key={counter}/>
                     );
                 }
-                if(prev_arg[0] == "h3"){
+                else if(prev_arg[0] == "h3"){
                     prev_arg = [];
-                    hasil.push(
-                        <HeadingToku variant={3} title={data[counter]}/>
+                    hasil2.push(
+                        <HeadingToku variant={3} title={data[counter]} key={counter}/>
                     );
                 }
-                if(prev_arg[0] == "h4"){
+                else if(prev_arg[0] == "h4"){
                     prev_arg = [];
-                    hasil.push(
-                        <HeadingToku variant={4} title={data[counter]}/>
+                    hasil2.push(
+                        <HeadingToku variant={4} title={data[counter]} key={counter}/>
                     );
                 }
+                counter+=1;
+                while(true){
+
+                    if(counter>data.length) break;
+                    console.log(counter);
+                    if(prev_arg.length == 0){
+                        prev_arg.push(data[counter]);
+                        if(data[counter] == "h1" || data[counter] == "h2" || data[counter] == "h3" || data[counter] == "h4") break;
+                    }
+                    else{
+                        console.log(prev_arg[0]);
+                        if(prev_arg[0] == "p"){
+                            prev_arg = [];
+                            hasil2.push(
+                                <Typography paragraph align="justify" key={counter}>
+                                    {data[counter]}
+                                </Typography>
+                            );
+                        }
+                    }
+                    counter+=1;
+                }
+                hasil.push(
+                    <section key={counter}>{hasil2}</section>
+                );
             }
         }
         counter+=1
