@@ -4,6 +4,7 @@ import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 import Typography from '@mui/material/Typography';
 import HeadingToku from '../component/heading';
 import ImageToku from '../component/image';
+import PostHeaderToku from '../component/post_header';
 
 function PageBuilder(props) {
 
@@ -20,10 +21,19 @@ function PageBuilder(props) {
     const db = getFirestore(app);  
     //===============================
     const [data, setData] = React.useState("kosong");
+    const [title, setTitle] = React.useState("Loading");
+    const [updateDate, setUpdateDate] = React.useState("Loading");
+    const [poster, setPostere] = React.useState("Loading");
     React.useEffect(() => {
         const docRef = doc(db, "BlogPost", "Lorem Ipsum");
         const docSnap = getDoc(docRef).then((doc) => {
-        setData(doc.data().content);
+            setData(doc.data().content);
+            setTitle(doc.data().title);
+            setPostere(doc.data().poster);
+
+            var t = new Date(Date.UTC(1970, 0, 1)); // Epoch
+            t.setUTCSeconds(doc.data().date.seconds);
+            setUpdateDate(t.toDateString());
         });
     }, []);
 
@@ -125,9 +135,10 @@ function PageBuilder(props) {
     }
 
     return (
-        <div>
+        <React.Fragment>
+            <PostHeaderToku title={title} date={updateDate} imgAlt={title} imgUrl={poster}/>
             {hasil}
-        </div>
+        </React.Fragment>
     );
 }
 
