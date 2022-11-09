@@ -7,7 +7,7 @@ function ImageToku(props) {
     return (
         <Box component="figure">
             {/*Border masih bingung border radius di IMG ini. Seharusnya kan 3 ngikutin parrent, tapi malah 9 */}
-            <img src={props.image} alt={props.alt} style={{width: "100%", height: "auto", borderRadius: borderRadius}}/>
+            <img src={props.image} alt={props.altTxt} style={{width: "100%", height: "auto", borderRadius: borderRadius}}/>
             <Box component="figcaption"><Typography variant="caption">{props.caption}</Typography > </Box>
         </Box>
     );

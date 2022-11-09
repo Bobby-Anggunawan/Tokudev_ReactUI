@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 import Typography from '@mui/material/Typography';
 import HeadingToku from '../component/heading';
+import ImageToku from '../component/image';
 
 function PageBuilder(props) {
 
@@ -43,6 +44,19 @@ function PageBuilder(props) {
                     </Typography>
                 );
             }
+            else if(prev_arg[0] == "img"){
+                if(prev_arg.length>1){
+                    console.log(counter);
+                    hasil2.push(
+                        <ImageToku key={counter} image={data[counter]} caption={prev_arg[1]} altTxt={data[counter-1]}/>
+                    );
+                    prev_arg = [];
+                }
+                else{
+                    prev_arg.push(data[counter]);
+                    counter+=1;
+                }
+            }
             else if(prev_arg[0] == "h1" || prev_arg[0] == "h2" || prev_arg[0] == "h3" || prev_arg[0] == "h4"){
                 var hasil2 = [];
                 
@@ -72,15 +86,12 @@ function PageBuilder(props) {
                 }
                 counter+=1;
                 while(true){
-
                     if(counter>data.length) break;
-                    console.log(counter);
                     if(prev_arg.length == 0){
                         prev_arg.push(data[counter]);
                         if(data[counter] == "h1" || data[counter] == "h2" || data[counter] == "h3" || data[counter] == "h4") break;
                     }
                     else{
-                        console.log(prev_arg[0]);
                         if(prev_arg[0] == "p"){
                             prev_arg = [];
                             hasil2.push(
@@ -88,6 +99,19 @@ function PageBuilder(props) {
                                     {data[counter]}
                                 </Typography>
                             );
+                        }
+                        else if(prev_arg[0] == "img"){
+                            if(prev_arg.length>1){
+                                console.log(counter);
+                                hasil2.push(
+                                    <ImageToku key={counter} image={data[counter]} caption={prev_arg[1]} altTxt={data[counter-1]}/>
+                                );
+                                prev_arg = [];
+                            }
+                            else{
+                                prev_arg.push(data[counter]);
+                                counter+=1;
+                            }
                         }
                     }
                     counter+=1;
