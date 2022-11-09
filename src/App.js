@@ -4,8 +4,6 @@ import Notes from './pages/Notes'
 import Create from './pages/Create'
 import BlogPost from './templates/blog_post';
 import Home from './pages/Home';
-import { prefersDarkMode, myTheme, darkModeTheme, lightModeTheme } from './constant';
-import { CssBaseline } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 

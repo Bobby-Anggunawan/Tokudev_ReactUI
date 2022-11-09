@@ -30,6 +30,7 @@ import { height } from '@mui/system';
 import { contentHorizontalPadding } from '../constant';
 import AppBarToku from '../component/general/app_bar';
 import FooterToku from '../component/general/footer';
+import PageBuilder from '../myLib/page_builder';
 
 
 const drawerWidth = 240;
@@ -145,7 +146,10 @@ function BlogPost(props) {
         >
           {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
           <Toolbar />
-          <BlogArticleExample/>
+          {
+            //<BlogArticleExample/>
+            <PageBuilder/>
+          }
         </Box>
       </Box>
 
