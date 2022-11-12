@@ -48,7 +48,7 @@ function AppBarToku(props){
           >
             <MenuIcon />
           </IconButton>
-          <Link href="/" variant="h6" underline="none" color="primary.contrastText">TokuDev</Link>
+          <Link href="/" variant="h6" underline="none" color="common.white">TokuDev</Link>
         </Toolbar>
       </AppBar>
         );
@@ -57,7 +57,7 @@ function AppBarToku(props){
     return(
     <AppBar position="fixed">
         <Toolbar>
-            <Link href="/" variant="h6" underline="none" color="primary.contrastText">TokuDev</Link>
+            <Link href="/" variant="h6" underline="none" color="common.white">TokuDev</Link>
 
             <Box sx={{ flexGrow: 1 }}></Box>
 

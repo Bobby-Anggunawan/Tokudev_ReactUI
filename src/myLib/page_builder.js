@@ -24,7 +24,7 @@ function PageBuilder(props) {
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);  
     //===============================
-    const [data, setData] = React.useState("kosong");
+    const [data, setData] = React.useState([]);
     const [title, setTitle] = React.useState("Loading");
     const [updateDate, setUpdateDate] = React.useState("Loading");
     const [poster, setPostere] = React.useState("Loading");
