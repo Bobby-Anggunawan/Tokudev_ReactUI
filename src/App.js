@@ -8,6 +8,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import NotFound from './pages/NotFound';
 import Article from './pages/Category/Article';
 import Tutorial from './pages/Category/Tutorial';
+import Tutorial_Content from './pages/Category/Tutorial-Content';
+import ArticlePost from './templates/article_post';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -43,11 +45,20 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
-            <Route path="/article">
+            <Route exact path="/article">
               <Article/>
             </Route>
-            <Route path="/tutorial">
+            <Route path="/article/*">
+              <ArticlePost/>
+            </Route>
+            <Route exact path="/tutorial">
               <Tutorial/>
+            </Route>
+            <Route path="/tutorial/*/*">
+              <BlogPost/>
+            </Route>
+            <Route path="/tutorial/*">
+              <Tutorial_Content/>
             </Route>
             <Route path="/create">
               <Create />

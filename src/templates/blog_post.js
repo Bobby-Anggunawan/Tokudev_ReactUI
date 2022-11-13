@@ -1,39 +1,20 @@
 import * as React from 'react';
 import PropTypes from 'prop-types';
-import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import MenuBookIcon from '@mui/icons-material/MenuBook';
-import AdbIcon from '@mui/icons-material/Adb';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
-import HomeIcon from '@mui/icons-material/Home';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import ImageToku from '../component/image';
-import CatchingPokemonIcon from '@mui/icons-material/CatchingPokemon';
 import ListSubheader from '@mui/material/ListSubheader';
-import BlogArticleExample from './blog_article_example';
-import { Container, Grid, ListItemButton } from '@mui/material';
-import { height } from '@mui/system';
-import { contentHorizontalPadding } from '../constant';
+import { contentHorizontalPadding, drawerWidth } from '../constant';
 import AppBarToku from '../component/general/app_bar';
 import FooterToku from '../component/general/footer';
 import PageBuilder from '../myLib/page_builder';
 
-
-const drawerWidth = 240;
 
 var sideBarJson = `
 {
