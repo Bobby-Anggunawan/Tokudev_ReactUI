@@ -1,0 +1,269 @@
+import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid } from '@mui/material'
+import React from 'react'
+import AppBarToku from '../component/general/app_bar'
+import FooterToku from '../component/general/footer'
+import { contentHorizontalPadding, db } from '../constant';
+import PageBuilderFunction from '../myLib/pageBuilderFunction';
+import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
+
+export default function PagePoster() {
+
+  const [urlTitle, setUrlTitle] = React.useState([]);
+  React.useEffect(() => {
+      const docRef = doc(db, "CategoryList", "Tutorial");
+      const docSnap = getDoc(docRef).then((doc) => {
+        setUrlTitle(doc.data().urlTitle);
+      });
+  }, []);
+
+  const [listSubUrlTitle, listSetUrlTitle] = React.useState([]);
+  const [subUrlTitleStore, setSubUrlTitleStore] = React.useState("");
+  const subAddUrlTitleStore = (event) => {
+    setSubUrlTitleStore(event.target.value);
+  };
+
+  const [urlTitleStore, setUrlTitleStore] = React.useState("");
+  const addUrlTitleStore = (event) => {
+    var eventValue = event.target.value;
+    setUrlTitleStore(eventValue);
+
+    const docRef2 = doc(db, "TutorialContentView", eventValue);
+    const docSnap2 = getDoc(docRef2).then((doc) => {
+      var concatedArr = [];
+      for(var x=0; x< doc.data().headerName.length; x++){
+        var tempArr = doc.data()[`headerChild${x+1}`];
+        for(var y=0; y<tempArr.length; y++){
+          concatedArr.push(tempArr[y]);
+        }
+      }
+      listSetUrlTitle(concatedArr);
+    });
+  };
+  //===================================
+
+  const [urlCategory, setUrlCategory] = React.useState("Article");
+  const addsetUrlCategory = (event) => {
+    setUrlCategory(event.target.value);
+  };
+
+  const [paragraphTypes, setParagraphType] = React.useState("p");
+  const handleChange = (event) => {
+    setParagraphType(event.target.value);
+  };
+
+  const [newParagraph, setNewParagraph] = React.useState("");
+  const addNewParagraph = (event) => {
+    setNewParagraph(event.target.value);
+  };
+  const [newParagraph1, setNewParagraph1] = React.useState("");
+  const addNewParagraph1 = (event) => {
+    setNewParagraph1(event.target.value);
+  };
+  const [newParagraph2, setNewParagraph2] = React.useState("");
+  const addNewParagraph2 = (event) => {
+    setNewParagraph2(event.target.value);
+  };
+
+  const [contents, setContents] = React.useState([]);
+  const [contentResult, setContentResult] = React.useState([]);
+  const addContents = (event) => {
+    if(paragraphTypes == "p"){
+      if(newParagraph!=""){
+        var contain = contents;
+        contain.push("p");
+        contain.push(newParagraph);
+        setContents(contain);
+
+        setContentResult(PageBuilderFunction(contents).Hasil);
+      }
+    }
+    else if(paragraphTypes == "img"){
+      if(newParagraph !="" && newParagraph1 !="" && newParagraph2 !=""){
+        var contain = contents;
+        contain.push("img");
+        contain.push(newParagraph2);
+        contain.push(newParagraph1);
+        contain.push(newParagraph);
+        setContents(contain);
+
+        setContentResult(PageBuilderFunction(contents).Hasil);
+      }
+    }
+    else if(paragraphTypes == "h1" && newParagraph!= ""){
+      var contain = contents;
+      contain.push("h1");
+      contain.push(newParagraph);
+      setContents(contain);
+      setContentResult(PageBuilderFunction(contents).Hasil);
+    }
+    else if(paragraphTypes == "h2" && newParagraph!= ""){
+      var contain = contents;
+      contain.push("h2");
+      contain.push(newParagraph);
+      setContents(contain);
+      setContentResult(PageBuilderFunction(contents).Hasil);
+    }
+    else if(paragraphTypes == "h3" && newParagraph!= ""){
+      var contain = contents;
+      contain.push("h3");
+      contain.push(newParagraph);
+      setContents(contain);
+      setContentResult(PageBuilderFunction(contents).Hasil);
+    }
+    else if(paragraphTypes == "h4" && newParagraph!= ""){
+      var contain = contents;
+      contain.push("h4");
+      contain.push(newParagraph);
+      setContents(contain);
+      setContentResult(PageBuilderFunction(contents).Hasil);
+    }
+
+    discardContent();
+  }
+  const discardContent = (event) => {
+    setNewParagraph("");
+    setNewParagraph1("");
+    setNewParagraph2("");
+  }
+
+  return (
+    <Box>
+      <AppBarToku/>
+      <Toolbar/>
+      
+      <Box minHeight="100vh" padding={contentHorizontalPadding}>
+
+        <Box display= "flex">
+          <Stack flex="50%" spacing={2}>
+            {contentResult.map((items) =>(
+              <Card key={Math.floor(Date.now() / 1000)}>
+                {items}
+              </Card>
+            ))}
+          </Stack>
+          
+          <Box flex="50%" paddingLeft={contentHorizontalPadding}>
+            <Grid container spacing={2}>
+              <Grid item xs={6}>
+                <TextField id="urlCategory"
+                    label="Category"
+                    margin="normal"
+                    select
+                    value={urlCategory}
+                    onChange={addsetUrlCategory}
+                    fullWidth>
+                  <MenuItem value="Article">Article</MenuItem>
+                  <MenuItem value="Tutorial">Tutorial</MenuItem>
+                </TextField>
+              </Grid>
+              <Grid item xs={6}>
+                {(urlCategory=="Tutorial" && urlTitle.length>0) &&
+                  <TextField id="urlDivision"
+                      label="Division"
+                      margin="normal"
+                      select
+                      fullWidth
+                      value={urlTitleStore}
+                      onChange={addUrlTitleStore}>
+                    {urlTitle.map((dataURLTitle) => {
+                      return(
+                        <MenuItem value={dataURLTitle} key={dataURLTitle}>{dataURLTitle}</MenuItem>
+                      );
+                    })}
+                  </TextField>
+                }
+              </Grid>
+            </Grid>
+            {
+              (urlCategory=="Tutorial")&&
+              <TextField id="subUrlDivision"
+                        label="Sub Division"
+                        margin="normal"
+                        fullWidth
+                        select
+                        value={subUrlTitleStore}
+                        onChange={subAddUrlTitleStore}>
+                {listSubUrlTitle.map((aDataMap) => {
+                  return(
+                    <MenuItem value={aDataMap} key={aDataMap}>{aDataMap}</MenuItem>
+                  );
+                })}
+
+              </TextField>
+            }
+            <TextField  id="postTitle"
+                    label="Post Title"
+                    margin="normal"
+                    fullWidth/>
+            <TextField  id="postSubTitle"
+                    label="Post Sub Title"
+                    margin="normal"
+                    fullWidth/>
+            <TextField  id="postPoster"
+                    label="Poster Image"
+                    margin="normal"
+                    fullWidth/>
+            <Button variant="contained">Post</Button>
+          </Box>
+        </Box>
+
+        <TextField  id="paragraphType"
+                    select
+                    label="Paragraph Type"
+                    margin="normal"
+                    fullWidth
+                    value={paragraphTypes}
+                    onChange={handleChange}>
+
+          <MenuItem value="p">P</MenuItem>
+          <MenuItem value="img">IMG</MenuItem>
+          <MenuItem value="h1">H1</MenuItem>
+          <MenuItem value="h2">H2</MenuItem>
+          <MenuItem value="h3">H3</MenuItem>
+          <MenuItem value="h4">H4</MenuItem>
+
+        </TextField>
+
+        <Box  component="form"
+              noValidate
+              autoComplete="off">
+
+          <TextField  multiline
+                    id="newParagraph"
+                    label={paragraphTypes=="img" && "Src" || "New Paragraph"}
+                    margin="normal"
+                    fullWidth
+                    onChange={addNewParagraph}
+                    value={newParagraph}/>
+
+          {
+            paragraphTypes=="img"&&
+
+            <Box>
+              <TextField  multiline
+                    id="Alt"
+                    label="Alt"
+                    margin="normal"
+                    fullWidth
+                    onChange={addNewParagraph1}/>
+              <TextField  multiline
+                    id="Caption"
+                    label="Caption"
+                    margin="normal"
+                    fullWidth
+                    onChange={addNewParagraph2}/>
+            </Box>
+          }
+
+        </Box>
+
+        <Stack direction="row" spacing={2}>
+          <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
+          <Button variant="contained" color="error" onClick={discardContent}>Discard</Button>
+        </Stack>
+      </Box>
+
+      <FooterToku/>
+    </Box>
+  )
+}

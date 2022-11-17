@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, Button, Card, CardActionArea, CardContent, CardMedia, Grid, Typography } from '@mui/material';
+import { Box, Button, Card, CardActionArea, CardContent, CardMedia, CssBaseline, Grid, Typography } from '@mui/material';
 import AppBarToku from '../component/general/app_bar';
 import suya from '../MyImg/wallpaperSuya.png';
 import FooterToku from '../component/general/footer';

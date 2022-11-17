@@ -2,104 +2,53 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, ImageList, ImageList
 import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
+import {db} from '../../constant'
+import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 
 export default function Tutorial() {
+
+    const [poster, setPoster] = React.useState([]);
+    const [subTitle, setSubTitle] = React.useState([]);
+    const [title, setTitle] = React.useState([]);
+    React.useEffect(() => {
+        const docRef = doc(db, "CategoryList", "Tutorial");
+        const docSnap = getDoc(docRef).then((doc) => {
+            setPoster(doc.data().poster);
+            setSubTitle(doc.data().subTitle);
+            setTitle(doc.data().title);
+        });
+    }, []);
+
+
   return (
     <Box>
         <AppBarToku/>
         <Toolbar/>
 
         <ImageList  variant="masonry" cols={3} gap={8} sx={{width: "50%", marginX: "auto"}}>
-            <ImageListItem>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea href="/tutorial/cs">
-                        <CardMedia  component="img"
-                                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAEssp5xBCP420VJTAkFru3VTpDnHVnXzjg&usqp=CAU"
-                                    alt="astronot"/>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                C#
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Buat game, web, kecerdasan buatan? C#
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </ImageListItem>
+            
+            {title.map((aTitle, x) => {
+                return(
+                        <ImageListItem>
+                        <Card>
+                            <CardActionArea href="/tutorial/cs">
+                                <CardMedia  component="img"
+                                        image={poster[x]}
+                                        alt={aTitle}/>
+                                <CardContent>
+                                    <Typography gutterBottom variant="h5" component="div">
+                                        {aTitle}
+                                    </Typography>
+                                    <Typography variant="body2" color="text.secondary">
+                                        {subTitle[x]}
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </ImageListItem>
+                );
+            })}
 
-
-            <ImageListItem>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea href="/tutorial/cs">
-                        <CardMedia  component="img"
-                                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAEssp5xBCP420VJTAkFru3VTpDnHVnXzjg&usqp=CAU"
-                                    alt="astronot"/>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                C#
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Buat game, web, kecerdasan buatan? C#
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </ImageListItem>
-
-            <ImageListItem>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea href="/tutorial/cs">
-                        <CardMedia  component="img"
-                                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAEssp5xBCP420VJTAkFru3VTpDnHVnXzjg&usqp=CAU"
-                                    alt="astronot"/>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                C#
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Buat game, web, kecerdasan buatan? C#
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </ImageListItem>
-
-            <ImageListItem>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea href="/tutorial/cs">
-                        <CardMedia  component="img"
-                                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAEssp5xBCP420VJTAkFru3VTpDnHVnXzjg&usqp=CAU"
-                                    alt="astronot"/>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                C#
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Buat game, web, kecerdasan buatan? C#
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </ImageListItem>
-
-            <ImageListItem>
-                <Card sx={{ maxWidth: 345 }}>
-                    <CardActionArea href="/tutorial/cs">
-                        <CardMedia  component="img"
-                                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQoAEssp5xBCP420VJTAkFru3VTpDnHVnXzjg&usqp=CAU"
-                                    alt="astronot"/>
-                        <CardContent>
-                            <Typography gutterBottom variant="h5" component="div">
-                                C#
-                            </Typography>
-                            <Typography variant="body2" color="text.secondary">
-                                Buat game, web, kecerdasan buatan? C#
-                            </Typography>
-                        </CardContent>
-                    </CardActionArea>
-                </Card>
-            </ImageListItem>
         </ImageList>
 
         <FooterToku/>
