@@ -4,7 +4,7 @@ import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
 import { contentHorizontalPadding, db } from '../constant';
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
-import { getFirestore, collection, getDoc, doc, setDoc, Timestamp } from "firebase/firestore";
+import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 
 
 async function postTutorial(category, division, subDivision, postTitle, postSubTitle, posterImage, content){
@@ -12,7 +12,7 @@ async function postTutorial(category, division, subDivision, postTitle, postSubT
     title: postTitle,
     subTitle: postSubTitle,
     poster: posterImage,
-    date: Timestamp.fromDate(new Date("December 10, 1815")),
+    date: Timestamp.now(),
     content: content
   };
 
@@ -20,9 +20,29 @@ async function postTutorial(category, division, subDivision, postTitle, postSubT
   //hapus semua non alphanumerical character
   //ganti spasi dengan _
   //buat semua huruf jadi kecil
-  buildURL = buildURL.replace(/\W/g,"").replace(" ", "_").toLowerCase()
+  buildURL = buildURL.replace(/[^\w\s]/gi,"").replaceAll(" ", "_").toLowerCase()
+  buildURL = division+"\\"+buildURL;
 
   await setDoc(doc(db, "TutorialPost", buildURL), docData);
+
+  
+  //========================
+  const tutorialContentView = doc(db, "TutorialContentView", division);
+  const docSnap = await getDoc(tutorialContentView);
+
+  var headerName = docSnap.data().headerName;
+  for(var x =0; x<headerName.length; x++){
+    if(headerName[x]==subDivision){
+      var temp = docSnap.data()[`headerChild${x+1}`];
+      temp.push(postTitle);
+      await updateDoc(tutorialContentView, {
+        [`headerChild${x+1}`] : temp
+      });
+
+      break;
+    }
+  }
+  
 }
 
 
@@ -49,14 +69,7 @@ export default function PagePoster() {
 
     const docRef2 = doc(db, "TutorialContentView", eventValue);
     const docSnap2 = getDoc(docRef2).then((doc) => {
-      var concatedArr = [];
-      for(var x=0; x< doc.data().headerName.length; x++){
-        var tempArr = doc.data()[`headerChild${x+1}`];
-        for(var y=0; y<tempArr.length; y++){
-          concatedArr.push(tempArr[y]);
-        }
-      }
-      listSetUrlTitle(concatedArr);
+      listSetUrlTitle(doc.data().headerName);
     });
   };
   //===================================
