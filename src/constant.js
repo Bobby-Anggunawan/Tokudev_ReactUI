@@ -23,7 +23,17 @@ const firebaseConfig = {
     appId: "1:249828565786:web:855a1e6fb7e7b46c96c2a3"
 };
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);  
-//===============================
+const db = getFirestore(app);
 
-export {contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db};
+
+function urlBuilder(title) {
+    let buildURL = title;
+    //hapus semua non alphanumerical character
+    //ganti spasi dengan _
+    //buat semua huruf jadi kecil
+    buildURL = buildURL.replace(/[^\w\s]/gi, "").replaceAll(" ", "_").toLowerCase()
+
+    return buildURL;
+}
+
+export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder };

@@ -2,12 +2,12 @@ import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Gri
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
-import { contentHorizontalPadding, db } from '../constant';
+import { contentHorizontalPadding, db, urlBuilder } from '../constant';
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 
 
-async function postTutorial(category, division, subDivision, postTitle, postSubTitle, posterImage, content){
+async function postTutorial(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
   const docData = {
     title: postTitle,
     subTitle: postSubTitle,
@@ -16,33 +16,48 @@ async function postTutorial(category, division, subDivision, postTitle, postSubT
     content: content
   };
 
-  let buildURL = postTitle;
-  //hapus semua non alphanumerical character
-  //ganti spasi dengan _
-  //buat semua huruf jadi kecil
-  buildURL = buildURL.replace(/[^\w\s]/gi,"").replaceAll(" ", "_").toLowerCase()
-  buildURL = division+"\\"+buildURL;
+  let buildURL = urlBuilder(postTitle);
+  buildURL = division + "\\" + buildURL;
 
   await setDoc(doc(db, "TutorialPost", buildURL), docData);
 
-  
+
   //========================
   const tutorialContentView = doc(db, "TutorialContentView", division);
   const docSnap = await getDoc(tutorialContentView);
 
   var headerName = docSnap.data().headerName;
-  for(var x =0; x<headerName.length; x++){
-    if(headerName[x]==subDivision){
-      var temp = docSnap.data()[`headerChild${x+1}`];
+  for (var x = 0; x < headerName.length; x++) {
+    if (headerName[x] == subDivision) {
+      var temp = [];
+      var tempPoster = [];
+      var tempSubTitle = [];
+
+      try{
+        temp = docSnap.data()[`headerChild${x + 1}`];
+        tempPoster = docSnap.data()[`childPoster${x + 1}`];
+        tempSubTitle = docSnap.data()[`childSubTitle${x + 1}`];
+
+        if(temp == null) temp = [];
+        if(tempPoster == null) tempPoster = [];
+        if(tempSubTitle == null) tempSubTitle = [];
+      }
+      catch{}
+
       temp.push(postTitle);
+      tempPoster.push(posterImage);
+      tempSubTitle.push(postSubTitle);
+
       await updateDoc(tutorialContentView, {
-        [`headerChild${x+1}`] : temp
+        [`headerChild${x + 1}`]: temp,
+        [`childPoster${x + 1}`]: tempPoster,
+        [`childSubTitle${x + 1}`]: tempSubTitle
       });
 
       break;
     }
   }
-  
+
 }
 
 
@@ -50,10 +65,10 @@ export default function PagePoster() {
 
   const [urlTitle, setUrlTitle] = React.useState([]);
   React.useEffect(() => {
-      const docRef = doc(db, "CategoryList", "Tutorial");
-      const docSnap = getDoc(docRef).then((doc) => {
-        setUrlTitle(doc.data().urlTitle);
-      });
+    const docRef = doc(db, "CategoryList", "Tutorial");
+    const docSnap = getDoc(docRef).then((doc) => {
+      setUrlTitle(doc.data().urlTitle);
+    });
   }, []);
 
   const [listSubUrlTitle, listSetUrlTitle] = React.useState([]);
@@ -113,8 +128,8 @@ export default function PagePoster() {
   const [contents, setContents] = React.useState([]);
   const [contentResult, setContentResult] = React.useState([]);
   const addContents = (event) => {
-    if(paragraphTypes == "p"){
-      if(newParagraph!=""){
+    if (paragraphTypes == "p") {
+      if (newParagraph != "") {
         var contain = contents;
         contain.push("p");
         contain.push(newParagraph);
@@ -123,8 +138,8 @@ export default function PagePoster() {
         setContentResult(PageBuilderFunction(contents).Hasil);
       }
     }
-    else if(paragraphTypes == "img"){
-      if(newParagraph !="" && newParagraph1 !="" && newParagraph2 !=""){
+    else if (paragraphTypes == "img") {
+      if (newParagraph != "" && newParagraph1 != "" && newParagraph2 != "") {
         var contain = contents;
         contain.push("img");
         contain.push(newParagraph2);
@@ -135,28 +150,28 @@ export default function PagePoster() {
         setContentResult(PageBuilderFunction(contents).Hasil);
       }
     }
-    else if(paragraphTypes == "h1" && newParagraph!= ""){
+    else if (paragraphTypes == "h1" && newParagraph != "") {
       var contain = contents;
       contain.push("h1");
       contain.push(newParagraph);
       setContents(contain);
       setContentResult(PageBuilderFunction(contents).Hasil);
     }
-    else if(paragraphTypes == "h2" && newParagraph!= ""){
+    else if (paragraphTypes == "h2" && newParagraph != "") {
       var contain = contents;
       contain.push("h2");
       contain.push(newParagraph);
       setContents(contain);
       setContentResult(PageBuilderFunction(contents).Hasil);
     }
-    else if(paragraphTypes == "h3" && newParagraph!= ""){
+    else if (paragraphTypes == "h3" && newParagraph != "") {
       var contain = contents;
       contain.push("h3");
       contain.push(newParagraph);
       setContents(contain);
       setContentResult(PageBuilderFunction(contents).Hasil);
     }
-    else if(paragraphTypes == "h4" && newParagraph!= ""){
+    else if (paragraphTypes == "h4" && newParagraph != "") {
       var contain = contents;
       contain.push("h4");
       contain.push(newParagraph);
@@ -174,45 +189,45 @@ export default function PagePoster() {
 
   return (
     <Box>
-      <AppBarToku/>
-      <Toolbar/>
-      
+      <AppBarToku />
+      <Toolbar />
+
       <Box minHeight="100vh" padding={contentHorizontalPadding}>
 
-        <Box display= "flex">
+        <Box display="flex">
           <Stack flex="50%" spacing={2}>
-            {contentResult.map((items) =>(
-              <Card key={Math.floor(Date.now() / 1000)}>
+            {contentResult.map((items, x) => (
+              <Card key={x}>
                 {items}
               </Card>
             ))}
           </Stack>
-          
+
           <Box flex="50%" paddingLeft={contentHorizontalPadding}>
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 <TextField id="urlCategory"
-                    label="Category"
-                    margin="normal"
-                    select
-                    value={urlCategory}
-                    onChange={addsetUrlCategory}
-                    fullWidth>
+                  label="Category"
+                  margin="normal"
+                  select
+                  value={urlCategory}
+                  onChange={addsetUrlCategory}
+                  fullWidth>
                   <MenuItem value="Article">Article</MenuItem>
                   <MenuItem value="Tutorial">Tutorial</MenuItem>
                 </TextField>
               </Grid>
               <Grid item xs={6}>
-                {(urlCategory=="Tutorial" && urlTitle.length>0) &&
+                {(urlCategory == "Tutorial" && urlTitle.length > 0) &&
                   <TextField id="urlDivision"
-                      label="Division"
-                      margin="normal"
-                      select
-                      fullWidth
-                      value={urlTitleStore}
-                      onChange={addUrlTitleStore}>
+                    label="Division"
+                    margin="normal"
+                    select
+                    fullWidth
+                    value={urlTitleStore}
+                    onChange={addUrlTitleStore}>
                     {urlTitle.map((dataURLTitle) => {
-                      return(
+                      return (
                         <MenuItem value={dataURLTitle} key={dataURLTitle}>{dataURLTitle}</MenuItem>
                       );
                     })}
@@ -221,53 +236,53 @@ export default function PagePoster() {
               </Grid>
             </Grid>
             {
-              (urlCategory=="Tutorial")&&
+              (urlCategory == "Tutorial") &&
               <TextField id="subUrlDivision"
-                        label="Sub Division"
-                        margin="normal"
-                        fullWidth
-                        select
-                        value={subUrlTitleStore}
-                        onChange={subAddUrlTitleStore}>
+                label="Sub Division"
+                margin="normal"
+                fullWidth
+                select
+                value={subUrlTitleStore}
+                onChange={subAddUrlTitleStore}>
                 {listSubUrlTitle.map((aDataMap) => {
-                  return(
+                  return (
                     <MenuItem value={aDataMap} key={aDataMap}>{aDataMap}</MenuItem>
                   );
                 })}
 
               </TextField>
             }
-            <TextField  id="postTitle"
-                    label="Post Title"
-                    margin="normal"
-                    fullWidth
-                    value={postTitle}
-                    onChange={addSetPostTitle}/>
-            <TextField  id="postSubTitle"
-                    label="Post Sub Title"
-                    margin="normal"
-                    fullWidth
-                    onChange={addSetSubPostTitle}
-                    value={postSubTitle}/>
-            <TextField  id="postPoster"
-                    label="Poster Image"
-                    margin="normal"
-                    fullWidth
-                    onChange={addSetPostPoster}
-                    value={postPoster}/>
-            <Button variant="contained" onClick={() => {postTutorial(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents);}}>
+            <TextField id="postTitle"
+              label="Post Title"
+              margin="normal"
+              fullWidth
+              value={postTitle}
+              onChange={addSetPostTitle} />
+            <TextField id="postSubTitle"
+              label="Post Sub Title"
+              margin="normal"
+              fullWidth
+              onChange={addSetSubPostTitle}
+              value={postSubTitle} />
+            <TextField id="postPoster"
+              label="Poster Image"
+              margin="normal"
+              fullWidth
+              onChange={addSetPostPoster}
+              value={postPoster} />
+            <Button variant="contained" onClick={() => { postTutorial(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents); }}>
               Post
             </Button>
           </Box>
         </Box>
 
-        <TextField  id="paragraphType"
-                    select
-                    label="Paragraph Type"
-                    margin="normal"
-                    fullWidth
-                    value={paragraphTypes}
-                    onChange={handleChange}>
+        <TextField id="paragraphType"
+          select
+          label="Paragraph Type"
+          margin="normal"
+          fullWidth
+          value={paragraphTypes}
+          onChange={handleChange}>
 
           <MenuItem value="p">P</MenuItem>
           <MenuItem value="img">IMG</MenuItem>
@@ -278,34 +293,34 @@ export default function PagePoster() {
 
         </TextField>
 
-        <Box  component="form"
-              noValidate
-              autoComplete="off">
+        <Box component="form"
+          noValidate
+          autoComplete="off">
 
-          <TextField  multiline
-                    id="newParagraph"
-                    label={paragraphTypes=="img" && "Src" || "New Paragraph"}
-                    margin="normal"
-                    fullWidth
-                    onChange={addNewParagraph}
-                    value={newParagraph}/>
+          <TextField multiline
+            id="newParagraph"
+            label={paragraphTypes == "img" && "Src" || "New Paragraph"}
+            margin="normal"
+            fullWidth
+            onChange={addNewParagraph}
+            value={newParagraph} />
 
           {
-            paragraphTypes=="img"&&
+            paragraphTypes == "img" &&
 
             <Box>
-              <TextField  multiline
-                    id="Alt"
-                    label="Alt"
-                    margin="normal"
-                    fullWidth
-                    onChange={addNewParagraph1}/>
-              <TextField  multiline
-                    id="Caption"
-                    label="Caption"
-                    margin="normal"
-                    fullWidth
-                    onChange={addNewParagraph2}/>
+              <TextField multiline
+                id="Alt"
+                label="Alt"
+                margin="normal"
+                fullWidth
+                onChange={addNewParagraph1} />
+              <TextField multiline
+                id="Caption"
+                label="Caption"
+                margin="normal"
+                fullWidth
+                onChange={addNewParagraph2} />
             </Box>
           }
 
@@ -317,7 +332,7 @@ export default function PagePoster() {
         </Stack>
       </Box>
 
-      <FooterToku/>
+      <FooterToku />
     </Box>
   )
 }

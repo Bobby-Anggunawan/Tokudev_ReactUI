@@ -18,7 +18,7 @@ function FooterToku(props){
               </ListSubheader>
             }>
               <ListSubheader></ListSubheader>
-              <ListItemButton component="a" href="#">
+              <ListItemButton component="a" href="/about">
                 <ListItemText primary="About" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
               <ListItemButton component="a" href="#">
