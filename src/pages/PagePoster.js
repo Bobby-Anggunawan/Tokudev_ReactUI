@@ -4,7 +4,27 @@ import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
 import { contentHorizontalPadding, db } from '../constant';
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
-import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
+import { getFirestore, collection, getDoc, doc, setDoc, Timestamp } from "firebase/firestore";
+
+
+async function postTutorial(category, division, subDivision, postTitle, postSubTitle, posterImage, content){
+  const docData = {
+    title: postTitle,
+    subTitle: postSubTitle,
+    poster: posterImage,
+    date: Timestamp.fromDate(new Date("December 10, 1815")),
+    content: content
+  };
+
+  let buildURL = postTitle;
+  //hapus semua non alphanumerical character
+  //ganti spasi dengan _
+  //buat semua huruf jadi kecil
+  buildURL = buildURL.replace(/\W/g,"").replace(" ", "_").toLowerCase()
+
+  await setDoc(doc(db, "TutorialPost", buildURL), docData);
+}
+
 
 export default function PagePoster() {
 
@@ -40,6 +60,19 @@ export default function PagePoster() {
     });
   };
   //===================================
+  const [postTitle, setPostTitle] = React.useState("");
+  const addSetPostTitle = (event) => {
+    setPostTitle(event.target.value);
+  };
+  const [postSubTitle, setPostSubTitle] = React.useState("");
+  const addSetSubPostTitle = (event) => {
+    setPostSubTitle(event.target.value);
+  };
+  const [postPoster, setPostPoster] = React.useState("");
+  const addSetPostPoster = (event) => {
+    setPostPoster(event.target.value);
+  };
+
 
   const [urlCategory, setUrlCategory] = React.useState("Article");
   const addsetUrlCategory = (event) => {
@@ -194,16 +227,24 @@ export default function PagePoster() {
             <TextField  id="postTitle"
                     label="Post Title"
                     margin="normal"
-                    fullWidth/>
+                    fullWidth
+                    value={postTitle}
+                    onChange={addSetPostTitle}/>
             <TextField  id="postSubTitle"
                     label="Post Sub Title"
                     margin="normal"
-                    fullWidth/>
+                    fullWidth
+                    onChange={addSetSubPostTitle}
+                    value={postSubTitle}/>
             <TextField  id="postPoster"
                     label="Poster Image"
                     margin="normal"
-                    fullWidth/>
-            <Button variant="contained">Post</Button>
+                    fullWidth
+                    onChange={addSetPostPoster}
+                    value={postPoster}/>
+            <Button variant="contained" onClick={() => {postTutorial(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents);}}>
+              Post
+            </Button>
           </Box>
         </Box>
 
