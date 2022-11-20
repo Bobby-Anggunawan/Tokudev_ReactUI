@@ -2,7 +2,7 @@ import { Box, Button, Stack, Toolbar, Typography } from '@mui/material'
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
-import { getStorage, ref, uploadBytes } from "firebase/storage";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { contentHorizontalPadding, contentVerticalPadding } from '../constant';
 
 
@@ -26,9 +26,19 @@ export default function FileUploader() {
         setStorageRefName(ref(storage, 'images/' + `${Math.floor(Date.now() / 1000)}_${fileName.split("\\")[2]}`));
     };
 
+    const [resultLink, setResultLink] = React.useState(null);
+
     const uploadImage = () => {
         uploadBytes(storageRef, inputValue).then((snapshot) => {
             console.log('Uploaded a blob or file!');
+
+            getDownloadURL(storageRef)
+                .then((url) => {
+                    setResultLink(url)
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         });
     }
 
@@ -39,7 +49,7 @@ export default function FileUploader() {
 
             <Box minHeight="100vh" paddingX={contentHorizontalPadding}>
 
-                <input type="file" onChange={(e) => { setStorageRef(e.target.value) }} ref={inputFile} style={{ display: "none" }} />
+                <input type="file" accept="image/*" onChange={(e) => { setStorageRef(e.target.value) }} ref={inputFile} style={{ display: "none" }} />
 
 
                 <h1>File Name: "{fileName}"</h1>
@@ -48,6 +58,7 @@ export default function FileUploader() {
                     <Button variant="contained" onClick={onButtonClick}>Open file upload window</Button>
                     {inputValue != null && <Button variant="contained" onClick={uploadImage} color="success">Upload</Button>}
                 </Stack>
+                {resultLink!=null && <h3>Image Terupload: {resultLink}</h3>}
 
             </Box>
 
