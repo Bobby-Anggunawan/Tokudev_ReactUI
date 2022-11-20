@@ -12,6 +12,7 @@ import Tutorial_Content from './pages/Category/Tutorial-Content';
 import ArticlePost from './templates/article_post';
 import PagePoster from './pages/PagePoster';
 import About from './pages/About';
+import Login from './pages/Login';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -47,6 +48,9 @@ function App() {
             <Route exact path="/">
               <Home />
             </Route>
+            <Route exact path="/login">
+              <Login/>
+            </Route>
             <Route exact path="/about">
               <About/>
             </Route>
@@ -70,9 +74,6 @@ function App() {
             </Route>
             <Route path="/create">
               <Create />
-            </Route>
-            <Route path="/blog_post">
-              <BlogPost/>
             </Route>
             <Route path="*">
               <NotFound/>

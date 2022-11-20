@@ -47,10 +47,10 @@ function FooterToku(props){
 
           <Grid item xs={12} sx={{backgroundColor: 'info.dark', color: 'info.contrastText'}}>
             <Typography align="center">
-              Copyright © 2022 Link
+              Copyright © 2022 Y-Ang
             </Typography>
             <Typography align="center">
-              Build with <Link href="https://docs.microsoft.com/en-us/aspnet/core/?view=aspnetcore-6.0">ASP.NET</Link> as backend and <Link href="https://mui.com/">MUI</Link>, the <Link href="https://reactjs.org/">React</Link> UI library ~ Based on <Link href="https://material.io/">Google Material Design</Link> ~ Hosted on <Link href="https://cloud.google.com/">Google Cloud</Link>
+              Build with <Link href="https://mui.com/">MUI</Link>, the <Link href="https://reactjs.org/">React</Link> UI library ~ Based on <Link href="https://material.io/">Google Material Design</Link> ~ Hosted on <Link href="https://cloud.google.com/">Google Cloud</Link>
             </Typography>
           </Grid>
         </Grid>
