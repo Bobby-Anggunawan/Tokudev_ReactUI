@@ -13,6 +13,7 @@ import ArticlePost from './templates/article_post';
 import PagePoster from './pages/PagePoster';
 import About from './pages/About';
 import Login from './pages/Login';
+import FileUploader from './pages/FileUploader';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -50,6 +51,9 @@ function App() {
             </Route>
             <Route exact path="/login">
               <Login/>
+            </Route>
+            <Route exact path="/upload_file">
+              <FileUploader/>
             </Route>
             <Route exact path="/about">
               <About/>
