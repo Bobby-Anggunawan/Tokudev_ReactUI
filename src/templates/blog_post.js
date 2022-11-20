@@ -14,6 +14,7 @@ import { contentHorizontalPadding, drawerWidth } from '../constant';
 import AppBarToku from '../component/general/app_bar';
 import FooterToku from '../component/general/footer';
 import PageBuilder from '../myLib/page_builder';
+import { useLocation } from "react-router-dom";
 
 
 var sideBarJson = `
@@ -47,35 +48,40 @@ function BlogPost(props) {
       <Divider />
       {/*65px di List maxHeight adalah tinggi toolbar. maxHeight nya emang harus di set dan gak boleh 100% karena kalo begitu efek stickynya gak kelihatan*/}
       <List
-      sx={{
-        width: '100%',
-        maxWidth: 360,
-        bgcolor: 'background.paper',
-        position: 'relative',
-        overflow: 'auto',
-        maxHeight: `calc(100vh - 65px)`,
-        '& ul': { padding: 0 },
-      }}
-      subheader={<li />}
-    >
-      {sideBarObj.headerName.map((sectionId, indeks) => (
-        <li key={`section-${sectionId}`}>
-          <ul>
-            <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
-            {sideBarObj.headerChild[indeks].map((item) => (
-              <ListItem key={`item-${sectionId}-${item}`}>
-                <ListItemText primary={`Item ${item}`} />
-              </ListItem>
-            ))}
-          </ul>
-        </li>
-      ))}
-    </List>
+        sx={{
+          width: '100%',
+          maxWidth: 360,
+          bgcolor: 'background.paper',
+          position: 'relative',
+          overflow: 'auto',
+          maxHeight: `calc(100vh - 65px)`,
+          '& ul': { padding: 0 },
+        }}
+        subheader={<li />}
+      >
+        {sideBarObj.headerName.map((sectionId, indeks) => (
+          <li key={`section-${sectionId}`}>
+            <ul>
+              <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
+              {sideBarObj.headerChild[indeks].map((item) => (
+                <ListItem key={`item-${sectionId}-${item}`}>
+                  <ListItemText primary={`Item ${item}`} />
+                </ListItem>
+              ))}
+            </ul>
+          </li>
+        ))}
+      </List>
     </div>
   );
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
+
+  const location = useLocation();
+  const tutorialName = location.pathname.split("/")[2];
+  const judulArtikel = location.pathname.split("/")[3];
+  const url = tutorialName+"\\"+judulArtikel;
 
   return (
     <Box>
@@ -83,7 +89,7 @@ function BlogPost(props) {
       <AppBarToku appBarType="blogPost" drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle}></AppBarToku>
 
       {/*Sidebar dan main content container*/}
-      <Box sx={{ display: 'flex'}}>
+      <Box sx={{ display: 'flex' }}>
         <Box
           component="nav"
           sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
@@ -113,7 +119,7 @@ function BlogPost(props) {
               position: 'sticky',
               top: 0,
               '& .MuiPaper-root': {
-                  position: 'sticky'
+                position: 'sticky'
               }
             }}
             open
@@ -123,13 +129,13 @@ function BlogPost(props) {
         </Box>
         <Box
           component="main"
-          sx={{ flexGrow: 1, width: {  sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding}}
+          sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}
         >
           {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
           <Toolbar />
           {
             //<BlogArticleExample/>
-            <PageBuilder/>
+            <PageBuilder pageUrl = {url}/>
           }
         </Box>
       </Box>

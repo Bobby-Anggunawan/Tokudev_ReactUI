@@ -30,7 +30,6 @@ export default function PageBuilderFunction(data){
             }
             else if(prev_arg[0] == "img"){
                 if(prev_arg.length>1){
-                    console.log(counter);
                     hasil.push(
                         <ImageToku key={counter} image={data[counter]} caption={prev_arg[1]} altTxt={data[counter-1]}/>
                     );
@@ -52,7 +51,7 @@ export default function PageBuilderFunction(data){
                     );
                     headingName = data[counter];
                     scrollSpyContent.push(
-                        <Link href={`#${data[counter]}`} ref={React.createRef()}>{data[counter]}</Link>
+                        <Link href={`#${data[counter]}`} ref={React.createRef()} key={`scrollSpyContent1${counter}`}>{data[counter]}</Link>
                     )
                 }
                 else if(prev_arg[0] == "h2"){
@@ -62,7 +61,7 @@ export default function PageBuilderFunction(data){
                     );
                     headingName = data[counter];
                     scrollSpyContent.push(
-                        <Link href={`#${data[counter]}`} ref={React.createRef()}>{data[counter]}</Link>
+                        <Link href={`#${data[counter]}`} ref={React.createRef()} key={`scrollSpyContent2${counter}`}>{data[counter]}</Link>
                     )
                 }
                 else if(prev_arg[0] == "h3"){
@@ -72,7 +71,7 @@ export default function PageBuilderFunction(data){
                     );
                     headingName = data[counter];
                     scrollSpyContent.push(
-                        <Link href={`#${data[counter]}`} ref={React.createRef()}>{data[counter]}</Link>
+                        <Link href={`#${data[counter]}`} ref={React.createRef()} key={`scrollSpyContent3${counter}`}>{data[counter]}</Link>
                     )
                 }
                 else if(prev_arg[0] == "h4"){
@@ -82,7 +81,7 @@ export default function PageBuilderFunction(data){
                     );
                     headingName = data[counter];
                     scrollSpyContent.push(
-                        <Link href={`#${data[counter]}`} ref={React.createRef()}>{data[counter]}</Link>
+                        <Link href={`#${data[counter]}`} ref={React.createRef()} key={`scrollSpyContent4${counter}`}>{data[counter]}</Link>
                     )
                 }
                 counter+=1;

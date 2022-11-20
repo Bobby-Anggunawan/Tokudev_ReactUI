@@ -18,7 +18,7 @@ function PageBuilder(props) {
     const [updateDate, setUpdateDate] = React.useState("Loading");
     const [poster, setPostere] = React.useState("Loading");
     React.useEffect(() => {
-        const docRef = doc(db, "BlogPost", "Lorem Ipsum");
+        const docRef = doc(db, "TutorialPost", props.pageUrl);
         const docSnap = getDoc(docRef).then((doc) => {
             setData(doc.data().content);
             setTitle(doc.data().title);

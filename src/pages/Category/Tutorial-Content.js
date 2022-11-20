@@ -3,7 +3,7 @@ import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
-import { db } from '../../constant';
+import { db, urlBuilder } from '../../constant';
 import { useLocation } from "react-router-dom";
 
 export default function Tutorial_Content() {
@@ -11,7 +11,6 @@ export default function Tutorial_Content() {
 
     const location = useLocation();
     const tutorialName = location.pathname.split("/")[2];
-    console.log(tutorialName);
 
     const [poster, setPoster] = React.useState([]);
     const [subTitle, setSubTitle] = React.useState([]);
@@ -49,7 +48,7 @@ export default function Tutorial_Content() {
                         return (
                             <ImageListItem key={x}>
                                 <Card>
-                                    <CardActionArea href="/tutorial/cs/loop">
+                                    <CardActionArea href={`/tutorial/${tutorialName}/${urlBuilder(data)}`}>
                                         <CardHeader title={data} />
                                         <CardMedia component="img"
                                             image={poster[x]}
