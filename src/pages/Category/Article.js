@@ -1,14 +1,16 @@
 import React from 'react'
-import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, ImageList, ImageListItem, Pagination, Stack, Toolbar, Typography } from '@mui/material';
+import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Grid, ImageList, ImageListItem, Pagination, PaginationItem, Stack, Toolbar, Typography } from '@mui/material';
 import AppBarToku from '../../component/general/app_bar';
 import FooterToku from '../../component/general/footer';
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 import { db, contentVerticalPadding, ConvertDateToString } from '../../constant'
 import LoadingPage from '../Loading';
+import { Link, useLocation } from 'react-router-dom';
 
 
 export default function Article() {
 
+    const thisURL = useLocation();
 
     const [pageCount, setPageCount] = React.useState(1);
 
@@ -17,7 +19,12 @@ export default function Article() {
     const [preview, setPriview] = React.useState([]);
     const [title, setTitle] = React.useState([]);
 
-    const [page, setPage] = React.useState(1);
+    const initHash = thisURL.hash;
+    var initPage = 1;
+    if(initHash != ""){
+        initPage = parseInt(initHash.replace("#page_", ""));
+    }
+    const [page, setPage] = React.useState(initPage);
 
     const setPagingPage = (_value) => {
         var docRef2 = doc(db, "ArticlePaging", `page${_value}`);
@@ -48,7 +55,7 @@ export default function Article() {
             <AppBarToku />
             <Toolbar />
             <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
-                {   title != 0 &&
+                {title != 0 &&
 
                     title.map((data, x) => {
                         return (
@@ -77,7 +84,18 @@ export default function Article() {
             </ImageList>
 
             <Box sx={{ width: "50%", marginX: "auto", marginY: contentVerticalPadding }}>
-                <Pagination count={pageCount} page={page} onChange={handleChange} color="primary" />
+                <Pagination
+                    page={page}
+                    onChange={handleChange}
+                    count={pageCount}
+                    renderItem={(item) => (
+                        <PaginationItem
+                            component={Link}
+                            to={`#page_${item.page}`}
+                            {...item}
+                        />
+                    )}
+                />
             </Box>
             <FooterToku />
         </Box>
