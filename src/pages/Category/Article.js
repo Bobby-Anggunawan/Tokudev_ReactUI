@@ -10,24 +10,35 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function Article() {
 
+
     const thisURL = useLocation();
+    const initHash = thisURL.hash;
+    var initPage = 1;
+    if (initHash != "") {
+        initPage = parseInt(initHash.replace("#page_", ""));
+    }
+    const [page, setPage] = React.useState(initPage);
 
     const [pageCount, setPageCount] = React.useState(1);
+
+    React.useEffect(() => {
+        const docRef = doc(db, "ArticlePaging", "master");
+        const docSnap = getDoc(docRef).then((doc) => {
+            var maxPage = doc.data().pagesCount;
+            setPageCount(maxPage);
+            setPagingPage(page, maxPage);
+        });
+    }, []);
 
     const [date, setDate] = React.useState([]);
     const [poster, setPoster] = React.useState([]);
     const [preview, setPriview] = React.useState([]);
     const [title, setTitle] = React.useState([]);
 
-    const initHash = thisURL.hash;
-    var initPage = 1;
-    if(initHash != ""){
-        initPage = parseInt(initHash.replace("#page_", ""));
-    }
-    const [page, setPage] = React.useState(initPage);
 
-    const setPagingPage = (_value) => {
-        var docRef2 = doc(db, "ArticlePaging", `page${_value}`);
+    const setPagingPage = (_value, maxPage) => {
+        console.log(maxPage-_value+1);
+        var docRef2 = doc(db, "ArticlePaging", `page${maxPage-_value+1}`);
         var docSnap2 = getDoc(docRef2).then((doc) => {
             setDate(doc.data().date);
             setPoster(doc.data().poster);
@@ -39,16 +50,8 @@ export default function Article() {
     const handleChange = (event, value) => {
         setPage(value);
         setTitle([]);
-        setPagingPage(value);
+        setPagingPage(value, pageCount);
     };
-
-    React.useEffect(() => {
-        const docRef = doc(db, "ArticlePaging", "master");
-        const docSnap = getDoc(docRef).then((doc) => {
-            setPageCount(doc.data().pagesCount);
-            setPagingPage(page);
-        });
-    }, []);
 
     return (
         <Box sx={{ margin: 0, padding: 0 }}>
@@ -88,6 +91,7 @@ export default function Article() {
                     page={page}
                     onChange={handleChange}
                     count={pageCount}
+                    color="primary"
                     renderItem={(item) => (
                         <PaginationItem
                             component={Link}
