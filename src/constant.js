@@ -36,4 +36,10 @@ function urlBuilder(title) {
     return buildURL;
 }
 
-export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder };
+function ConvertDateToString(date){
+    var t = new Date(Date.UTC(1970, 0, 1)); // Epoch
+    t.setUTCSeconds(date.seconds);
+    return t.toDateString();
+}
+
+export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString };

@@ -36,11 +36,14 @@ function FooterToku(props){
                 Legal
               </ListSubheader>
             }>
-              <ListItemButton component="a" href="#">
+              <ListItemButton component="a" href="/privacy_policy">
                 <ListItemText primary="Privacy Policy" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
               <ListItemButton component="a" href="#">
                 <ListItemText primary="Terms of Use" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
+              </ListItemButton>
+              <ListItemButton component="a" href="#">
+                <ListItemText primary="Credit" primaryTypographyProps={{align: "center", color: 'grey.400'}}/>
               </ListItemButton>
             </List>
           </Grid>

@@ -14,6 +14,7 @@ import PagePoster from './pages/PagePoster';
 import About from './pages/About';
 import Login from './pages/Login';
 import FileUploader from './pages/FileUploader';
+import PrivacyPolicy from './pages/PrivacyPolicy';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
@@ -57,6 +58,9 @@ function App() {
             </Route>
             <Route exact path="/about">
               <About/>
+            </Route>
+            <Route exact path="/privacy_policy">
+              <PrivacyPolicy/>
             </Route>
             <Route path="/page_poster">
               <PagePoster/>

@@ -6,7 +6,7 @@ import HeadingToku from '../component/heading';
 import ImageToku from '../component/image';
 import PostHeaderToku from '../component/post_header';
 import Box from '@mui/material/Box';
-import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db } from '../constant';
+import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString } from '../constant';
 import Link from '@mui/material/Link';
 import ScrollSpy from 'react-scrollspy-navigation';
 import PageBuilderFunction from './pageBuilderFunction';
@@ -22,16 +22,21 @@ function PageBuilder(props) {
     const [updateDate, setUpdateDate] = React.useState(null);
     const [poster, setPostere] = React.useState(null);
     React.useEffect(() => {
-        const docRef = doc(db, "TutorialPost", props.pageUrl);
+        var docRef = null;
+        if(props.isTutorial){
+            docRef = doc(db, "TutorialPost", props.pageUrl);
+        }
+        else{
+            docRef = doc(db, "TutorialPost", props.pageUrl);
+        }
+
         const docSnap = getDoc(docRef).then((doc) => {
             if (doc.exists()) {
                 setData(doc.data().content);
                 setTitle(doc.data().title);
                 setPostere(doc.data().poster);
 
-                var t = new Date(Date.UTC(1970, 0, 1)); // Epoch
-                t.setUTCSeconds(doc.data().date.seconds);
-                setUpdateDate(t.toDateString());
+                setUpdateDate(ConvertDateToString(doc.data().date));
             }
 
             setLoading(false);
@@ -57,6 +62,8 @@ function PageBuilder(props) {
     else {
         if(title==null){
             props.getNotFound(true);
+
+            //aslinya gak penting, tapi kalau dihapus jadi error
             return (
                 <LoadingPage />
             );

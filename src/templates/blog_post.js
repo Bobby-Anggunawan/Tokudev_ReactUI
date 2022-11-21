@@ -150,7 +150,7 @@ function BlogPost(props) {
           <Toolbar />
           {
             //<BlogArticleExample/>
-            <PageBuilder pageUrl = {url} getNotFound={getPageNotFound}/>
+            <PageBuilder pageUrl = {url} getNotFound={getPageNotFound} isTutorial/>
           }
         </Box>
       </Box>
