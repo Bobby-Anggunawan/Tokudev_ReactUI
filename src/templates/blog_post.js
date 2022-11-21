@@ -15,6 +15,7 @@ import AppBarToku from '../component/general/app_bar';
 import FooterToku from '../component/general/footer';
 import PageBuilder from '../myLib/page_builder';
 import { useLocation } from "react-router-dom";
+import NotFound from '../pages/NotFound';
 
 
 var sideBarJson = `
@@ -83,6 +84,20 @@ function BlogPost(props) {
   const judulArtikel = location.pathname.split("/")[3];
   const url = tutorialName+"\\"+judulArtikel;
 
+  //================================================
+  const getPageNotFound = (isFound) =>{
+    setNotFound(isFound);
+  }
+
+  const [isNotFound, setNotFound] = React.useState(false);
+  //================================================
+
+  if(isNotFound){
+    return(
+      <NotFound/>
+    );
+  }
+
   return (
     <Box>
       <CssBaseline />
@@ -135,7 +150,7 @@ function BlogPost(props) {
           <Toolbar />
           {
             //<BlogArticleExample/>
-            <PageBuilder pageUrl = {url}/>
+            <PageBuilder pageUrl = {url} getNotFound={getPageNotFound}/>
           }
         </Box>
       </Box>

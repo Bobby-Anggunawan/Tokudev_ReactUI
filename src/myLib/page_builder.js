@@ -56,9 +56,13 @@ function PageBuilder(props) {
     }
     else {
         if(title==null){
-            return(
-                <NotFound/>
+            props.getNotFound(true);
+            return (
+                <LoadingPage />
             );
+        }
+        else{
+            props.getNotFound(false);
         }
     }
 
