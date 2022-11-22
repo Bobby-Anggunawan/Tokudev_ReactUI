@@ -3,7 +3,7 @@ import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Gri
 import AppBarToku from '../../component/general/app_bar';
 import FooterToku from '../../component/general/footer';
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
-import { db, contentVerticalPadding, ConvertDateToString } from '../../constant'
+import { db, contentVerticalPadding, ConvertDateToString, urlBuilder } from '../../constant'
 import LoadingPage from '../Loading';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -75,7 +75,7 @@ export default function Article() {
                                         <Typography>{preview[x]}</Typography>
                                     </CardContent>
                                     <CardActions>
-                                        <Button href="/article/komputer_bagus">Read More</Button>
+                                        <Button href={`/article/${urlBuilder(data)}`}>Read More</Button>
                                     </CardActions>
                                 </Card>
                             </ImageListItem>

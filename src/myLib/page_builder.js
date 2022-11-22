@@ -15,6 +15,11 @@ import NotFound from '../pages/NotFound';
 
 function PageBuilder(props) {
 
+    var collectionToFetch = "TutorialPost";
+    if(props.isArticle){
+        collectionToFetch = "ArticlePost";
+    }
+
     const [isLoading, setLoading] = React.useState(true);
 
     const [data, setData] = React.useState(null);
@@ -24,10 +29,10 @@ function PageBuilder(props) {
     React.useEffect(() => {
         var docRef = null;
         if(props.isTutorial){
-            docRef = doc(db, "TutorialPost", props.pageUrl);
+            docRef = doc(db, collectionToFetch, props.pageUrl);
         }
         else{
-            docRef = doc(db, "TutorialPost", props.pageUrl);
+            docRef = doc(db, collectionToFetch, props.pageUrl);
         }
 
         const docSnap = getDoc(docRef).then((doc) => {
