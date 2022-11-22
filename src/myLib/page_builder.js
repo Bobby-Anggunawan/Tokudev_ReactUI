@@ -12,11 +12,13 @@ import ScrollSpy from 'react-scrollspy-navigation';
 import PageBuilderFunction from './pageBuilderFunction';
 import LoadingPage from '../pages/Loading';
 import NotFound from '../pages/NotFound';
+import { Alert } from '@mui/material';
+import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
 
 function PageBuilder(props) {
 
     var collectionToFetch = "TutorialPost";
-    if(props.isArticle){
+    if (props.isArticle) {
         collectionToFetch = "ArticlePost";
     }
 
@@ -26,12 +28,13 @@ function PageBuilder(props) {
     const [title, setTitle] = React.useState(null);
     const [updateDate, setUpdateDate] = React.useState(null);
     const [poster, setPostere] = React.useState(null);
+    const [subtitle, setSubtitle] = React.useState(null);
     React.useEffect(() => {
         var docRef = null;
-        if(props.isTutorial){
+        if (props.isTutorial) {
             docRef = doc(db, collectionToFetch, props.pageUrl);
         }
-        else{
+        else {
             docRef = doc(db, collectionToFetch, props.pageUrl);
         }
 
@@ -39,6 +42,7 @@ function PageBuilder(props) {
             if (doc.exists()) {
                 setData(doc.data().content);
                 setTitle(doc.data().title);
+                setSubtitle(doc.data().subTitle);
                 setPostere(doc.data().poster);
 
                 setUpdateDate(ConvertDateToString(doc.data().date));
@@ -53,7 +57,7 @@ function PageBuilder(props) {
     var pageResult = null;
     var hasil = null;
     var scrollSpyContent = null;
-    if(data!=null){
+    if (data != null) {
         pageResult = PageBuilderFunction(data);
         hasil = pageResult.Hasil;
         scrollSpyContent = pageResult.ScrollSpyContent;
@@ -65,7 +69,7 @@ function PageBuilder(props) {
         );
     }
     else {
-        if(title==null){
+        if (title == null) {
             props.getNotFound(true);
 
             //aslinya gak penting, tapi kalau dihapus jadi error
@@ -73,7 +77,7 @@ function PageBuilder(props) {
                 <LoadingPage />
             );
         }
-        else{
+        else {
             props.getNotFound(false);
         }
     }
@@ -84,6 +88,9 @@ function PageBuilder(props) {
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
                 <Box sx={{ flexGrow: 1 }}>
+                    <Alert icon={<TheaterComedyIcon/>} severity="info">
+                        {subtitle}
+                    </Alert>
                     {hasil}
                 </Box>
 
