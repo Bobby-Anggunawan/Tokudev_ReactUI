@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid } from '@mui/material'
+import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid, Alert, formLabelClasses } from '@mui/material'
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
@@ -7,7 +7,7 @@ import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 
 
-async function postTutorial(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
+async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
   const docData = {
     title: postTitle,
     subTitle: postSubTitle,
@@ -19,45 +19,105 @@ async function postTutorial(category, division, subDivision, postTitle, postSubT
   let buildURL = urlBuilder(postTitle);
   buildURL = division + "\\" + buildURL;
 
-  await setDoc(doc(db, "TutorialPost", buildURL), docData);
 
+  if (category == "Tutorial") {
+    await setDoc(doc(db, "TutorialPost", buildURL), docData);
 
-  //========================
-  const tutorialContentView = doc(db, "TutorialContentView", division);
-  const docSnap = await getDoc(tutorialContentView);
+    //========================
+    //buat tutorial content view
 
-  var headerName = docSnap.data().headerName;
-  for (var x = 0; x < headerName.length; x++) {
-    if (headerName[x] == subDivision) {
-      var temp = [];
-      var tempPoster = [];
-      var tempSubTitle = [];
+    const tutorialContentView = doc(db, "TutorialContentView", division);
+    const docSnap = await getDoc(tutorialContentView);
 
-      try{
-        temp = docSnap.data()[`headerChild${x + 1}`];
-        tempPoster = docSnap.data()[`childPoster${x + 1}`];
-        tempSubTitle = docSnap.data()[`childSubTitle${x + 1}`];
+    var headerName = docSnap.data().headerName;
+    for (var x = 0; x < headerName.length; x++) {
+      if (headerName[x] == subDivision) {
+        var temp = [];
+        var tempPoster = [];
+        var tempSubTitle = [];
 
-        if(temp == null) temp = [];
-        if(tempPoster == null) tempPoster = [];
-        if(tempSubTitle == null) tempSubTitle = [];
+        try {
+          temp = docSnap.data()[`headerChild${x + 1}`];
+          tempPoster = docSnap.data()[`childPoster${x + 1}`];
+          tempSubTitle = docSnap.data()[`childSubTitle${x + 1}`];
+
+          if (temp == null) temp = [];
+          if (tempPoster == null) tempPoster = [];
+          if (tempSubTitle == null) tempSubTitle = [];
+        }
+        catch { }
+
+        temp.push(postTitle);
+        tempPoster.push(posterImage);
+        tempSubTitle.push(postSubTitle);
+
+        await updateDoc(tutorialContentView, {
+          [`headerChild${x + 1}`]: temp,
+          [`childPoster${x + 1}`]: tempPoster,
+          [`childSubTitle${x + 1}`]: tempSubTitle
+        });
+
+        break;
       }
-      catch{}
-
-      temp.push(postTitle);
-      tempPoster.push(posterImage);
-      tempSubTitle.push(postSubTitle);
-
-      await updateDoc(tutorialContentView, {
-        [`headerChild${x + 1}`]: temp,
-        [`childPoster${x + 1}`]: tempPoster,
-        [`childSubTitle${x + 1}`]: tempSubTitle
-      });
-
-      break;
     }
   }
+  else if (category == "Article") {
+    await setDoc(doc(db, "ArticlePost", buildURL), docData);
 
+    //========================
+    //buat article paging
+    const articlePaging = doc(db, "ArticlePaging", "master");
+    const docArticlePaging = await getDoc(articlePaging);
+
+    const pagesCount = docArticlePaging.data().pagesCount;
+    const contentPerPage = docArticlePaging.data().contentPerPage;
+
+    const pagingPage = doc(db, "ArticlePaging", `page${pagesCount}`);
+    const docPagingPage = await getDoc(pagingPage);
+
+    const lastPageItems = docPagingPage.data().title;
+    if (lastPageItems.length < contentPerPage) {
+      lastPageItems.push(postTitle);
+
+      const preview = docPagingPage.data().preview;
+      var ketemuP = false;
+      var tempPreview = "";
+      const previewMaxWord = 25;
+      var tempPreviewWordCount = 0;
+
+      for (var x = 0; x < content.length; x++) {
+        if (ketemuP) {
+          const myArray = content[x].split(" ");
+          for (var y = 0; y < myArray.length; y++) {
+            if(tempPreview=="") tempPreview += myArray[y];
+            else tempPreview += ` ${myArray[y]}`;
+
+            tempPreviewWordCount += 1;
+            if (tempPreviewWordCount >= previewMaxWord) {
+              break;
+            }
+          }
+          break;
+        }
+        if (content[x] == "p") ketemuP = true;
+      }
+
+      preview.push(tempPreview);
+
+      const poster = docPagingPage.data().poster;
+      poster.push(posterImage);
+
+      const date = docPagingPage.data().date;
+      date.push(Timestamp.now());
+
+      await updateDoc(pagingPage, {
+        title: lastPageItems,
+        preview: preview,
+        poster: poster,
+        date: date
+      });
+    }
+  }
 }
 
 
@@ -187,12 +247,26 @@ export default function PagePoster() {
     setNewParagraph2("");
   }
 
+  const [successPosted, setSuccessPosted] = React.useState(false);
+  const clickPost = () => {
+    setSuccessPosted(false);
+    postPage(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents).then(() => {
+      setSuccessPosted(true);
+    });
+  }
+
   return (
     <Box>
       <AppBarToku />
       <Toolbar />
 
       <Box minHeight="100vh" padding={contentHorizontalPadding}>
+
+        {successPosted == true &&
+          <Alert variant="filled" severity="success">
+            {postTitle}: berhasil di post...
+          </Alert>
+        }
 
         <Box display="flex">
           <Stack flex="50%" spacing={2}>
@@ -270,7 +344,7 @@ export default function PagePoster() {
               fullWidth
               onChange={addSetPostPoster}
               value={postPoster} />
-            <Button variant="contained" onClick={() => { postTutorial(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents); }}>
+            <Button variant="contained" onClick={clickPost}>
               Post
             </Button>
           </Box>
