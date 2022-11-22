@@ -75,32 +75,35 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
     const pagingPage = doc(db, "ArticlePaging", `page${pagesCount}`);
     const docPagingPage = await getDoc(pagingPage);
 
+    //====================
+    //build preview paragraf
+    const preview = docPagingPage.data().preview;
+    var ketemuP = false;
+    var tempPreview = "";
+    const previewMaxWord = 25;
+    var tempPreviewWordCount = 0;
+
+    for (var x = 0; x < content.length; x++) {
+      if (ketemuP) {
+        const myArray = content[x].split(" ");
+        for (var y = 0; y < myArray.length; y++) {
+          if (tempPreview == "") tempPreview += myArray[y];
+          else tempPreview += ` ${myArray[y]}`;
+
+          tempPreviewWordCount += 1;
+          if (tempPreviewWordCount >= previewMaxWord) {
+            break;
+          }
+        }
+        break;
+      }
+      if (content[x] == "p") ketemuP = true;
+    }
+    //======================
+
     const lastPageItems = docPagingPage.data().title;
     if (lastPageItems.length < contentPerPage) {
       lastPageItems.push(postTitle);
-
-      const preview = docPagingPage.data().preview;
-      var ketemuP = false;
-      var tempPreview = "";
-      const previewMaxWord = 25;
-      var tempPreviewWordCount = 0;
-
-      for (var x = 0; x < content.length; x++) {
-        if (ketemuP) {
-          const myArray = content[x].split(" ");
-          for (var y = 0; y < myArray.length; y++) {
-            if(tempPreview=="") tempPreview += myArray[y];
-            else tempPreview += ` ${myArray[y]}`;
-
-            tempPreviewWordCount += 1;
-            if (tempPreviewWordCount >= previewMaxWord) {
-              break;
-            }
-          }
-          break;
-        }
-        if (content[x] == "p") ketemuP = true;
-      }
 
       preview.push(tempPreview);
 
@@ -115,6 +118,23 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
         preview: preview,
         poster: poster,
         date: date
+      });
+    }
+    else {
+      const buildTitle = [postTitle];
+      const buildPreview = [tempPreview];
+      const buildPoster = [posterImage];
+      const buildDate = [Timestamp.now()];
+      const docData = {
+        title: buildTitle,
+        preview: buildPreview,
+        poster: buildPoster,
+        date: buildDate
+      };
+      await setDoc(doc(db, "ArticlePaging", `page${pagesCount+1}`), docData);
+
+      await updateDoc(articlePaging, {
+        pagesCount: pagesCount+1,
       });
     }
   }
