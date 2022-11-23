@@ -2,6 +2,21 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { initializeApp } from "firebase/app";
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 
+
+
+//ENUMS
+const tutorialList = new Map([
+    ['cs', {title: "C#",
+            poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png",
+            subTitle: "Subtitle C#",
+            urlTitle: "cs"}],
+    ['javascript', {title: "Javascript",
+            poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Unofficial_JavaScript_logo_2.svg/2048px-Unofficial_JavaScript_logo_2.svg.png",
+            subTitle: "Subtitle js",
+            urlTitle: "javascript"}]
+]);
+  
+
 const contentHorizontalPadding = "25px";    //kekiri kekanan
 const contentVerticalPadding = "25px";      //keatas kebawah
 const tableOfContentsWidth = "150px";
@@ -46,4 +61,4 @@ function firstLetterUpercase(data){
     return data.charAt(0).toUpperCase() + data.slice(1);
 }
 
-export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString, firstLetterUpercase };
+export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString, firstLetterUpercase, tutorialList };

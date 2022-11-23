@@ -17,7 +17,7 @@ import PageBuilder from '../myLib/page_builder';
 import { useLocation } from "react-router-dom";
 import NotFound from '../pages/NotFound';
 import { Button, ListItemButton } from '@mui/material';
-import { urlBuilder } from '../constant'
+import { urlBuilder, tutorialList } from '../constant'
 
 
 function BlogPost(props) {
@@ -32,7 +32,7 @@ function BlogPost(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography>Tutorial React</Typography>
+        <Typography>{"Tutorial "+tutorialList.get(props.tutorialName).title}</Typography>
       </Toolbar>
       <Divider />
       {/*65px di List maxHeight adalah tinggi toolbar. maxHeight nya emang harus di set dan gak boleh 100% karena kalo begitu efek stickynya gak kelihatan*/}

@@ -40,12 +40,16 @@ function PageBuilder(props) {
 
         const docSnap = getDoc(docRef).then((doc) => {
             if (doc.exists()) {
+                const pageTitle = doc.data().title;
                 setData(doc.data().content);
-                setTitle(doc.data().title);
+                setTitle(pageTitle);
                 setSubtitle(doc.data().subTitle);
                 setPostere(doc.data().poster);
 
                 setUpdateDate(ConvertDateToString(doc.data().date));
+
+                if (props.isArticle) document.title = `${pageTitle} - Tokudev`;
+                else document.title = `${pageTitle} - Tokudev`;
             }
 
             setLoading(false);
@@ -88,7 +92,7 @@ function PageBuilder(props) {
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
                 <Box sx={{ flexGrow: 1 }}>
-                    <Alert icon={<TheaterComedyIcon/>} severity="info" sx={{marginBottom: contentVerticalPadding}}>
+                    <Alert icon={<TheaterComedyIcon />} severity="info" sx={{ marginBottom: contentVerticalPadding }}>
                         {subtitle}
                     </Alert>
                     {hasil}

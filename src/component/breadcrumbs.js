@@ -9,12 +9,10 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import ExploreIcon from '@mui/icons-material/Explore';
 import { useLocation } from "react-router-dom";
 import { Box } from '@mui/system';
-import { firstLetterUpercase } from '../constant'
+import { firstLetterUpercase, tutorialList } from '../constant'
 
 function BreadcrumbsToku(props) {
-
   const location = useLocation();
-  console.log(location.pathname.split("/"));
 
   if (location.pathname.split("/")[1] == "tutorial") {
     return (
@@ -44,7 +42,7 @@ function BreadcrumbsToku(props) {
           href={`/tutorial/${location.pathname.split("/")[2]}`}
         >
           <ExploreIcon sx={{ mr: 0.5 }} fontSize="inherit" />
-          {firstLetterUpercase(location.pathname.split("/")[2])}
+          {tutorialList.get(location.pathname.split("/")[2]).title}
         </Link>
         <Typography
           sx={{ display: 'flex', alignItems: 'center' }}

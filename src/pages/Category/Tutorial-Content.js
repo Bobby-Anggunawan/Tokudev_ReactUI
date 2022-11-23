@@ -57,7 +57,7 @@ export default function Tutorial_Content() {
 
     else if(location.pathname.split("/").length > 3 && location.pathname.split("/")[3] != ""){
         return(
-            <BlogPost sideBarJson={JSON.stringify(sideBarObj)} tutorialTitle={location.pathname.split("/")[3]}/>
+            <BlogPost sideBarJson={JSON.stringify(sideBarObj)} tutorialTitle={location.pathname.split("/")[3]} tutorialName={location.pathname.split("/")[2]}/>
         );
     }
 

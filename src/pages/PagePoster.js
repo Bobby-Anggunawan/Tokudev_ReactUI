@@ -2,7 +2,7 @@ import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Gri
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
-import { contentHorizontalPadding, db, urlBuilder } from '../constant';
+import { contentHorizontalPadding, db, urlBuilder, tutorialList } from '../constant';
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 
@@ -143,13 +143,12 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
 
 export default function PagePoster() {
 
-  const [urlTitle, setUrlTitle] = React.useState([]);
-  React.useEffect(() => {
-    const docRef = doc(db, "CategoryList", "Tutorial");
-    const docSnap = getDoc(docRef).then((doc) => {
-      setUrlTitle(doc.data().urlTitle);
-    });
-  }, []);
+  const urlTitle = [];
+
+
+  tutorialList.forEach((data) => {
+    urlTitle.push(data.urlTitle);
+  });
 
   const [listSubUrlTitle, listSetUrlTitle] = React.useState([]);
   const [subUrlTitleStore, setSubUrlTitleStore] = React.useState("");
