@@ -16,8 +16,10 @@ import FooterToku from '../component/general/footer';
 import PageBuilder from '../myLib/page_builder';
 import { useLocation } from "react-router-dom";
 import NotFound from '../pages/NotFound';
+import { ListItemButton } from '@mui/material';
+import {urlBuilder} from '../constant'
 
-
+/*
 var sideBarJson = `
 {
   "headerName": ["satu", "dua", "tiga", "empat", "lima", "enam", "tujuh"],
@@ -32,11 +34,13 @@ var sideBarJson = `
   ]
 }
 `;
-const sideBarObj = JSON.parse(sideBarJson);
+const sideBarObj = JSON.parse(sideBarJson);*/
 
 function BlogPost(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
+
+  const sideBarObj = JSON.parse(props.sideBarJson)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -57,16 +61,19 @@ function BlogPost(props) {
           overflow: 'auto',
           maxHeight: `calc(100vh - 65px)`,
           '& ul': { padding: 0 },
+          minHeight: "100vh"
         }}
         subheader={<li />}
       >
         {sideBarObj.headerName.map((sectionId, indeks) => (
           <li key={`section-${sectionId}`}>
             <ul>
-              <ListSubheader>{`I'm sticky ${sectionId}`}</ListSubheader>
+              <ListSubheader>{`${sectionId}`}</ListSubheader>
               {sideBarObj.headerChild[indeks].map((item) => (
-                <ListItem key={`item-${sectionId}-${item}`}>
-                  <ListItemText primary={`Item ${item}`} />
+                <ListItem key={`${sectionId}-${item}`}>
+                  <ListItemButton component="a" href={urlBuilder(`/${item}`)}>
+                    <ListItemText primary={item} />
+                  </ListItemButton>
                 </ListItem>
               ))}
             </ul>

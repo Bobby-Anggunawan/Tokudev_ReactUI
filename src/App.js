@@ -74,9 +74,6 @@ function App() {
             <Route exact path="/tutorial">
               <Tutorial/>
             </Route>
-            <Route path="/tutorial/*/*">
-              <BlogPost/>
-            </Route>
             <Route path="/tutorial/*">
               <Tutorial_Content/>
             </Route>

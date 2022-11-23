@@ -88,7 +88,7 @@ function PageBuilder(props) {
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
                 <Box sx={{ flexGrow: 1 }}>
-                    <Alert icon={<TheaterComedyIcon/>} severity="info">
+                    <Alert icon={<TheaterComedyIcon/>} severity="info" sx={{marginBottom: contentVerticalPadding}}>
                         {subtitle}
                     </Alert>
                     {hasil}

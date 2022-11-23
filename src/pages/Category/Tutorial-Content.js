@@ -5,6 +5,8 @@ import FooterToku from '../../component/general/footer'
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 import { db, urlBuilder } from '../../constant';
 import { useLocation } from "react-router-dom";
+import BlogPost from '../../templates/blog_post';
+import LoadingPage from '../Loading';
 
 export default function Tutorial_Content() {
 
@@ -12,14 +14,27 @@ export default function Tutorial_Content() {
     const location = useLocation();
     const tutorialName = location.pathname.split("/")[2];
 
+    //data di /tutorial/cs
     const [poster, setPoster] = React.useState([]);
     const [subTitle, setSubTitle] = React.useState([]);
     const [title, setTitle] = React.useState([]);
+    //=============================================
+    //data real TutorialContentView untuk /tutorial/cs/nama
+    const [sideBarObj, setSideBarObj] = React.useState(null);
+    //=============================================
     React.useEffect(() => {
         const docRef = doc(db, "TutorialContentView", tutorialName);
         const docSnap = getDoc(docRef).then((doc) => {
 
-            const headerNameCount = doc.data().headerName.length;
+            const _headerName = doc.data().headerName;
+            setSideBarObj({
+                headerName: _headerName,
+                headerChild: _headerName.map((item, x) => {
+                    return doc.data()[`headerChild${x + 1}`];
+                })
+            });
+
+            const headerNameCount = _headerName.length;
 
             var tempPoster = [];
             var tempSubTitle = [];
@@ -35,6 +50,16 @@ export default function Tutorial_Content() {
             setTitle(tempTitle);
         });
     }, []);
+
+    if(sideBarObj == null){
+        return(<LoadingPage/>);
+    }
+
+    else if(location.pathname.split("/").length > 3 && location.pathname.split("/")[3] != ""){
+        return(
+            <BlogPost sideBarJson={JSON.stringify(sideBarObj)}/>
+        );
+    }
 
     return (
         <Box>
