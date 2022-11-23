@@ -16,25 +16,9 @@ import FooterToku from '../component/general/footer';
 import PageBuilder from '../myLib/page_builder';
 import { useLocation } from "react-router-dom";
 import NotFound from '../pages/NotFound';
-import { ListItemButton } from '@mui/material';
-import {urlBuilder} from '../constant'
+import { Button, ListItemButton } from '@mui/material';
+import { urlBuilder } from '../constant'
 
-/*
-var sideBarJson = `
-{
-  "headerName": ["satu", "dua", "tiga", "empat", "lima", "enam", "tujuh"],
-  "headerChild": [
-    ["a", "b"],
-    ["c", "d", "e", "f"],
-    ["g"],
-    ["h", "i", "j"],
-    ["k", "l", "m", "n", "o", "p"],
-    ["q", "r", "s", "t"],
-    ["u", "v"]
-  ]
-}
-`;
-const sideBarObj = JSON.parse(sideBarJson);*/
 
 function BlogPost(props) {
   const { window } = props;
@@ -68,14 +52,28 @@ function BlogPost(props) {
         {sideBarObj.headerName.map((sectionId, indeks) => (
           <li key={`section-${sectionId}`}>
             <ul>
+              {indeks > 0 && <Divider />}
               <ListSubheader>{`${sectionId}`}</ListSubheader>
-              {sideBarObj.headerChild[indeks].map((item) => (
-                <ListItem key={`${sectionId}-${item}`}>
-                  <ListItemButton component="a" href={urlBuilder(`/${item}`)}>
-                    <ListItemText primary={item} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
+              {sideBarObj.headerChild[indeks].map((item) => {
+                if (props.tutorialTitle != urlBuilder(item)) {
+                  return (
+                    <ListItem key={`${sectionId}-${item}`} disablePadding>
+                      <ListItemButton component="a" href={urlBuilder(item)}>
+                        <ListItemText primary={item} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                }
+                else{
+                  return(
+                    <ListItem key={`${sectionId}-${item}`} disablePadding>
+                      <ListItemButton component="a" selected={true}>
+                        <ListItemText primary={item} />
+                      </ListItemButton>
+                    </ListItem>
+                  );
+                }
+              })}
             </ul>
           </li>
         ))}
@@ -89,19 +87,19 @@ function BlogPost(props) {
   const location = useLocation();
   const tutorialName = location.pathname.split("/")[2];
   const judulArtikel = location.pathname.split("/")[3];
-  const url = tutorialName+"\\"+judulArtikel;
+  const url = tutorialName + "\\" + judulArtikel;
 
   //================================================
-  const getPageNotFound = (isFound) =>{
+  const getPageNotFound = (isFound) => {
     setNotFound(isFound);
   }
 
   const [isNotFound, setNotFound] = React.useState(false);
   //================================================
 
-  if(isNotFound){
-    return(
-      <NotFound/>
+  if (isNotFound) {
+    return (
+      <NotFound />
     );
   }
 
@@ -157,7 +155,7 @@ function BlogPost(props) {
           <Toolbar />
           {
             //<BlogArticleExample/>
-            <PageBuilder pageUrl = {url} getNotFound={getPageNotFound} isTutorial/>
+            <PageBuilder pageUrl={url} getNotFound={getPageNotFound} isTutorial />
           }
         </Box>
       </Box>

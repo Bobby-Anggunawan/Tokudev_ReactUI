@@ -17,7 +17,7 @@ function PostHeaderToku(props) {
 
             {/*Header Content*/}
             <Box sx={{color: "common.white",height: "100%", width:"100%", display: "flex", flexDirection:"column", position: "absolute", top:0, paddingLeft: 3, paddingRight: 3, paddingTop:2, paddingBottom:2}}>
-                <BreadcrumbsToku/>
+                <BreadcrumbsToku postTitle={props.title}/>
                 <Box sx={{flexGrow:1}}></Box>
                 <HeadingToku variant={1} title={props.title}/>
                 <Typography>Last update {props.date}</Typography>

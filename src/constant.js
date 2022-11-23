@@ -42,4 +42,8 @@ function ConvertDateToString(date){
     return t.toDateString();
 }
 
-export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString };
+function firstLetterUpercase(data){
+    return data.charAt(0).toUpperCase() + data.slice(1);
+}
+
+export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString, firstLetterUpercase };
