@@ -29,7 +29,7 @@ export default function Login() {
 
     if (isLogin == false) {
         return (
-            <Box>
+            <Box sx={{minHeight: "100vh"}}>
                 <h1>Welcome to My Awesome App</h1>
 
                 <Button id="sign-in-button"
@@ -62,7 +62,7 @@ export default function Login() {
         );
     }
     return (
-        <Box>
+        <Box sx={{minHeight: "100vh"}}>
             <h1>Welcome to My Awesome App</h1>
 
             <Button variant="contained" onClick={() => {

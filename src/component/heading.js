@@ -2,10 +2,8 @@ import React from 'react';
 import { IconButton, Typography } from '@mui/material';
 import LinkIcon from '@mui/icons-material/Link';
 import { styled } from '@mui/system';
-import Slide from '@mui/material/Slide';
-import Snackbar from '@mui/material/Snackbar';
-import CloseIcon from '@mui/icons-material/Close';
-import Button from '@mui/material/Button';
+import { useLocation } from "react-router-dom";
+import {url, urlBuilder} from '../constant'
 
 
 const MyHeading = styled(Typography)({
@@ -16,6 +14,17 @@ const MyHeading = styled(Typography)({
   
 
 function HeadingToku(props) {
+
+    const [linkURL, setLinkURL] = React.useState([]);
+
+    const location = useLocation();
+
+    React.useEffect(() => {
+        setLinkURL(location.pathname);
+    }, []);
+
+
+
     return (
         <React.Fragment>
             {
@@ -25,7 +34,7 @@ function HeadingToku(props) {
                 /*Yang dirender kalo bukan h1*/
                 <MyHeading variant={`h${props.variant}`}>
                     <Typography component="span" variant={`h${props.variant+2}`} sx={{fontWeight: "normal"}}>{props.title}</Typography>
-                    <IconButton sx={{visibility: "hidden"}} onClick={() => {navigator.clipboard.writeText(props.title)}}>
+                    <IconButton sx={{visibility: "hidden"}} onClick={() => {navigator.clipboard.writeText(`${url}${linkURL}#${urlBuilder(props.title)}`)}}>
                         <LinkIcon/>
                     </IconButton>
                 </MyHeading>:

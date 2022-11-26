@@ -2,8 +2,7 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, ImageList, ImageList
 import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
-import { db, urlBuilder, tutorialList } from '../../constant'
-import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
+import {tutorialList } from '../../constant'
 
 export default function Tutorial() {
 

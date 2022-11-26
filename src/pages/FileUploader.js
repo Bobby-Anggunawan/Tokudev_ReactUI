@@ -28,7 +28,7 @@ export default function FileUploader() {
     const [description, setDescription] = React.useState("");
     const handleSetDescription = (event) => {
         setDescription(event.target.value);
-      };    
+    };
     //=================
     const storage = getStorage();
     const [storageRef, setStorageRefName] = React.useState(ref(storage, 'images/' + "null.png"));
@@ -63,7 +63,7 @@ export default function FileUploader() {
                         isAnime: categoryCheck[4]
                     };
 
-                    setDoc(doc(db, "TokuFiles", `${Math.floor(Date.now() / 1000)}_${fileName.split("\\")[2]}`), docData).then(() => {console.log("image terupload")});
+                    setDoc(doc(db, "TokuFiles", `${Math.floor(Date.now() / 1000)}_${fileName.split("\\")[2]}`), docData).then(() => { console.log("image terupload") });
                 })
                 .catch((error) => {
                     console.log(error);
@@ -72,38 +72,31 @@ export default function FileUploader() {
     }
 
     return (
-        <Box>
-            <AppBarToku />
-            <Toolbar />
+        <Box minHeight="100vh" paddingX={contentHorizontalPadding}>
 
-            <Box minHeight="100vh" paddingX={contentHorizontalPadding}>
-
-                <input type="file" accept="image/*" onChange={(e) => { setStorageRef(e.target.value) }} ref={inputFile} style={{ display: "none" }} />
+            <input type="file" accept="image/*" onChange={(e) => { setStorageRef(e.target.value) }} ref={inputFile} style={{ display: "none" }} />
 
 
-                <h1>File Name: "{fileName}"</h1>
-                <Box display="flex">
-                    {inputValue != null && <img src={URL.createObjectURL(inputValue)} height="200px" style={{paddingRight: contentHorizontalPadding}} />}
-                    <Stack spacing={2}>
-                        <TextField label="Description" variant="outlined" multiline value={description} onChange={handleSetDescription} />
-                        <FormGroup>
-                            <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(0)} value={categoryCheck[0]} />} label="Screenshot" />
-                            <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(1)} value={categoryCheck[0]} />} label="Edit Sendiri" />
-                            <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(2)} value={categoryCheck[0]} />} label="Company Product (logo & benda)" />
-                            <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(3)} value={categoryCheck[0]} />} label="Nature" />
-                            <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(4)} value={categoryCheck[0]} />} label="Anime" />
-                        </FormGroup>
-                    </Stack>
-                </Box>
-                <Stack direction="row" spacing={2} paddingY={contentVerticalPadding}>
-                    <Button variant="contained" onClick={onButtonClick}>Open file upload window</Button>
-                    {inputValue != null && <Button variant="contained" onClick={uploadImage} color="success">Upload</Button>}
+            <h1>File Name: "{fileName}"</h1>
+            <Box display="flex">
+                {inputValue != null && <img src={URL.createObjectURL(inputValue)} height="200px" style={{ paddingRight: contentHorizontalPadding }} />}
+                <Stack spacing={2}>
+                    <TextField label="Description" variant="outlined" multiline value={description} onChange={handleSetDescription} />
+                    <FormGroup>
+                        <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(0)} value={categoryCheck[0]} />} label="Screenshot" />
+                        <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(1)} value={categoryCheck[0]} />} label="Edit Sendiri" />
+                        <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(2)} value={categoryCheck[0]} />} label="Company Product (logo & benda)" />
+                        <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(3)} value={categoryCheck[0]} />} label="Nature" />
+                        <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(4)} value={categoryCheck[0]} />} label="Anime" />
+                    </FormGroup>
                 </Stack>
-                {resultLink != null && <h3><a href={resultLink} target="_blank">Image Terupload</a></h3>}
-
             </Box>
+            <Stack direction="row" spacing={2} paddingY={contentVerticalPadding}>
+                <Button variant="contained" onClick={onButtonClick}>Open file upload window</Button>
+                {inputValue != null && <Button variant="contained" onClick={uploadImage} color="success">Upload</Button>}
+            </Stack>
+            {resultLink != null && <h3><a href={resultLink} target="_blank">Image Terupload</a></h3>}
 
-            <FooterToku />
         </Box>
     )
 }

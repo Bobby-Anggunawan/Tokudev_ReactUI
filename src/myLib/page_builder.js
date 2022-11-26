@@ -6,7 +6,7 @@ import HeadingToku from '../component/heading';
 import ImageToku from '../component/image';
 import PostHeaderToku from '../component/post_header';
 import Box from '@mui/material/Box';
-import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString } from '../constant';
+import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString, tutorialList } from '../constant';
 import Link from '@mui/material/Link';
 import ScrollSpy from 'react-scrollspy-navigation';
 import PageBuilderFunction from './pageBuilderFunction';
@@ -49,7 +49,7 @@ function PageBuilder(props) {
                 setUpdateDate(ConvertDateToString(doc.data().date));
 
                 if (props.isArticle) document.title = `${pageTitle} - Tokudev`;
-                else document.title = `${pageTitle} - Tokudev`;
+                else document.title = `${tutorialList.get(props.pageUrl.split("\\")[0]).title} - ${pageTitle} - Tokudev`;
             }
 
             setLoading(false);

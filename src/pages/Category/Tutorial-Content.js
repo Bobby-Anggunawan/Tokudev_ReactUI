@@ -2,14 +2,13 @@ import { Box, Card, CardActionArea, CardContent, CardHeader, CardMedia, ImageLis
 import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
-import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
+import {getDoc, doc } from "firebase/firestore";
 import { db, urlBuilder } from '../../constant';
 import { useLocation } from "react-router-dom";
 import BlogPost from '../../templates/blog_post';
 import LoadingPage from '../Loading';
 
 export default function Tutorial_Content() {
-
 
     const location = useLocation();
     const tutorialName = location.pathname.split("/")[2];
@@ -57,7 +56,7 @@ export default function Tutorial_Content() {
 
     else if(location.pathname.split("/").length > 3 && location.pathname.split("/")[3] != ""){
         return(
-            <BlogPost sideBarJson={JSON.stringify(sideBarObj)} tutorialTitle={location.pathname.split("/")[3]} tutorialName={location.pathname.split("/")[2]}/>
+            <BlogPost sideBarJson={JSON.stringify(sideBarObj)}/>
         );
     }
 

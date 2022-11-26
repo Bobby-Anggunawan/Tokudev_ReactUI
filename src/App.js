@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { BrowserRouter as Router, Switch, Route, useLocation } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom'
 import Notes from './pages/Notes'
 import Create from './pages/Create'
 import BlogPost from './templates/blog_post';
@@ -15,8 +15,9 @@ import About from './pages/About';
 import Login from './pages/Login';
 import FileUploader from './pages/FileUploader';
 import PrivacyPolicy from './pages/PrivacyPolicy';
+import BasicLayout from './basic_layout';
 
-const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
+const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
 function App() {
 
@@ -45,50 +46,25 @@ function App() {
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
-        <Router>
-          <Switch>
-            <Route exact path="/">
-              <Home />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<BasicLayout />}>
+              <Route index element={<Home />} />
+              <Route path="login" element={<Login/>} />
+              <Route path="upload_file" element={<FileUploader/>} />
+              <Route path="about" element={<About/>} />
+              <Route path="privacy_policy" element={<PrivacyPolicy/>} />
+              <Route path="page_poster" element={<PagePoster/>} />
+              <Route path="article" element={<Article/>} />
+              <Route path="article/*" element={<ArticlePost/>} />
+              <Route path="*" element={<NotFound/>} />
             </Route>
-            <Route exact path="/login">
-              <Login/>
-            </Route>
-            <Route exact path="/upload_file">
-              <FileUploader/>
-            </Route>
-            <Route exact path="/about">
-              <About/>
-            </Route>
-            <Route exact path="/privacy_policy">
-              <PrivacyPolicy/>
-            </Route>
-            <Route path="/page_poster">
-              <PagePoster/>
-            </Route>
-            <Route exact path="/article">
-              <Article/>
-            </Route>
-            <Route path="/article/*">
-              <ArticlePost/>
-            </Route>
-            <Route exact path="/tutorial">
-              <Tutorial/>
-            </Route>
-            <Route path="/tutorial/*">
-              <Tutorial_Content/>
-            </Route>
-            <Route path="/create">
-              <Create />
-            </Route>
-            <Route path="*">
-              <NotFound/>
-            </Route>
-          </Switch>
-        </Router>
+          </Routes>
+        </BrowserRouter>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
 
 export default App;
-export {ColorModeContext};
+export { ColorModeContext };

@@ -3,19 +3,21 @@ import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
 import HeadingToku from '../component/heading'
+import {contentHorizontalPadding} from '../constant'
 
 export default function About() {
   return (
-    <Box>
-
-        <AppBarToku/>
-        <Toolbar/>
-
-        <Box minHeight={"100vh"}>
-            <Typography>Jugemu Jugemu Unko Nageki Ototoi no Shin-chan no Pantsu Shinpachi no Jinsei Barumunku Fezarion Aizakku Shunaidaa Sanbun no Ichi no Junjou na Kanjou no Nokotta Sanbun no Ni wa Sakamuke ga Kininaru Kanjou Uragiri wa Boku no Namae wo Shitteiru you de Shiranai no wo Boku wa Shitteiru Rusu Surume Medaka Kazunoko Koedame Medaka... Kono Medaka wa Sakki to Chigau Yatsu Dakara Ikeno Medaka no Hou Dakara Raayu Yuuteimiyaoukimukou Pepepepepepepepepepepepe Bichiguso Maru</Typography>
-        </Box>
-
-        <FooterToku/>
+    <Box minHeight={"100vh"} padding={contentHorizontalPadding}>
+      <HeadingToku variant={1} title="About Tokudev"/>
+      <section id="kenapa_website_ini_dibuat">
+        <HeadingToku variant={2} title="Kenapa Website Ini Dibuat?"/>
+        <Typography paragraph align="justify">
+          Ada banyak bidang yang dapat didalami di dunia IT. Saya ingin beajar banyak hal dari membuat game, membuat aplikasi mobile, kecerdasan buatan, sampai membuat website. Namun semakin banyak yang saya pelajari, saya sadar saya juga melupakan banyak hal yang sebelumnya saya pelajari. Wajar saja, saya tidak fokus belajar hanya satu bidang saja. Namun saya tidak suka melupakan apa yang sudah saya pelajari. Jadi saya perlu membuat catatan yang mudah diorganisasikan untuk mencatat hal yang telah dan akan saya pelajari. Oleh karena itu saya memutuskan membuat website ini.
+        </Typography>
+        <Typography paragraph align="justify">
+          Fun fact!! saya belajar backend dan SEO selagi mengembangkan website ini.
+        </Typography>
+      </section>
     </Box>
   )
 }

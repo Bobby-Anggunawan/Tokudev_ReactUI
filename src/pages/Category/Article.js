@@ -3,7 +3,7 @@ import { Box, Button, Card, CardActions, CardContent, CardHeader, CardMedia, Gri
 import AppBarToku from '../../component/general/app_bar';
 import FooterToku from '../../component/general/footer';
 import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
-import { db, contentVerticalPadding, ConvertDateToString, urlBuilder } from '../../constant'
+import { db, contentVerticalPadding, ConvertDateToString, urlBuilder, contentHorizontalPadding } from '../../constant'
 import LoadingPage from '../Loading';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -37,8 +37,8 @@ export default function Article() {
 
 
     const setPagingPage = (_value, maxPage) => {
-        console.log(maxPage-_value+1);
-        var docRef2 = doc(db, "ArticlePaging", `page${maxPage-_value+1}`);
+        console.log(maxPage - _value + 1);
+        var docRef2 = doc(db, "ArticlePaging", `page${maxPage - _value + 1}`);
         var docSnap2 = getDoc(docRef2).then((doc) => {
             setDate(doc.data().date);
             setPoster(doc.data().poster);
@@ -55,36 +55,36 @@ export default function Article() {
 
     return (
         <Box sx={{ margin: 0, padding: 0 }}>
-            <AppBarToku />
-            <Toolbar />
-            <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
-                {title != 0 &&
+            <Box minHeight={"100vh"}>
+                <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
+                    {title != 0 &&
 
-                    title.map((data, x) => {
-                        return (
-                            <ImageListItem key={x}>
-                                <Card>
-                                    <CardHeader
-                                        title={data}
-                                        subheader={ConvertDateToString(date[x])} />
-                                    <CardMedia
-                                        component="img"
-                                        image={poster[x]}
-                                        alt={data} />
-                                    <CardContent variant="body2" color="text.secondary">
-                                        <Typography>{preview[x]}</Typography>
-                                    </CardContent>
-                                    <CardActions>
-                                        <Button href={`/article/${urlBuilder(data)}`}>Read More</Button>
-                                    </CardActions>
-                                </Card>
-                            </ImageListItem>
-                        );
-                    })
+                        title.map((data, x) => {
+                            return (
+                                <ImageListItem key={x}>
+                                    <Card>
+                                        <CardHeader
+                                            title={data}
+                                            subheader={ConvertDateToString(date[x])} />
+                                        <CardMedia
+                                            component="img"
+                                            image={poster[x]}
+                                            alt={data} />
+                                        <CardContent variant="body2" color="text.secondary">
+                                            <Typography>{preview[x]}</Typography>
+                                        </CardContent>
+                                        <CardActions>
+                                            <Button href={`/article/${urlBuilder(data)}`}>Read More</Button>
+                                        </CardActions>
+                                    </Card>
+                                </ImageListItem>
+                            );
+                        })
 
-                    || <LoadingPage />
-                }
-            </ImageList>
+                        || <LoadingPage />
+                    }
+                </ImageList>
+            </Box>
 
             <Box sx={{ width: "50%", marginX: "auto", marginY: contentVerticalPadding }}>
                 <Pagination
@@ -101,7 +101,6 @@ export default function Article() {
                     )}
                 />
             </Box>
-            <FooterToku />
         </Box>
     )
 }

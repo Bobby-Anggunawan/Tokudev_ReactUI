@@ -26,13 +26,18 @@ function BlogPost(props) {
 
   const sideBarObj = JSON.parse(props.sideBarJson)
 
+  const location = useLocation();
+  const tutorialName = location.pathname.split("/")[2];
+  const judulArtikel = location.pathname.split("/")[3];
+  const url = tutorialName + "\\" + judulArtikel;
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
   const drawer = (
     <div>
       <Toolbar>
-        <Typography>{"Tutorial "+tutorialList.get(props.tutorialName).title}</Typography>
+        <Typography>{"Tutorial "+tutorialList.get(tutorialName).title}</Typography>
       </Toolbar>
       <Divider />
       {/*65px di List maxHeight adalah tinggi toolbar. maxHeight nya emang harus di set dan gak boleh 100% karena kalo begitu efek stickynya gak kelihatan*/}
@@ -55,7 +60,7 @@ function BlogPost(props) {
               {indeks > 0 && <Divider />}
               <ListSubheader>{`${sectionId}`}</ListSubheader>
               {sideBarObj.headerChild[indeks].map((item) => {
-                if (props.tutorialTitle != urlBuilder(item)) {
+                if (judulArtikel != urlBuilder(item)) {
                   return (
                     <ListItem key={`${sectionId}-${item}`} disablePadding>
                       <ListItemButton component="a" href={urlBuilder(item)}>
@@ -83,11 +88,6 @@ function BlogPost(props) {
 
   const container = window !== undefined ? () => window().document.body : undefined;
 
-
-  const location = useLocation();
-  const tutorialName = location.pathname.split("/")[2];
-  const judulArtikel = location.pathname.split("/")[3];
-  const url = tutorialName + "\\" + judulArtikel;
 
   //================================================
   const getPageNotFound = (isFound) => {

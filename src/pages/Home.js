@@ -6,25 +6,23 @@ import FooterToku from '../component/general/footer';
 
 export default function Home() {
 
-    const quote = [ "I treat people the way I want people to treat me..",
+    const quote = ["I treat people the way I want people to treat me..",
 
-                    "You can't change people's minds. But proving what they believe is wrong, crushing their spirit, that's fun!!",
+        "You can't change people's minds. But proving what they believe is wrong, crushing their spirit, that's fun!!",
 
-                    "A world where people can drag down all incompetent people above them is the perfect world.",
-                    "I think if everyone fights each other every time while still obeying the law, all incompetence will be gone."];
+        "A world where people can drag down all incompetent people above them is the perfect world.",
+        "I think if everyone fights each other every time while still obeying the law, all incompetence will be gone."];
     const shownQuote = quote[Math.floor(Math.random() * quote.length)];
 
     return (
-        <Box sx={{ height: "100vh", margin: 0, padding: 0 }}>
-
-            <AppBarToku/>
+        <React.Fragment>
 
             <img src={suya} style={{ width: "100vw", height: "100vh", position: "fixed", left: "0px", top: "0px", zIndex: -1 }}></img>
 
             <Box sx={{ height: "100vh", paddingX: { xs: "20px", md: "50px" } }}>
-                <Box margin="auto" paddingY="40vh">
-                    <Typography paddingBottom="20px" align="center" variant='h1' display="block" component="span" sx={{color: "common.white", textShadow: "0px 2px 5px rgba(0,0,0,1)", fontWeight: "500"}}>By. Y-Ang</Typography>
-                    <Typography align="center" variant='h3' display="block" component="span" sx={{color: "common.white", textShadow: "0px 2px 5px rgba(0,0,0,1)", fontWeight: "500"}}>{shownQuote}</Typography>
+                <Box margin="auto" paddingY="30vh">
+                    <Typography paddingBottom="20px" align="center" variant='h1' display="block" component="span" sx={{ color: "common.white", textShadow: "0px 2px 5px rgba(0,0,0,1)", fontWeight: "500" }}>By. Y-Ang</Typography>
+                    <Typography align="center" variant='h3' display="block" component="span" sx={{ color: "common.white", textShadow: "0px 2px 5px rgba(0,0,0,1)", fontWeight: "500" }}>{shownQuote}</Typography>
                 </Box>
             </Box>
 
@@ -64,11 +62,24 @@ export default function Home() {
                             </CardActionArea>
                         </Card>
                     </Grid>
+                    <Grid item xs={4}>
+                        <Card>
+                            <CardActionArea href="#">
+                                <CardMedia
+                                    component="img"
+                                    image="https://firebasestorage.googleapis.com/v0/b/tokudev-c4305.appspot.com/o/images%2F1669219207_pexels-antonio-batini%C4%87-4164418.jpg?alt=media&token=8a9259be-793e-4851-8665-59068716c724"
+                                    alt="Code React" />
+                                <CardContent variant="body2" color="text.secondary">
+                                    <Typography gutterBottom variant="h5" component="div" align="center">
+                                        Program
+                                    </Typography>
+                                </CardContent>
+                            </CardActionArea>
+                        </Card>
+                    </Grid>
                 </Grid>
             </Box>
 
-            <FooterToku></FooterToku>
-
-        </Box>
+        </React.Fragment>
     )
 }

@@ -4,6 +4,8 @@ import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 
 
 
+const url = "http://localhost:3000";
+
 //ENUMS
 const tutorialList = new Map([
     ['cs', {title: "C#",
@@ -61,4 +63,4 @@ function firstLetterUpercase(data){
     return data.charAt(0).toUpperCase() + data.slice(1);
 }
 
-export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString, firstLetterUpercase, tutorialList };
+export { contentHorizontalPadding, tableOfContentsWidth, muiToolbarHeight, contentVerticalPadding, borderRadius, drawerWidth, db, urlBuilder, ConvertDateToString, firstLetterUpercase, tutorialList, url };

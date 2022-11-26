@@ -29,18 +29,12 @@ export default function ArticlePost() {
   }
 
   return (
-    <Box>
+    <Box component="main" minHeight="100vh"
+      sx={{ flexGrow: 1, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}>
+      
       <CssBaseline />
-      <AppBarToku />
-      <Toolbar />
 
-
-      <Box component="main"
-        sx={{ flexGrow: 1, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}>
-        <PageBuilder pageUrl={url} getNotFound={getPageNotFound} isArticle/>
-      </Box>
-
-      <FooterToku />
+      <PageBuilder pageUrl={url} getNotFound={getPageNotFound} isArticle />
     </Box>
   )
 }

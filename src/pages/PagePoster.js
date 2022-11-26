@@ -275,11 +275,7 @@ export default function PagePoster() {
   }
 
   return (
-    <Box>
-      <AppBarToku />
-      <Toolbar />
-
-      <Box minHeight="100vh" padding={contentHorizontalPadding}>
+    <Box minHeight="100vh" padding={contentHorizontalPadding}>
 
         {successPosted == true &&
           <Alert variant="filled" severity="success">
@@ -424,8 +420,5 @@ export default function PagePoster() {
           <Button variant="contained" color="error" onClick={discardContent}>Discard</Button>
         </Stack>
       </Box>
-
-      <FooterToku />
-    </Box>
   )
 }

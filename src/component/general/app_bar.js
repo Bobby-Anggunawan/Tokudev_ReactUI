@@ -98,8 +98,8 @@ function AppBarToku(props) {
 
         <Box sx={{ flexGrow: 1 }}></Box>
 
-        <Button color="inherit">Home</Button>
-        <Button color="inherit">About</Button>
+        <Button color="inherit" href="/">Home</Button>
+        <Button color="inherit" href="/about">About</Button>
         <Button color="inherit">Contact</Button>
 
         <Box sx={{ flexGrow: 1 }}></Box>
