@@ -37,7 +37,7 @@ function BlogPost(props) {
   const drawer = (
     <div>
       <Toolbar>
-        <Typography>{"Tutorial "+tutorialList.get(tutorialName).title}</Typography>
+        <Typography>{"Tutorial " + tutorialList.get(tutorialName).title}</Typography>
       </Toolbar>
       <Divider />
       {/*65px di List maxHeight adalah tinggi toolbar. maxHeight nya emang harus di set dan gak boleh 100% karena kalo begitu efek stickynya gak kelihatan*/}
@@ -69,8 +69,8 @@ function BlogPost(props) {
                     </ListItem>
                   );
                 }
-                else{
-                  return(
+                else {
+                  return (
                     <ListItem key={`${sectionId}-${item}`} disablePadding>
                       <ListItemButton component="a" selected={true}>
                         <ListItemText primary={item} />
@@ -104,63 +104,55 @@ function BlogPost(props) {
   }
 
   return (
-    <Box>
+    <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBarToku appBarType="blogPost" drawerWidth={drawerWidth} handleDrawerToggle={handleDrawerToggle}></AppBarToku>
 
-      {/*Sidebar dan main content container*/}
-      <Box sx={{ display: 'flex' }}>
-        <Box
-          component="nav"
-          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
-          aria-label="Tutorial List"
+      <Box
+        component="nav"
+        sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        aria-label="Tutorial List"
+      >
+        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+        <Drawer
+          container={container}
+          variant="temporary"
+          open={mobileOpen}
+          onClose={handleDrawerToggle}
+          ModalProps={{
+            keepMounted: true, // Better open performance on mobile.
+          }}
+          sx={{
+            display: { xs: 'block', sm: 'none' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+          }}
         >
-          {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
-          <Drawer
-            container={container}
-            variant="temporary"
-            open={mobileOpen}
-            onClose={handleDrawerToggle}
-            ModalProps={{
-              keepMounted: true, // Better open performance on mobile.
-            }}
-            sx={{
-              display: { xs: 'block', sm: 'none' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-            }}
-          >
-            {drawer}
-          </Drawer>
-          <Drawer
-            variant="permanent"
-            sx={{
-              display: { xs: 'none', sm: 'block' },
-              '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
-              position: 'sticky',
-              top: 0,
-              '& .MuiPaper-root': {
-                position: 'sticky'
-              }
-            }}
-            open
-          >
-            {drawer}
-          </Drawer>
-        </Box>
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}
+          {drawer}
+        </Drawer>
+        <Drawer
+          variant="permanent"
+          sx={{
+            display: { xs: 'none', sm: 'block' },
+            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+            position: 'sticky',
+            top: 0,
+            '& .MuiPaper-root': {
+              position: 'sticky'
+            }
+          }}
+          open
         >
-          {/*Toolbar ini sebenarnya gak penting. Tapi kalau dihapus, tulisan paling atas di content nanti ada di bawah appbar(gak kelihatan. Coba aja hapus terus lihat pengaruhnya)*/}
-          <Toolbar />
-          {
-            //<BlogArticleExample/>
-            <PageBuilder pageUrl={url} getNotFound={getPageNotFound} isTutorial />
-          }
-        </Box>
+          {drawer}
+        </Drawer>
       </Box>
-
-      <FooterToku></FooterToku>
+      <Box
+        component="main"
+        sx={{ flexGrow: 1, width: { sm: `calc(100% - ${drawerWidth}px)` }, paddingLeft: contentHorizontalPadding, paddingRight: contentHorizontalPadding }}
+      >
+        {
+          //<BlogArticleExample/>
+          <PageBuilder pageUrl={url} getNotFound={getPageNotFound} isTutorial />
+        }
+      </Box>
     </Box>
   );
 }

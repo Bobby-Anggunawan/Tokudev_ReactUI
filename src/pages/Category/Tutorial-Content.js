@@ -2,7 +2,7 @@ import { Box, Card, CardActionArea, CardContent, CardHeader, CardMedia, ImageLis
 import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
-import {getDoc, doc } from "firebase/firestore";
+import { getDoc, doc } from "firebase/firestore";
 import { db, urlBuilder } from '../../constant';
 import { useLocation } from "react-router-dom";
 import BlogPost from '../../templates/blog_post';
@@ -50,48 +50,39 @@ export default function Tutorial_Content() {
         });
     }, []);
 
-    if(sideBarObj == null){
-        return(<LoadingPage/>);
+    if (sideBarObj == null) {
+        return (<LoadingPage />);
     }
 
-    else if(location.pathname.split("/").length > 3 && location.pathname.split("/")[3] != ""){
-        return(
-            <BlogPost sideBarJson={JSON.stringify(sideBarObj)}/>
+    else if (location.pathname.split("/").length > 3 && location.pathname.split("/")[3] != "") {
+        return (
+            <BlogPost sideBarJson={JSON.stringify(sideBarObj)} />
         );
     }
 
     return (
-        <Box>
-            <AppBarToku />
-            <Toolbar />
-
-
-            <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
-                {
-                    title.map((data, x) => {
-                        return (
-                            <ImageListItem key={x}>
-                                <Card>
-                                    <CardActionArea href={`/tutorial/${tutorialName}/${urlBuilder(data)}`}>
-                                        <CardHeader title={data} />
-                                        <CardMedia component="img"
-                                            image={poster[x]}
-                                            alt={data} />
-                                        <CardContent>
-                                            <Typography variant="body2" color="text.secondary">
-                                                {subTitle[x]}
-                                            </Typography>
-                                        </CardContent>
-                                    </CardActionArea>
-                                </Card>
-                            </ImageListItem>
-                        );
-                    })
-                }
-            </ImageList>
-
-
-            <FooterToku />
-        </Box>
+        <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto", minHeight: "100vh"}}>
+            {
+                title.map((data, x) => {
+                    return (
+                        <ImageListItem key={x}>
+                            <Card>
+                                <CardActionArea href={`/tutorial/${tutorialName}/${urlBuilder(data)}`}>
+                                    <CardHeader title={data} />
+                                    <CardMedia component="img"
+                                        image={poster[x]}
+                                        alt={data} />
+                                    <CardContent>
+                                        <Typography variant="body2" color="text.secondary">
+                                            {subTitle[x]}
+                                        </Typography>
+                                    </CardContent>
+                                </CardActionArea>
+                            </Card>
+                        </ImageListItem>
+                    );
+                })
+            }
+        </ImageList>
     )
 }

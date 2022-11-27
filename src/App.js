@@ -16,6 +16,7 @@ import Login from './pages/Login';
 import FileUploader from './pages/FileUploader';
 import PrivacyPolicy from './pages/PrivacyPolicy';
 import BasicLayout from './basic_layout';
+import LoadingPage from './pages/Loading';
 
 const ColorModeContext = React.createContext({ toggleColorMode: () => { } });
 
@@ -57,8 +58,13 @@ function App() {
               <Route path="page_poster" element={<PagePoster/>} />
               <Route path="article" element={<Article/>} />
               <Route path="article/*" element={<ArticlePost/>} />
-              <Route path="*" element={<NotFound/>} />
+              <Route path="tutorial" element={<Tutorial/>} />
+              <Route path="tutorial/*" element={<Tutorial_Content/>} />
             </Route>
+            <Route path="*" element={<NotFound/>} />
+
+            {"TEST==================="}
+            <Route path="test" element={<LoadingPage/>} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

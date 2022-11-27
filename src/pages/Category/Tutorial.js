@@ -2,7 +2,7 @@ import { Box, Card, CardActionArea, CardContent, CardMedia, ImageList, ImageList
 import React from 'react'
 import AppBarToku from '../../component/general/app_bar'
 import FooterToku from '../../component/general/footer'
-import {tutorialList } from '../../constant'
+import { tutorialList } from '../../constant'
 
 export default function Tutorial() {
 
@@ -30,16 +30,8 @@ export default function Tutorial() {
     })
 
     return (
-        <Box>
-            <AppBarToku />
-            <Toolbar />
-
-            <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
-                {listOfTutorial}
-
-            </ImageList>
-
-            <FooterToku />
-        </Box>
+        <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto", minHeight: "100vh" }}>
+            {listOfTutorial}
+        </ImageList>
     )
 }
