@@ -6,6 +6,7 @@ import { contentHorizontalPadding, db, urlBuilder, tutorialList } from '../const
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
+import PageBuilderFunction2 from '../myLib/pageBuilderFunction2';
 
 
 async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
@@ -215,7 +216,7 @@ export default function PagePoster() {
         contain.push(newParagraph);
         setContents(contain);
 
-        setContentResult(PageBuilderFunction(contents).Hasil);
+        setContentResult(PageBuilderFunction2(contents).Hasil);
       }
     }
     else if (paragraphTypes == "img") {
@@ -227,17 +228,20 @@ export default function PagePoster() {
         contain.push(newParagraph);
         setContents(contain);
 
-        setContentResult(PageBuilderFunction(contents).Hasil);
+        setContentResult(PageBuilderFunction2(contents).Hasil);
       }
     }
     else if(paragraphTypes == "code"){
       if((contentCodeContainer.length != 0) && (contentLangContainer.length != 0) && (contentLangContainer.length == contentCodeContainer.length)){
+        var contain = contents;
         contain.push("code");
         contain.push(contentCodeContainer.length);
         for(var x =0; x< contentCodeContainer.length; x++){
-          contain.push(contentCodeContainer[x]);
           contain.push(contentLangContainer[x]);
+          contain.push(contentCodeContainer[x]);
         }
+        setContents(contain);
+        setContentResult(PageBuilderFunction2(contents).Hasil);
       }
     }
     else if (paragraphTypes == "h1" && newParagraph != "") {
@@ -245,28 +249,28 @@ export default function PagePoster() {
       contain.push("h1");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction(contents).Hasil);
+      setContentResult(PageBuilderFunction2(contents).Hasil);
     }
     else if (paragraphTypes == "h2" && newParagraph != "") {
       var contain = contents;
       contain.push("h2");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction(contents).Hasil);
+      setContentResult(PageBuilderFunction2(contents).Hasil);
     }
     else if (paragraphTypes == "h3" && newParagraph != "") {
       var contain = contents;
       contain.push("h3");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction(contents).Hasil);
+      setContentResult(PageBuilderFunction2(contents).Hasil);
     }
     else if (paragraphTypes == "h4" && newParagraph != "") {
       var contain = contents;
       contain.push("h4");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction(contents).Hasil);
+      setContentResult(PageBuilderFunction2(contents).Hasil);
     }
 
     discardContent();
@@ -305,6 +309,8 @@ export default function PagePoster() {
 
     setContentLangContainer([]);
     setContentCodeContainer([]);
+
+    setParagraphType("p");
   }
 
   return (
