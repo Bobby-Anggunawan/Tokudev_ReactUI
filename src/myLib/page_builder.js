@@ -9,7 +9,7 @@ import Box from '@mui/material/Box';
 import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString, tutorialList } from '../constant';
 import Link from '@mui/material/Link';
 import ScrollSpy from 'react-scrollspy-navigation';
-import PageBuilderFunction from './pageBuilderFunction';
+import PageBuilderFunction2 from './pageBuilderFunction2';
 import LoadingPage from '../pages/Loading';
 import NotFound from '../pages/NotFound';
 import { Alert } from '@mui/material';
@@ -62,7 +62,7 @@ function PageBuilder(props) {
     var hasil = null;
     var scrollSpyContent = null;
     if (data != null) {
-        pageResult = PageBuilderFunction(data);
+        pageResult = PageBuilderFunction2(data);
         hasil = pageResult.Hasil;
         scrollSpyContent = pageResult.ScrollSpyContent;
     }

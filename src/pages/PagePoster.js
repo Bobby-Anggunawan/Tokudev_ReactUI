@@ -1,10 +1,11 @@
-import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid, Alert, formLabelClasses } from '@mui/material'
+import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid, Alert, formLabelClasses, Autocomplete } from '@mui/material'
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
 import { contentHorizontalPadding, db, urlBuilder, tutorialList } from '../constant';
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
+import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
 
 
 async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
@@ -131,10 +132,10 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
         poster: buildPoster,
         date: buildDate
       };
-      await setDoc(doc(db, "ArticlePaging", `page${pagesCount+1}`), docData);
+      await setDoc(doc(db, "ArticlePaging", `page${pagesCount + 1}`), docData);
 
       await updateDoc(articlePaging, {
-        pagesCount: pagesCount+1,
+        pagesCount: pagesCount + 1,
       });
     }
   }
@@ -229,6 +230,16 @@ export default function PagePoster() {
         setContentResult(PageBuilderFunction(contents).Hasil);
       }
     }
+    else if(paragraphTypes == "code"){
+      if((contentCodeContainer.length != 0) && (contentLangContainer.length != 0) && (contentLangContainer.length == contentCodeContainer.length)){
+        contain.push("code");
+        contain.push(contentCodeContainer.length);
+        for(var x =0; x< contentCodeContainer.length; x++){
+          contain.push(contentCodeContainer[x]);
+          contain.push(contentLangContainer[x]);
+        }
+      }
+    }
     else if (paragraphTypes == "h1" && newParagraph != "") {
       var contain = contents;
       contain.push("h1");
@@ -260,11 +271,6 @@ export default function PagePoster() {
 
     discardContent();
   }
-  const discardContent = (event) => {
-    setNewParagraph("");
-    setNewParagraph1("");
-    setNewParagraph2("");
-  }
 
   const [successPosted, setSuccessPosted] = React.useState(false);
   const clickPost = () => {
@@ -274,151 +280,201 @@ export default function PagePoster() {
     });
   }
 
+
+  const langOption = Object.values(EnumType);
+  const [contentLang, setContentLang] = React.useState(langOption[0]);
+
+  const [contentLangContainer, setContentLangContainer] = React.useState([]);
+  const [contentCodeContainer, setContentCodeContainer] = React.useState([]);
+  const addLandAndCode = () => {
+    const addDataLang = contentLangContainer;
+    addDataLang.push(contentLang);
+    setContentLangContainer(addDataLang);
+
+    const addDataCode = contentCodeContainer;
+    addDataCode.push(newParagraph);
+    setContentCodeContainer(addDataCode);
+
+    setNewParagraph("");
+  }
+
+  const discardContent = (event) => {
+    setNewParagraph("");
+    setNewParagraph1("");
+    setNewParagraph2("");
+
+    setContentLangContainer([]);
+    setContentCodeContainer([]);
+  }
+
   return (
     <Box minHeight="100vh" padding={contentHorizontalPadding}>
 
-        {successPosted == true &&
-          <Alert variant="filled" severity="success">
-            {postTitle}: berhasil di post...
-          </Alert>
-        }
+      {successPosted == true &&
+        <Alert variant="filled" severity="success">
+          {postTitle}: berhasil di post...
+        </Alert>
+      }
 
-        <Box display="flex">
-          <Stack flex="50%" spacing={2}>
-            {contentResult.map((items, x) => (
-              <Card key={x}>
-                {items}
-              </Card>
-            ))}
-          </Stack>
+      <Box display="flex">
+        <Stack flex="50%" spacing={2}>
+          {contentResult.map((items, x) => (
+            <Card key={x}>
+              {items}
+            </Card>
+          ))}
+        </Stack>
 
-          <Box flex="50%" paddingLeft={contentHorizontalPadding}>
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
-                <TextField id="urlCategory"
-                  label="Category"
+        <Box flex="50%" paddingLeft={contentHorizontalPadding}>
+          <Grid container spacing={2}>
+            <Grid item xs={6}>
+              <TextField id="urlCategory"
+                label="Category"
+                margin="normal"
+                select
+                value={urlCategory}
+                onChange={addsetUrlCategory}
+                fullWidth>
+                <MenuItem value="Article">Article</MenuItem>
+                <MenuItem value="Tutorial">Tutorial</MenuItem>
+              </TextField>
+            </Grid>
+            <Grid item xs={6}>
+              {(urlCategory == "Tutorial" && urlTitle.length > 0) &&
+                <TextField id="urlDivision"
+                  label="Division"
                   margin="normal"
                   select
-                  value={urlCategory}
-                  onChange={addsetUrlCategory}
-                  fullWidth>
-                  <MenuItem value="Article">Article</MenuItem>
-                  <MenuItem value="Tutorial">Tutorial</MenuItem>
+                  fullWidth
+                  value={urlTitleStore}
+                  onChange={addUrlTitleStore}>
+                  {urlTitle.map((dataURLTitle) => {
+                    return (
+                      <MenuItem value={dataURLTitle} key={dataURLTitle}>{dataURLTitle}</MenuItem>
+                    );
+                  })}
                 </TextField>
-              </Grid>
-              <Grid item xs={6}>
-                {(urlCategory == "Tutorial" && urlTitle.length > 0) &&
-                  <TextField id="urlDivision"
-                    label="Division"
-                    margin="normal"
-                    select
-                    fullWidth
-                    value={urlTitleStore}
-                    onChange={addUrlTitleStore}>
-                    {urlTitle.map((dataURLTitle) => {
-                      return (
-                        <MenuItem value={dataURLTitle} key={dataURLTitle}>{dataURLTitle}</MenuItem>
-                      );
-                    })}
-                  </TextField>
-                }
-              </Grid>
+              }
             </Grid>
-            {
-              (urlCategory == "Tutorial") &&
-              <TextField id="subUrlDivision"
-                label="Sub Division"
-                margin="normal"
-                fullWidth
-                select
-                value={subUrlTitleStore}
-                onChange={subAddUrlTitleStore}>
-                {listSubUrlTitle.map((aDataMap) => {
-                  return (
-                    <MenuItem value={aDataMap} key={aDataMap}>{aDataMap}</MenuItem>
-                  );
-                })}
-
-              </TextField>
-            }
-            <TextField id="postTitle"
-              label="Post Title"
+          </Grid>
+          {
+            (urlCategory == "Tutorial") &&
+            <TextField id="subUrlDivision"
+              label="Sub Division"
               margin="normal"
               fullWidth
-              value={postTitle}
-              onChange={addSetPostTitle} />
-            <TextField id="postSubTitle"
-              label="Post Sub Title"
-              margin="normal"
-              fullWidth
-              onChange={addSetSubPostTitle}
-              value={postSubTitle} />
-            <TextField id="postPoster"
-              label="Poster Image"
-              margin="normal"
-              fullWidth
-              onChange={addSetPostPoster}
-              value={postPoster} />
-            <Button variant="contained" onClick={clickPost}>
-              Post
-            </Button>
-          </Box>
-        </Box>
+              select
+              value={subUrlTitleStore}
+              onChange={subAddUrlTitleStore}>
+              {listSubUrlTitle.map((aDataMap) => {
+                return (
+                  <MenuItem value={aDataMap} key={aDataMap}>{aDataMap}</MenuItem>
+                );
+              })}
 
-        <TextField id="paragraphType"
-          select
-          label="Paragraph Type"
-          margin="normal"
-          fullWidth
-          value={paragraphTypes}
-          onChange={handleChange}>
-
-          <MenuItem value="p">P</MenuItem>
-          <MenuItem value="img">IMG</MenuItem>
-          <MenuItem value="h1">H1</MenuItem>
-          <MenuItem value="h2">H2</MenuItem>
-          <MenuItem value="h3">H3</MenuItem>
-          <MenuItem value="h4">H4</MenuItem>
-
-        </TextField>
-
-        <Box component="form"
-          noValidate
-          autoComplete="off">
-
-          <TextField multiline
-            id="newParagraph"
-            label={paragraphTypes == "img" && "Src" || "New Paragraph"}
+            </TextField>
+          }
+          <TextField id="postTitle"
+            label="Post Title"
             margin="normal"
             fullWidth
-            onChange={addNewParagraph}
-            value={newParagraph} />
-
-          {
-            paragraphTypes == "img" &&
-
-            <Box>
-              <TextField multiline
-                id="Alt"
-                label="Alt"
-                margin="normal"
-                fullWidth
-                onChange={addNewParagraph1} />
-              <TextField multiline
-                id="Caption"
-                label="Caption"
-                margin="normal"
-                fullWidth
-                onChange={addNewParagraph2} />
-            </Box>
-          }
-
+            value={postTitle}
+            onChange={addSetPostTitle} />
+          <TextField id="postSubTitle"
+            label="Post Sub Title"
+            margin="normal"
+            fullWidth
+            onChange={addSetSubPostTitle}
+            value={postSubTitle} />
+          <TextField id="postPoster"
+            label="Poster Image"
+            margin="normal"
+            fullWidth
+            onChange={addSetPostPoster}
+            value={postPoster} />
+          <Button variant="contained" onClick={clickPost}>
+            Post
+          </Button>
         </Box>
-
-        <Stack direction="row" spacing={2}>
-          <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
-          <Button variant="contained" color="error" onClick={discardContent}>Discard</Button>
-        </Stack>
       </Box>
+
+      <TextField id="paragraphType"
+        select
+        label="Paragraph Type"
+        margin="normal"
+        fullWidth
+        value={paragraphTypes}
+        onChange={handleChange}>
+
+        <MenuItem value="p">P</MenuItem>
+        <MenuItem value="img">IMG</MenuItem>
+        <MenuItem value="code">Code</MenuItem>
+        <MenuItem value="h1">H1</MenuItem>
+        <MenuItem value="h2">H2</MenuItem>
+        <MenuItem value="h3">H3</MenuItem>
+        <MenuItem value="h4">H4</MenuItem>
+
+      </TextField>
+
+      <Box component="form"
+        noValidate
+        autoComplete="off">
+
+        {
+          paragraphTypes == "code" &&
+          <Box>
+            <Autocomplete
+              disablePortal
+              value={contentLang}
+              onChange={(event, newValue) => {
+                setContentLang(newValue);
+              }}
+              options={langOption}
+              renderInput={(params) =>
+                <TextField {...params}
+                  label="Language"
+                  margin="normal" />} />
+          </Box>
+        }
+
+        <TextField multiline
+          id="newParagraph"
+          label={paragraphTypes == "img" && "Src" || "New Paragraph"}
+          margin="normal"
+          fullWidth
+          onChange={addNewParagraph}
+          value={newParagraph} />
+
+        {
+          paragraphTypes == "img" &&
+
+          <Box>
+            <TextField multiline
+              id="Alt"
+              label="Alt"
+              margin="normal"
+              fullWidth
+              onChange={addNewParagraph1} />
+            <TextField multiline
+              id="Caption"
+              label="Caption"
+              margin="normal"
+              fullWidth
+              onChange={addNewParagraph2} />
+          </Box>
+        }
+
+      </Box>
+
+      <Stack direction="row" spacing={2}>
+        {paragraphTypes == "code" && <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
+        <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
+        <Button variant="contained" color="error" onClick={discardContent}>Discard</Button>
+      </Stack>
+
+      <Stack>
+        {contentCodeContainer.length != 0 && <SyntaxHighlighter langList={contentLangContainer} code={contentCodeContainer}/>}
+      </Stack>
+    </Box>
   )
 }
