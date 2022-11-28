@@ -13,6 +13,7 @@ function TabPanel(props) {
       role="tabpanel"
       hidden={value !== index}
       id={`simple-tabpanel-${index}`}
+      sx={{backgroundColor: "#302c2c"}}
     >
       {children}
     </Box>
@@ -40,8 +41,13 @@ const EnumType = {
   GDScript: "gdscript"
 }
 
-function SyntaxHighlighter(props) {
+function PrismLoadLanguages(){
+  require('prismjs/components/prism-csharp');
+  require('prismjs/components/prism-dart');
+  require('prismjs/components/prism-gdscript');
+}
 
+function SyntaxHighlighter(props) {
   const [value, setValue] = React.useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -54,9 +60,9 @@ function SyntaxHighlighter(props) {
 
       <Tabs value={value} onChange={handleChange}>
         {
-          props.langList.map((data) => {
+          props.langList.map((data, x) => {
             return (
-              <Tab label={data} />
+              <Tab label={data} key={x}/>
             );
           })
         }
@@ -64,10 +70,9 @@ function SyntaxHighlighter(props) {
       {
         props.code.map((data, x) => {
           return (
-            <TabPanel value={value} index={x}>
+            <TabPanel value={value} index={x} key={x}>
               <pre className="line-numbers">
-                <code className={`language-${props.langList[x]}`}>
-                  {data}
+                <code className={`language-${props.langList[x]}`} dangerouslySetInnerHTML={{ __html: data }}>
                 </code>
               </pre>
             </TabPanel>
@@ -85,4 +90,4 @@ SyntaxHighlighter.propTypes = {
 };
 
 export default SyntaxHighlighter;
-export {EnumType};
+export {EnumType, PrismLoadLanguages};

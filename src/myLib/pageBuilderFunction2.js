@@ -3,7 +3,9 @@ import React from 'react'
 import HeadingToku from "../component/heading";
 import ImageToku from "../component/image";
 import SyntaxHighlighter from "../component/syntax_highlighter";
+import {PrismLoadLanguages} from "../component/syntax_highlighter";
 import {urlBuilder} from "../constant";
+import Prism from 'prismjs';
 
 class ParagraphType {
     constructor(name, dataCount, propMap) {
@@ -75,6 +77,7 @@ function nextHeader(data, start = 0) {
 }
 
 function buildSection(data, stop, start = 0) {
+    PrismLoadLanguages();
     var ret = [];
     var counter = start;
     while (counter < data.length && counter < stop) {
@@ -97,8 +100,10 @@ function buildSection(data, stop, start = 0) {
                 const lang = [];
                 const code = [];
                 for (var xSize = 0; xSize < size; xSize++) {
-                    lang.push(data[counter + cnt + 1]);
-                    code.push(data[counter + (cnt + 1) + 1]);
+                    const bahasa = data[counter + cnt + 1];
+                    lang.push(bahasa);
+                    const html = Prism.highlight(data[counter + (cnt + 1) + 1], Prism.languages[bahasa], bahasa);
+                    code.push(html)
                     cnt += 2;
                 }
                 ret.push(buildCODE(lang, code, counter))
