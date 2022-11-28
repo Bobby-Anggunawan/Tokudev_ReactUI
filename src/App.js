@@ -64,7 +64,7 @@ function App() {
             <Route path="*" element={<NotFound/>} />
 
             {"TEST==================="}
-            <Route path="test" element={<LoadingPage/>} />
+            <Route path="test" element={<Notes/>} />
           </Routes>
         </BrowserRouter>
       </ThemeProvider>

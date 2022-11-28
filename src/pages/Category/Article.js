@@ -53,54 +53,57 @@ export default function Article() {
         setPagingPage(value, pageCount);
     };
 
-    return (
-        <Box sx={{ margin: 0, padding: 0 }}>
-            <Box minHeight={"100vh"}>
-                <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
-                    {title != 0 &&
-
+    if(title.length != 0){
+        return (
+            <Box sx={{ margin: 0, padding: 0 }}>
+                <Box minHeight={"100vh"}>
+                    <ImageList variant="masonry" cols={3} gap={8} sx={{ width: "50%", marginX: "auto" }}>
+                        {
                         title.map((data, x) => {
-                            return (
-                                <ImageListItem key={x}>
-                                    <Card>
-                                        <CardHeader
-                                            title={data}
-                                            subheader={ConvertDateToString(date[x])} />
-                                        <CardMedia
-                                            component="img"
-                                            image={poster[x]}
-                                            alt={data} />
-                                        <CardContent variant="body2" color="text.secondary">
-                                            <Typography>{preview[x]}</Typography>
-                                        </CardContent>
-                                        <CardActions>
-                                            <Button href={`/article/${urlBuilder(data)}`}>Read More</Button>
-                                        </CardActions>
-                                    </Card>
-                                </ImageListItem>
-                            );
-                        })
-
-                        || <LoadingPage />
-                    }
-                </ImageList>
+                                return (
+                                    <ImageListItem key={x}>
+                                        <Card>
+                                            <CardHeader
+                                                title={data}
+                                                subheader={ConvertDateToString(date[x])} />
+                                            <CardMedia
+                                                component="img"
+                                                image={poster[x]}
+                                                alt={data} />
+                                            <CardContent variant="body2" color="text.secondary">
+                                                <Typography>{preview[x]}</Typography>
+                                            </CardContent>
+                                            <CardActions>
+                                                <Button href={`/article/${urlBuilder(data)}`}>Read More</Button>
+                                            </CardActions>
+                                        </Card>
+                                    </ImageListItem>
+                                );
+                            })
+                        }
+                    </ImageList>
+                </Box>
+    
+                <Box sx={{ width: "50%", marginX: "auto", marginY: contentVerticalPadding }}>
+                    <Pagination
+                        page={page}
+                        onChange={handleChange}
+                        count={pageCount}
+                        color="primary"
+                        renderItem={(item) => (
+                            <PaginationItem
+                                component={Link}
+                                to={`#page_${item.page}`}
+                                {...item}
+                            />
+                        )}
+                    />
+                </Box>
             </Box>
+        );
+    }
 
-            <Box sx={{ width: "50%", marginX: "auto", marginY: contentVerticalPadding }}>
-                <Pagination
-                    page={page}
-                    onChange={handleChange}
-                    count={pageCount}
-                    color="primary"
-                    renderItem={(item) => (
-                        <PaginationItem
-                            component={Link}
-                            to={`#page_${item.page}`}
-                            {...item}
-                        />
-                    )}
-                />
-            </Box>
-        </Box>
-    )
+    return(
+        <LoadingPage/>
+    );
 }
