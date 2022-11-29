@@ -3,8 +3,8 @@ import React from 'react'
 import HeadingToku from "../component/heading";
 import ImageToku from "../component/image";
 import SyntaxHighlighter from "../component/syntax_highlighter";
-import {PrismLoadLanguages} from "../component/syntax_highlighter";
-import {urlBuilder} from "../constant";
+import { PrismLoadLanguages } from "../component/syntax_highlighter";
+import { urlBuilder } from "../constant";
 import Prism from 'prismjs';
 
 class ParagraphType {
@@ -57,14 +57,14 @@ function buildCODE(lang, code, keyCounter) {
 
 function nextHeader(data, start = 0) {
     for (var x = start; x < data.length; x++) {
-        if (data[x] == "h2" || data[x] == "h3" || data[x] == "h4") {
+        if (data[x] == paragraphType.h2.name || data[x] == paragraphType.h3.name || data[x] == paragraphType.h4.name) {
             var obj = {
                 index: x,
                 level: 1
             };
-            if (data[x] == "h2") obj.level = 2;
-            else if (data[x] == "h3") obj.level = 3;
-            else if (data[x] == "h4") obj.level = 4;
+            if (data[x] == paragraphType.h2.name) obj.level = 2;
+            else if (data[x] == paragraphType.h3.name) obj.level = 3;
+            else if (data[x] == paragraphType.h4.name) obj.level = 4;
 
             return obj;
         }
@@ -76,42 +76,77 @@ function nextHeader(data, start = 0) {
     return obj2;
 }
 
+function buildIndividualSection(data, start = 0) {
+    var ret = null;
+    var nextStart = start;
+    PrismLoadLanguages();
+    switch (data[start]) {
+        case paragraphType.h1.name:
+            const judul1 = data[start + 1];
+            ret = <HeadingToku variant={1} title={judul1} key={start} />;
+            nextStart += paragraphType.h1.dataCount + 1;
+            break;
+        case paragraphType.h2.name:
+            const judul2 = data[start + 1];
+            ret = <HeadingToku variant={2} title={judul1} key={start} />;
+            nextStart += paragraphType.h2.dataCount + 1;
+            break;
+        case paragraphType.h3.name:
+            const judul3 = data[start + 1];
+            ret = <HeadingToku variant={3} title={judul1} key={start} />;
+            nextStart += paragraphType.h3.dataCount + 1;
+            break;
+        case paragraphType.h4.name:
+            const judul4 = data[start + 1];
+            ret = <HeadingToku variant={4} title={judul1} key={start} />;
+            nextStart += paragraphType.h4.dataCount + 1;
+            break;
+
+
+        case paragraphType.p.name:
+            const isi = data[start + 1];
+            ret = buildP(isi, start);
+            nextStart += paragraphType.p.dataCount + 1;
+            break;
+        case paragraphType.img.name:
+            const caption = data[start + 1];
+            const alt = data[start + 2];
+            const src = data[start + 3];
+            ret = buildIMG(caption, alt, src, start);
+            nextStart += paragraphType.img.dataCount + 1;
+            break;
+        case paragraphType.code.name:
+            const size = data[start + 1];
+            var cnt = 1;
+            const lang = [];
+            const code = [];
+            for (var xSize = 0; xSize < size; xSize++) {
+                const bahasa = data[start + cnt + 1];
+                lang.push(bahasa);
+                const html = Prism.highlight(data[start + (cnt + 1) + 1], Prism.languages[bahasa], bahasa);
+                code.push(html)
+                cnt += 2;
+            }
+            ret = buildCODE(lang, code, start)
+            nextStart += size * 2 + 2;
+            break;
+        default:
+            throw `Tag "${data[start]}" tidak dikenali`;
+    }
+    return {
+        hasil: ret,
+        addCounter: nextStart
+    }
+}
+
 function buildSection(data, stop, start = 0) {
     PrismLoadLanguages();
     var ret = [];
     var counter = start;
     while (counter < data.length && counter < stop) {
-        switch (data[counter]) {
-            case "p":
-                const isi = data[counter + 1];
-                ret.push(buildP(isi, counter));
-                counter += 2;
-                break;
-            case "img":
-                const caption = data[counter + 1];
-                const alt = data[counter + 2];
-                const src = data[counter + 3];
-                ret.push(buildIMG(caption, alt, src, counter));
-                counter += 4;
-                break;
-            case "code":
-                const size = data[counter + 1];
-                var cnt = 1;
-                const lang = [];
-                const code = [];
-                for (var xSize = 0; xSize < size; xSize++) {
-                    const bahasa = data[counter + cnt + 1];
-                    lang.push(bahasa);
-                    const html = Prism.highlight(data[counter + (cnt + 1) + 1], Prism.languages[bahasa], bahasa);
-                    code.push(html)
-                    cnt += 2;
-                }
-                ret.push(buildCODE(lang, code, counter))
-                counter += size * 2 + 2;
-                break;
-            default:
-                throw `Tag "${data[counter]}" tidak dikenali`;
-        }
+        const temp = buildIndividualSection(data, counter);
+        ret.push(temp.hasil);
+        counter = temp.addCounter;
     }
     return ret;
 }
@@ -122,8 +157,8 @@ function buildScrollSpy(data) {
     data.forEach((item, index) => {
         if (item == "h2" || item == "h3" || item == "h4") {
             ret.push(
-                <Link href={`#${urlBuilder(data[index+1])}`} ref={React.createRef()} key={`scrollSpyContent1${index}`}>
-                    {data[index+1]}
+                <Link href={`#${urlBuilder(data[index + 1])}`} ref={React.createRef()} key={`scrollSpyContent1${index}`}>
+                    {data[index + 1]}
                 </Link>
             )
         }
@@ -147,7 +182,7 @@ function buildWhole(data) {
         const prefHeading = nextHeading.index;
         nextHeading = nextHeader(data, counter + 1);
         aSection = aSection.concat(buildSection(data, nextHeading.index, counter + 2));
-        ret.push(<section key={counter} id={urlBuilder(data[prefHeading+1])}>{aSection}</section>);
+        ret.push(<section key={counter} id={urlBuilder(data[prefHeading + 1])}>{aSection}</section>);
 
         counter = nextHeading.index;
     }
@@ -155,11 +190,49 @@ function buildWhole(data) {
     return ret;
 }
 
+function getTagRef(data) {
+    var ret = [];
+    const tagCollection = Object.keys(paragraphType);
+    var maxTagLen = 0;
+    tagCollection.map((data) => {
+        if (maxTagLen < data.length) maxTagLen = data.length;
+    });
+    for (var x = 0; x < data.length; x++) {
+        if (data[x].length <= maxTagLen) {
+            for (var y = 0; y < tagCollection.length; y++) {
+                if (paragraphType[tagCollection[y]].name == data[x]) {
+                    var lenRet = 0;
+                    if (paragraphType[tagCollection[y]].dataCount == -1) {
+                        if (paragraphType[tagCollection[y]].name == paragraphType.code.name) {
+                            lenRet = (data[x + 1] * 2) + 1;
+                        }
+                        else {
+                            throw "error gak tahu kenapa....";
+                        }
+                    }
+                    else {
+                        lenRet = paragraphType[tagCollection[y]].dataCount;
+                    }
+                    ret.push({
+                        tag: paragraphType[tagCollection[y]].name,
+                        index: x,
+                        length: lenRet,
+                        element: buildIndividualSection(data, x).hasil
+                    });
+                }
+            }
+        }
+    }
+
+    return ret;
+}
 
 export default function PageBuilderFunction2(data) {
     const obj = {
         Hasil: buildWhole(data),
-        ScrollSpyContent: buildScrollSpy(data)
+        ScrollSpyContent: buildScrollSpy(data),
     };
     return obj;
 }
+
+export {getTagRef};

@@ -6,7 +6,7 @@ import { contentHorizontalPadding, db, urlBuilder, tutorialList } from '../const
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
-import PageBuilderFunction2 from '../myLib/pageBuilderFunction2';
+import PageBuilderFunction2, {getTagRef} from '../myLib/pageBuilderFunction2';
 
 
 async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
@@ -209,6 +209,7 @@ export default function PagePoster() {
   const [contents, setContents] = React.useState([]);
   const [contentResult, setContentResult] = React.useState([]);
   const addContents = (event) => {
+    var contentAdded = false;
     if (paragraphTypes == "p") {
       if (newParagraph != "") {
         var contain = contents;
@@ -216,7 +217,7 @@ export default function PagePoster() {
         contain.push(newParagraph);
         setContents(contain);
 
-        setContentResult(PageBuilderFunction2(contents).Hasil);
+        contentAdded = true;
       }
     }
     else if (paragraphTypes == "img") {
@@ -228,7 +229,7 @@ export default function PagePoster() {
         contain.push(newParagraph);
         setContents(contain);
 
-        setContentResult(PageBuilderFunction2(contents).Hasil);
+        contentAdded = true;
       }
     }
     else if(paragraphTypes == "code"){
@@ -241,7 +242,7 @@ export default function PagePoster() {
           contain.push(contentCodeContainer[x]);
         }
         setContents(contain);
-        setContentResult(PageBuilderFunction2(contents).Hasil);
+        contentAdded = true;
       }
     }
     else if (paragraphTypes == "h1" && newParagraph != "") {
@@ -249,31 +250,65 @@ export default function PagePoster() {
       contain.push("h1");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction2(contents).Hasil);
+      contentAdded = true;
     }
     else if (paragraphTypes == "h2" && newParagraph != "") {
       var contain = contents;
       contain.push("h2");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction2(contents).Hasil);
+      contentAdded = true;
     }
     else if (paragraphTypes == "h3" && newParagraph != "") {
       var contain = contents;
       contain.push("h3");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction2(contents).Hasil);
+      contentAdded = true;
     }
     else if (paragraphTypes == "h4" && newParagraph != "") {
       var contain = contents;
       contain.push("h4");
       contain.push(newParagraph);
       setContents(contain);
-      setContentResult(PageBuilderFunction2(contents).Hasil);
+      contentAdded = true;
+    }
+
+    if(contentAdded){
+      var contain = getTagRef(contents).map((tag) => {
+        return(
+          <Box>
+            <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
+              Hapus Paragraf
+            </Button>
+            {tag.element}
+          </Box>
+        );
+      });
+
+      setContentResult(contain);
     }
 
     discardContent();
+  }
+
+  const hapusParagraf = (start, range)=>{
+    var tempContent = contents;
+    tempContent.splice(start, range+1);
+    setContents(tempContent);
+
+    var contain = getTagRef(tempContent).map((tag) => {
+      return(
+        <Box>
+          <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
+            Hapus Paragraf
+          </Button>
+          {tag.element}
+        </Box>
+      );
+    });
+
+    setContentResult(contain);
   }
 
   const [successPosted, setSuccessPosted] = React.useState(false);
