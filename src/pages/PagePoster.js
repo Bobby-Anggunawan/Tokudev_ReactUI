@@ -208,6 +208,26 @@ export default function PagePoster() {
 
   const [contents, setContents] = React.useState([]);
   const [contentResult, setContentResult] = React.useState([]);
+
+  const buildContentPreview =(currentData)=>{
+    var contain = getTagRef(currentData).map((tag, idx, arr) => {
+      return(
+        <Box>
+          <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
+            Hapus Paragraf
+          </Button>
+          <Button onClick={()=> {pindahkanParagrafKeatas(tag.index, tag.length, arr[idx-1].index)}}>
+            Geser Keatas
+          </Button>
+          {tag.element}
+        </Box>
+      );
+    });
+    console.log(contain);
+
+    setContentResult(contain);
+  }
+
   const addContents = (event) => {
     var contentAdded = false;
     if (paragraphTypes == "p") {
@@ -275,18 +295,7 @@ export default function PagePoster() {
     }
 
     if(contentAdded){
-      var contain = getTagRef(contents).map((tag) => {
-        return(
-          <Box>
-            <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
-              Hapus Paragraf
-            </Button>
-            {tag.element}
-          </Box>
-        );
-      });
-
-      setContentResult(contain);
+      buildContentPreview(contain);
     }
 
     discardContent();
@@ -297,18 +306,28 @@ export default function PagePoster() {
     tempContent.splice(start, range+1);
     setContents(tempContent);
 
-    var contain = getTagRef(tempContent).map((tag) => {
-      return(
-        <Box>
-          <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
-            Hapus Paragraf
-          </Button>
-          {tag.element}
-        </Box>
-      );
-    });
+    buildContentPreview(tempContent);
+  }
 
-    setContentResult(contain);
+  const pindahkanParagrafKeatas = (start, range, prefTagIndex) =>{
+    const tempContent = contents;
+    const anParagraf = tempContent.splice(start, range+1);
+    tempContent.splice(prefTagIndex, 0, anParagraf);
+    
+    const tempContentFinal = [];
+    tempContent.map((next) => {
+      if(Array.isArray(next)){
+        for(var x=0; x<next.length; x++){
+          tempContentFinal.push(next[x]);
+        }
+      }
+      else{
+        tempContentFinal.push(next);
+      }
+    });
+    setContents(tempContentFinal);
+
+    buildContentPreview(tempContentFinal);
   }
 
   const [successPosted, setSuccessPosted] = React.useState(false);
@@ -346,6 +365,8 @@ export default function PagePoster() {
     setContentCodeContainer([]);
 
     setParagraphType("p");
+
+    buildContentPreview(contents);
   }
 
   return (
@@ -510,8 +531,16 @@ export default function PagePoster() {
       <Stack direction="row" spacing={2}>
         {paragraphTypes == "code" && <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
         <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
-        <Button variant="contained" color="error" onClick={discardContent}>Discard</Button>
+        <Button variant="contained" color="error" onClick={discardContent}>
+          Discard {"&"} Safe Refresh
+        </Button>
       </Stack>
+
+      <Alert severity="warning" sx={{marginTop: contentHorizontalPadding}}>
+        <Typography variant="string">
+        Lebih baik tekan tombol <Typography component={"span"} sx={{color:"error.dark"}}>"Safe Refresh"</Typography> tiap memindahkan elemen ke atas dan kebawah
+        </Typography>
+      </Alert>
 
       <Stack>
         {contentCodeContainer.length != 0 && <SyntaxHighlighter langList={contentLangContainer} code={contentCodeContainer}/>}
