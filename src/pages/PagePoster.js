@@ -6,7 +6,7 @@ import { contentHorizontalPadding, db, urlBuilder, tutorialList } from '../const
 import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
-import PageBuilderFunction2, {getTagRef} from '../myLib/pageBuilderFunction2';
+import PageBuilderFunction2, { getTagRef } from '../myLib/pageBuilderFunction2';
 
 
 async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
@@ -209,21 +209,21 @@ export default function PagePoster() {
   const [contents, setContents] = React.useState([]);
   const [contentResult, setContentResult] = React.useState([]);
 
-  const buildContentPreview =(currentData)=>{
+  const buildContentPreview = (currentData) => {
     var contain = getTagRef(currentData).map((tag, idx, arr) => {
-      return(
+      return (
         <Box>
-          <Button onClick={()=> {hapusParagraf(tag.index, tag.length)}}>
+          <Button onClick={() => { hapusParagraf(tag.index, tag.length) }}>
             Hapus Paragraf
           </Button>
-          <Button onClick={()=> {pindahkanParagrafKeatas(tag.index, tag.length, arr[idx-1].index)}}>
+          <Button onClick={() => { pindahkanParagrafKeatas(tag.index, tag.length, arr[idx - 1].index) }}>
             Geser Keatas
           </Button>
           {tag.element}
         </Box>
       );
     });
-    console.log(contain);
+    console.log(contents);
 
     setContentResult(contain);
   }
@@ -252,12 +252,12 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
-    else if(paragraphTypes == "code"){
-      if((contentCodeContainer.length != 0) && (contentLangContainer.length != 0) && (contentLangContainer.length == contentCodeContainer.length)){
+    else if (paragraphTypes == "code") {
+      if ((contentCodeContainer.length != 0) && (contentLangContainer.length != 0) && (contentLangContainer.length == contentCodeContainer.length)) {
         var contain = contents;
         contain.push("code");
         contain.push(contentCodeContainer.length);
-        for(var x =0; x< contentCodeContainer.length; x++){
+        for (var x = 0; x < contentCodeContainer.length; x++) {
           contain.push(contentLangContainer[x]);
           contain.push(contentCodeContainer[x]);
         }
@@ -265,7 +265,7 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
-    else if(paragraphTypes == "alertNote"){
+    else if (paragraphTypes == "alertNote") {
       if (newParagraph != "") {
         var contain = contents;
         contain.push("alertNote");
@@ -275,11 +275,39 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
-    else if(paragraphTypes == "alertError"){
+    else if (paragraphTypes == "alertError") {
       if (newParagraph != "") {
         var contain = contents;
         contain.push("alertError");
         contain.push(newParagraph);
+        setContents(contain);
+
+        contentAdded = true;
+      }
+    }
+    else if (paragraphTypes == "listOrdered") {
+      if (contentCodeContainer.length > 0) {
+        var contain = contents;
+        contain.push("listOrdered");
+        contain.push(contentCodeContainer.length);
+        contentCodeContainer.forEach((data) => {
+          contain.push(data);
+        });
+
+        setContents(contain);
+
+        contentAdded = true;
+      }
+    }
+    else if (paragraphTypes == "listUnordered") {
+      if (contentCodeContainer.length > 0) {
+        var contain = contents;
+        contain.push("listUnordered");
+        contain.push(contentCodeContainer.length);
+        contentCodeContainer.forEach((data) => {
+          contain.push(data);
+        });
+
         setContents(contain);
 
         contentAdded = true;
@@ -314,34 +342,34 @@ export default function PagePoster() {
       contentAdded = true;
     }
 
-    if(contentAdded){
+    if (contentAdded) {
       buildContentPreview(contain);
     }
 
     discardContent();
   }
 
-  const hapusParagraf = (start, range)=>{
+  const hapusParagraf = (start, range) => {
     var tempContent = contents;
-    tempContent.splice(start, range+1);
+    tempContent.splice(start, range + 1);
     setContents(tempContent);
 
     buildContentPreview(tempContent);
   }
 
-  const pindahkanParagrafKeatas = (start, range, prefTagIndex) =>{
+  const pindahkanParagrafKeatas = (start, range, prefTagIndex) => {
     const tempContent = contents;
-    const anParagraf = tempContent.splice(start, range+1);
+    const anParagraf = tempContent.splice(start, range + 1);
     tempContent.splice(prefTagIndex, 0, anParagraf);
-    
+
     const tempContentFinal = [];
     tempContent.map((next) => {
-      if(Array.isArray(next)){
-        for(var x=0; x<next.length; x++){
+      if (Array.isArray(next)) {
+        for (var x = 0; x < next.length; x++) {
           tempContentFinal.push(next[x]);
         }
       }
-      else{
+      else {
         tempContentFinal.push(next);
       }
     });
@@ -365,13 +393,21 @@ export default function PagePoster() {
   const [contentLangContainer, setContentLangContainer] = React.useState([]);
   const [contentCodeContainer, setContentCodeContainer] = React.useState([]);
   const addLandAndCode = () => {
-    const addDataLang = contentLangContainer;
-    addDataLang.push(contentLang);
-    setContentLangContainer(addDataLang);
+    if (paragraphTypes == "code") {
+      const addDataLang = contentLangContainer;
+      addDataLang.push(contentLang);
+      setContentLangContainer(addDataLang);
 
-    const addDataCode = contentCodeContainer;
-    addDataCode.push(newParagraph);
-    setContentCodeContainer(addDataCode);
+      const addDataCode = contentCodeContainer;
+      addDataCode.push(newParagraph);
+      setContentCodeContainer(addDataCode);
+    }
+
+    else if (paragraphTypes == "listOrdered" || paragraphTypes == "listUnordered") {
+      const addDataCode = contentCodeContainer;
+      addDataCode.push(newParagraph);
+      setContentCodeContainer(addDataCode);
+    }
 
     setNewParagraph("");
   }
@@ -492,6 +528,8 @@ export default function PagePoster() {
         <MenuItem value="img">IMG</MenuItem>
         <MenuItem value="alertNote">Alert Note</MenuItem>
         <MenuItem value="alertError">Alert Error</MenuItem>
+        <MenuItem value="listOrdered">List Ordered</MenuItem>
+        <MenuItem value="listUnordered">List UnOrdered</MenuItem>
         <MenuItem value="code">Code</MenuItem>
         <MenuItem value="h2">H2</MenuItem>
         <MenuItem value="h3">H3</MenuItem>
@@ -531,40 +569,61 @@ export default function PagePoster() {
         {
           paragraphTypes == "img" &&
 
-          <Box>
-            <TextField multiline
-              id="Alt"
-              label="Alt"
-              margin="normal"
-              fullWidth
-              onChange={addNewParagraph1} />
-            <TextField multiline
-              id="Caption"
-              label="Caption"
-              margin="normal"
-              fullWidth
-              onChange={addNewParagraph2} />
-          </Box>
+          <TextField multiline
+            id="Alt"
+            label="Alt"
+            margin="normal"
+            fullWidth
+            onChange={addNewParagraph1} />
+        }
+
+        {
+          paragraphTypes == "img" &&
+
+          <TextField multiline
+            id="Caption"
+            label="Caption"
+            margin="normal"
+            fullWidth
+            onChange={addNewParagraph2} />
         }
 
       </Box>
 
       <Stack direction="row" spacing={2}>
-        {paragraphTypes == "code" && <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
+        {(  paragraphTypes == "code" ||
+            paragraphTypes == "listOrdered" ||
+            paragraphTypes == "listUnordered") && <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
         <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
         <Button variant="contained" color="error" onClick={discardContent}>
           Discard {"&"} Safe Refresh
         </Button>
       </Stack>
 
-      <Alert severity="warning" sx={{marginTop: contentHorizontalPadding}}>
+      <Alert severity="warning" sx={{ marginTop: contentHorizontalPadding }}>
         <Typography variant="string">
-        Lebih baik tekan tombol <Typography component={"span"} sx={{color:"error.dark"}}>"Safe Refresh"</Typography> tiap memindahkan elemen ke atas dan kebawah
+          Lebih baik tekan tombol <Typography component={"span"} sx={{ color: "error.dark" }}>"Safe Refresh"</Typography> tiap memindahkan elemen ke atas dan kebawah
         </Typography>
       </Alert>
 
       <Stack>
-        {contentCodeContainer.length != 0 && <SyntaxHighlighter langList={contentLangContainer} code={contentCodeContainer}/>}
+        {(contentCodeContainer.length != 0 && paragraphTypes == "code") && <SyntaxHighlighter langList={contentLangContainer} code={contentCodeContainer} />}
+
+        {(contentCodeContainer.length != 0 && paragraphTypes == "listOrdered") &&
+          <ol>
+            {contentCodeContainer.map((listData, xIndex) => {
+              return <li key={xIndex}>{listData}</li>
+            })}
+          </ol>
+        }
+
+        {(contentCodeContainer.length != 0 && paragraphTypes == "listUnordered") &&
+          <ul>
+            {contentCodeContainer.map((listData, xIndex) => {
+              return <li key={xIndex}>{listData}</li>
+            })}
+          </ul>
+        }
       </Stack>
     </Box>
   )

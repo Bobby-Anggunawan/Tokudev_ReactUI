@@ -24,6 +24,8 @@ const paragraphType = {
     alertNote: new ParagraphType("alertNote", 1, ["isi"]),
     alertWarning: new ParagraphType("alertWarning", 1, ["isiTXT"]),
     alertError: new ParagraphType("alertError", 1, ["isiTXT"]),
+    listOrdered: new ParagraphType("listOrdered", -1, ["item1", "item2", "item3", "dst"]),
+    listUnordered: new ParagraphType("listUnordered", -1, ["item1", "item2", "item3", "dst"]),
 
     h1: new ParagraphType("h1", 1, ["judul"]),
     h2: new ParagraphType("h2", 1, ["judul"]),
@@ -80,6 +82,29 @@ function buildAlertError(isi) {
     );
 }
 
+function buildListComponent(items, isOrdered) {
+    if (isOrdered) {
+        return (
+            <ol>
+                {items.map((itemsData, x) => {
+                    return (
+                        <Typography component="li" key={`${x}${items[x]}`}>{itemsData}</Typography>
+                    );
+                })}
+            </ol>
+        );
+    }
+    return (
+        <ul>
+            {items.map((itemsData, x) => {
+                return (
+                    <Typography component="li" key={`${x}${items[x]}`}>{itemsData}</Typography>
+                );
+            })}
+        </ul>
+    );
+}
+
 function nextHeader(data, start = 0) {
     for (var x = start; x < data.length; x++) {
         if (data[x] == paragraphType.h2.name || data[x] == paragraphType.h3.name || data[x] == paragraphType.h4.name) {
@@ -106,6 +131,8 @@ function buildIndividualSection(data, start = 0) {
     var nextStart = start;
     PrismLoadLanguages();
     var isi;
+    var size;
+    var containItem = [];
     switch (data[start]) {
         case paragraphType.h1.name:
             isi = data[start + 1];
@@ -142,7 +169,7 @@ function buildIndividualSection(data, start = 0) {
             nextStart += paragraphType.img.dataCount + 1;
             break;
         case paragraphType.code.name:
-            const size = data[start + 1];
+            size = data[start + 1];
             var cnt = 1;
             const lang = [];
             const code = [];
@@ -165,6 +192,22 @@ function buildIndividualSection(data, start = 0) {
             isi = data[start + 1];
             ret = buildAlertError(isi);
             nextStart += paragraphType.alertError.dataCount + 1;
+            break;
+        case paragraphType.listOrdered.name:
+            size = data[start + 1];
+            for (var i = start + 2; i < start + 2 + size; i++) {
+                containItem.push(data[i]);
+            }
+            ret = buildListComponent(containItem, true);
+            nextStart += size + 2;
+            break;
+        case paragraphType.listUnordered.name:
+            size = data[start + 1];
+            for (var i = start + 2; i < start + 2 + size; i++) {
+                containItem.push(data[i]);
+            }
+            ret = buildListComponent(containItem, false);
+            nextStart += size + 2;
             break;
         default:
             throw `Tag "${data[start]}" tidak dikenali`;
@@ -242,8 +285,12 @@ function getTagRef(data) {
                         if (paragraphType[tagCollection[y]].name == paragraphType.code.name) {
                             lenRet = (data[x + 1] * 2) + 1;
                         }
+                        if (    paragraphType[tagCollection[y]].name == paragraphType.listOrdered.name ||
+                                paragraphType[tagCollection[y]].name == paragraphType.listUnordered.name) {
+                            lenRet = data[x + 1] + 1;
+                        }
                         else {
-                            throw "error gak tahu kenapa....";
+                            throw "lenRet belum dihitung. Kodenya belum diimplementasikan(mencari panjang data tag yangparagraphType.dataCount bernilai -1)";
                         }
                     }
                     else {
