@@ -1,4 +1,4 @@
-import { Box, Link, Typography } from "@mui/material";
+import { Alert, Box, Link, Typography } from "@mui/material";
 import React from 'react'
 import HeadingToku from "../component/heading";
 import ImageToku from "../component/image";
@@ -6,6 +6,8 @@ import SyntaxHighlighter from "../component/syntax_highlighter";
 import { PrismLoadLanguages } from "../component/syntax_highlighter";
 import { urlBuilder } from "../constant";
 import Prism from 'prismjs';
+import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import WarningIcon from '@mui/icons-material/Warning';
 
 class ParagraphType {
     constructor(name, dataCount, propMap) {
@@ -19,6 +21,9 @@ const paragraphType = {
     p: new ParagraphType("p", 1, ["isi"]),
     img: new ParagraphType("img", 3, ["caption", "alt", "src"]),
     code: new ParagraphType("code", -1, ["size", "selanjutnya=>", "bahasa", "code", "bahasa", "code", "dst"]),
+    alertNote: new ParagraphType("alertNote", 1, ["isi"]),
+    alertWarning: new ParagraphType("alertWarning", 1, ["isiTXT"]),
+    alertError: new ParagraphType("alertError", 1, ["isiTXT"]),
 
     h1: new ParagraphType("h1", 1, ["judul"]),
     h2: new ParagraphType("h2", 1, ["judul"]),
@@ -55,6 +60,26 @@ function buildCODE(lang, code, keyCounter) {
     );
 }
 
+function buildAlertNote(isi) {
+    return (
+        <Alert
+            icon={<LightbulbIcon />}
+            color="secondary">
+            {isi}
+        </Alert>
+    );
+}
+
+function buildAlertError(isi) {
+    return (
+        <Alert
+            icon={<WarningIcon />}
+            color="error">
+            {isi}
+        </Alert>
+    );
+}
+
 function nextHeader(data, start = 0) {
     for (var x = start; x < data.length; x++) {
         if (data[x] == paragraphType.h2.name || data[x] == paragraphType.h3.name || data[x] == paragraphType.h4.name) {
@@ -80,31 +105,32 @@ function buildIndividualSection(data, start = 0) {
     var ret = null;
     var nextStart = start;
     PrismLoadLanguages();
+    var isi;
     switch (data[start]) {
         case paragraphType.h1.name:
-            const judul1 = data[start + 1];
-            ret = <HeadingToku variant={1} title={judul1} key={start} />;
+            isi = data[start + 1];
+            ret = <HeadingToku variant={1} title={isi} key={start} />;
             nextStart += paragraphType.h1.dataCount + 1;
             break;
         case paragraphType.h2.name:
-            const judul2 = data[start + 1];
-            ret = <HeadingToku variant={2} title={judul1} key={start} />;
+            isi = data[start + 1];
+            ret = <HeadingToku variant={2} title={isi} key={start} />;
             nextStart += paragraphType.h2.dataCount + 1;
             break;
         case paragraphType.h3.name:
-            const judul3 = data[start + 1];
-            ret = <HeadingToku variant={3} title={judul1} key={start} />;
+            isi = data[start + 1];
+            ret = <HeadingToku variant={3} title={isi} key={start} />;
             nextStart += paragraphType.h3.dataCount + 1;
             break;
         case paragraphType.h4.name:
-            const judul4 = data[start + 1];
-            ret = <HeadingToku variant={4} title={judul1} key={start} />;
+            isi = data[start + 1];
+            ret = <HeadingToku variant={4} title={isi} key={start} />;
             nextStart += paragraphType.h4.dataCount + 1;
             break;
 
 
         case paragraphType.p.name:
-            const isi = data[start + 1];
+            isi = data[start + 1];
             ret = buildP(isi, start);
             nextStart += paragraphType.p.dataCount + 1;
             break;
@@ -129,6 +155,16 @@ function buildIndividualSection(data, start = 0) {
             }
             ret = buildCODE(lang, code, start)
             nextStart += size * 2 + 2;
+            break;
+        case paragraphType.alertNote.name:
+            isi = data[start + 1];
+            ret = buildAlertNote(isi);
+            nextStart += paragraphType.alertNote.dataCount + 1;
+            break;
+        case paragraphType.alertError.name:
+            isi = data[start + 1];
+            ret = buildAlertError(isi);
+            nextStart += paragraphType.alertError.dataCount + 1;
             break;
         default:
             throw `Tag "${data[start]}" tidak dikenali`;
@@ -235,4 +271,4 @@ export default function PageBuilderFunction2(data) {
     return obj;
 }
 
-export {getTagRef};
+export { getTagRef };

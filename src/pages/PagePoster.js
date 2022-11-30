@@ -265,6 +265,26 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
+    else if(paragraphTypes == "alertNote"){
+      if (newParagraph != "") {
+        var contain = contents;
+        contain.push("alertNote");
+        contain.push(newParagraph);
+        setContents(contain);
+
+        contentAdded = true;
+      }
+    }
+    else if(paragraphTypes == "alertError"){
+      if (newParagraph != "") {
+        var contain = contents;
+        contain.push("alertError");
+        contain.push(newParagraph);
+        setContents(contain);
+
+        contentAdded = true;
+      }
+    }
     else if (paragraphTypes == "h1" && newParagraph != "") {
       var contain = contents;
       contain.push("h1");
@@ -470,8 +490,9 @@ export default function PagePoster() {
 
         <MenuItem value="p">P</MenuItem>
         <MenuItem value="img">IMG</MenuItem>
+        <MenuItem value="alertNote">Alert Note</MenuItem>
+        <MenuItem value="alertError">Alert Error</MenuItem>
         <MenuItem value="code">Code</MenuItem>
-        <MenuItem value="h1">H1</MenuItem>
         <MenuItem value="h2">H2</MenuItem>
         <MenuItem value="h3">H3</MenuItem>
         <MenuItem value="h4">H4</MenuItem>
