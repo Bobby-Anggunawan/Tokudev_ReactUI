@@ -28,7 +28,6 @@ function AppBarToku(props) {
   const handleChange = (event) => {
     setChecked(event.target.checked);
     colorMode.toggleColorMode();
-
     if (event.target.checked) localStorage['DarkModeValue'] = 'light';
     else localStorage['DarkModeValue'] = 'dark';
   };

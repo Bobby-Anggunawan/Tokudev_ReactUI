@@ -313,6 +313,24 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
+    else if (paragraphTypes == "table") {
+      if (contentCodeContainer.length > 0) {
+        var contain = contents;
+        contain.push("table");
+        contain.push(contentCodeContainer[0].length);
+        contain.push(contentCodeContainer.length);
+        contain.push(newParagraph1);
+        contentCodeContainer.forEach((data) => {
+          data.forEach((finalData) => {
+            contain.push(finalData);
+          })
+        });
+
+        setContents(contain);
+
+        contentAdded = true;
+      }
+    }
     else if (paragraphTypes == "h1" && newParagraph != "") {
       var contain = contents;
       contain.push("h1");
@@ -406,6 +424,12 @@ export default function PagePoster() {
     else if (paragraphTypes == "listOrdered" || paragraphTypes == "listUnordered") {
       const addDataCode = contentCodeContainer;
       addDataCode.push(newParagraph);
+      setContentCodeContainer(addDataCode);
+    }
+
+    else if (paragraphTypes == "table") {
+      const addDataCode = contentCodeContainer;
+      addDataCode.push(newParagraph.split("\n"));
       setContentCodeContainer(addDataCode);
     }
 
@@ -530,6 +554,7 @@ export default function PagePoster() {
         <MenuItem value="alertError">Alert Error</MenuItem>
         <MenuItem value="listOrdered">List Ordered</MenuItem>
         <MenuItem value="listUnordered">List UnOrdered</MenuItem>
+        <MenuItem value="table">Table</MenuItem>
         <MenuItem value="code">Code</MenuItem>
         <MenuItem value="h2">H2</MenuItem>
         <MenuItem value="h3">H3</MenuItem>
@@ -560,14 +585,14 @@ export default function PagePoster() {
 
         <TextField multiline
           id="newParagraph"
-          label={paragraphTypes == "img" && "Src" || "New Paragraph"}
+          label={paragraphTypes == "img" && "Src" || paragraphTypes == "table" && "Data (tekan enter untuk tiap kolom)" || "New Paragraph"}
           margin="normal"
           fullWidth
           onChange={addNewParagraph}
           value={newParagraph} />
 
         {
-          paragraphTypes == "img" &&
+          (paragraphTypes == "img" || paragraphTypes == "table") &&
 
           <TextField multiline
             id="Alt"
@@ -591,9 +616,13 @@ export default function PagePoster() {
       </Box>
 
       <Stack direction="row" spacing={2}>
-        {(  paragraphTypes == "code" ||
-            paragraphTypes == "listOrdered" ||
-            paragraphTypes == "listUnordered") && <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
+        {(paragraphTypes == "code" ||
+          paragraphTypes == "listOrdered" ||
+          paragraphTypes == "listUnordered" ||
+          paragraphTypes == "table") &&
+
+          <Button variant="outlined" onClick={addLandAndCode}>Contain</Button>}
+
         <Button variant="outlined" onClick={addContents}>Add Paragraph</Button>
         <Button variant="contained" color="error" onClick={discardContent}>
           Discard {"&"} Safe Refresh
@@ -623,6 +652,26 @@ export default function PagePoster() {
               return <li key={xIndex}>{listData}</li>
             })}
           </ul>
+        }
+
+        {(contentCodeContainer.length != 0 && paragraphTypes == "table") &&
+          <table>
+            <tbody>
+              {contentCodeContainer.map((listData, xIndex) => {
+                return (
+                  <tr key={`tr${xIndex}`}>
+                    {
+                      listData.map((listDataFinal, yIndex) => {
+                        return (
+                          <td key={`td${yIndex}`}>{listDataFinal}</td>
+                        );
+                      })
+                    }
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         }
       </Stack>
     </Box>

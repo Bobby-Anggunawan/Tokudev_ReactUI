@@ -1,4 +1,5 @@
-import { Alert, Box, Link, Typography } from "@mui/material";
+import { Alert, Box, Link, Paper, Tab, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { tableCellClasses } from '@mui/material/TableCell';
 import React from 'react'
 import HeadingToku from "../component/heading";
 import ImageToku from "../component/image";
@@ -8,6 +9,7 @@ import { urlBuilder } from "../constant";
 import Prism from 'prismjs';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import WarningIcon from '@mui/icons-material/Warning';
+import { styled } from '@mui/material/styles';
 
 class ParagraphType {
     constructor(name, dataCount, propMap) {
@@ -22,10 +24,10 @@ const paragraphType = {
     img: new ParagraphType("img", 3, ["caption", "alt", "src"]),
     code: new ParagraphType("code", -1, ["size", "selanjutnya=>", "bahasa", "code", "bahasa", "code", "dst"]),
     alertNote: new ParagraphType("alertNote", 1, ["isi"]),
-    alertWarning: new ParagraphType("alertWarning", 1, ["isiTXT"]),
     alertError: new ParagraphType("alertError", 1, ["isiTXT"]),
     listOrdered: new ParagraphType("listOrdered", -1, ["item1", "item2", "item3", "dst"]),
     listUnordered: new ParagraphType("listUnordered", -1, ["item1", "item2", "item3", "dst"]),
+    table: new ParagraphType("table", -1, ["jumlahKolom", "jumlah baris", "element1", "element2", "element3", "dst"]),
 
     h1: new ParagraphType("h1", 1, ["judul"]),
     h2: new ParagraphType("h2", 1, ["judul"]),
@@ -105,6 +107,88 @@ function buildListComponent(items, isOrdered) {
     );
 }
 
+function buildTable(baris, kolom, caption, data) {
+
+    //=====================================================
+    const StyledTableCell = styled(TableCell)(({ theme }) => ({
+        [`&.${tableCellClasses.head}`]: {
+            backgroundColor: theme.palette.common.black,
+            color: theme.palette.common.white,
+        },
+        [`&.${tableCellClasses.body}`]: {
+            fontSize: 14,
+        },
+    }));
+
+    const StyledTableRow = styled(TableRow)(({ theme }) => ({
+        '&:nth-of-type(odd)': {
+            backgroundColor: theme.palette.action.hover,
+        },
+        // hide last border
+        '&:last-child td, &:last-child th': {
+            border: 0,
+        },
+    }));
+    //=====================================================
+
+    const tableHeads = [];
+    const tableBodys = [];
+    var contain = [];
+    var counter = 0;
+    for (var x = 0; x < kolom; x++) {
+        for (var y = 0; y < baris; y++) {
+            if (x == 0) {
+                tableHeads.push(data[counter]);
+            }
+            else {
+                contain.push(data[counter]);
+                if (contain.length == baris) {
+                    tableBodys.push(contain);
+                    contain = [];
+                }
+            }
+            counter++;
+        }
+    }
+    console.log(tableHeads);
+    console.log(tableBodys);
+
+
+    return (
+        <TableContainer component={Paper}>
+            <Table>
+                <caption>{caption}</caption>
+                <TableHead>
+                    <StyledTableRow>
+                        {
+                            tableHeads.map((data, x) => {
+                                return (
+                                    <StyledTableCell key={`th${x}${data}`}>{data}</StyledTableCell>
+                                );
+                            })
+                        }
+                    </StyledTableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        tableBodys.map((data, x) => {
+                            return (
+                                <StyledTableRow key={`tr${x}${data[0]}`}>
+                                    {data.map((dataa, y) => {
+                                        return (
+                                            <StyledTableCell key={`tc${y}${dataa}`}>{dataa}</StyledTableCell>
+                                        );
+                                    })}
+                                </StyledTableRow>
+                            );
+                        })
+                    }
+                </TableBody>
+            </Table>
+        </TableContainer>
+    );
+}
+
 function nextHeader(data, start = 0) {
     for (var x = start; x < data.length; x++) {
         if (data[x] == paragraphType.h2.name || data[x] == paragraphType.h3.name || data[x] == paragraphType.h4.name) {
@@ -123,6 +207,7 @@ function nextHeader(data, start = 0) {
         index: data.length,
         level: 100
     };
+    console.log(obj2);
     return obj2;
 }
 
@@ -209,6 +294,14 @@ function buildIndividualSection(data, start = 0) {
             ret = buildListComponent(containItem, false);
             nextStart += size + 2;
             break;
+        case paragraphType.table.name:
+            size = data[start + 1] * data[start + 2];
+            for (var x = start+4; x < start+size + 4; x++) {
+                containItem.push(data[x]);
+            }
+            ret = buildTable(data[start + 1], data[start + 2], data[start + 3], containItem);
+            nextStart += size + 1 + 3;
+            break;
         default:
             throw `Tag "${data[start]}" tidak dikenali`;
     }
@@ -255,7 +348,8 @@ function buildWhole(data) {
         counter = nextHeading.index;
     }
 
-    while (counter < data.length) {
+    while (counter <= data.length) {
+        console.log(counter);
         var aSection = [];
         aSection.push(<HeadingToku variant={nextHeading.level} title={data[counter + 1]} key={counter} />);
         const prefHeading = nextHeading.index;
@@ -285,9 +379,12 @@ function getTagRef(data) {
                         if (paragraphType[tagCollection[y]].name == paragraphType.code.name) {
                             lenRet = (data[x + 1] * 2) + 1;
                         }
-                        if (    paragraphType[tagCollection[y]].name == paragraphType.listOrdered.name ||
-                                paragraphType[tagCollection[y]].name == paragraphType.listUnordered.name) {
+                        else if (paragraphType[tagCollection[y]].name == paragraphType.listOrdered.name ||
+                            paragraphType[tagCollection[y]].name == paragraphType.listUnordered.name) {
                             lenRet = data[x + 1] + 1;
+                        }
+                        else if (paragraphType[tagCollection[y]].name == paragraphType.table.name) {
+                            lenRet = data[x + 1] * data[x + 2] + 3;
                         }
                         else {
                             throw "lenRet belum dihitung. Kodenya belum diimplementasikan(mencari panjang data tag yangparagraphType.dataCount bernilai -1)";
@@ -307,6 +404,8 @@ function getTagRef(data) {
         }
     }
 
+    console.log(ret);
+
     return ret;
 }
 
@@ -316,6 +415,13 @@ export default function PageBuilderFunction2(data) {
         ScrollSpyContent: buildScrollSpy(data),
     };
     return obj;
+}
+
+function test() {
+    var bbhbhaA = ["table", 3, 4, "API documentation for the React TableFooter component. Learn about the available props and the CSS API.", "h-1", "h-2", "h-3", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"];
+
+    var bbhbhaA2 = ["p", "ini p", "p", "ini juga p"];
+    return PageBuilderFunction2(bbhbhaA).Hasil;
 }
 
 export { getTagRef };
