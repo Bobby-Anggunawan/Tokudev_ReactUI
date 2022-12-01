@@ -206,6 +206,11 @@ export default function PagePoster() {
     setNewParagraph2(event.target.value);
   };
 
+  const [newParagraphNum, setNewParagraphNum] = React.useState(0);
+  const addNewParagraphNum = (event) => {
+    setNewParagraphNum(event.target.value);
+  };
+
   const [contents, setContents] = React.useState([]);
   const [contentResult, setContentResult] = React.useState([]);
 
@@ -330,6 +335,18 @@ export default function PagePoster() {
 
         contentAdded = true;
       }
+    }
+    else if(paragraphTypes == "wikiHowStep"){
+      var contain = contents;
+      contain.push("wikiHowStep");
+      contain.push(newParagraphNum);
+      contain.push(newParagraph);
+      contain.push(newParagraph1);
+      contain.push(newParagraph2);
+
+      setContents(contain);
+
+      contentAdded = true;
     }
     else if (paragraphTypes == "h1" && newParagraph != "") {
       var contain = contents;
@@ -552,6 +569,7 @@ export default function PagePoster() {
         <MenuItem value="img">IMG</MenuItem>
         <MenuItem value="alertNote">Alert Note</MenuItem>
         <MenuItem value="alertError">Alert Error</MenuItem>
+        <MenuItem value="wikiHowStep">WikiHow Step</MenuItem>
         <MenuItem value="listOrdered">List Ordered</MenuItem>
         <MenuItem value="listUnordered">List UnOrdered</MenuItem>
         <MenuItem value="table">Table</MenuItem>
@@ -583,31 +601,42 @@ export default function PagePoster() {
           </Box>
         }
 
+        {
+          paragraphTypes == "wikiHowStep" && 
+          <TextField
+            inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
+            fullWidth
+            label="Nomor"
+            margin="normal"
+            onChange={addNewParagraphNum}
+            value={newParagraphNum}/>
+        }
+
         <TextField multiline
           id="newParagraph"
-          label={paragraphTypes == "img" && "Src" || paragraphTypes == "table" && "Data (tekan enter untuk tiap kolom)" || "New Paragraph"}
+          label={paragraphTypes == "img" && "Src" || paragraphTypes == "table" && "Data (tekan enter untuk tiap kolom)" || paragraphTypes == "wikiHowStep" && "Judul" || "New Paragraph"}
           margin="normal"
           fullWidth
           onChange={addNewParagraph}
           value={newParagraph} />
 
         {
-          (paragraphTypes == "img" || paragraphTypes == "table") &&
+          (paragraphTypes == "img" || paragraphTypes == "table" || paragraphTypes == "wikiHowStep") &&
 
           <TextField multiline
             id="Alt"
-            label="Alt"
+            label= {paragraphTypes == "img" && "Alt" || paragraphTypes == "table" && "Caption" || "Url Gambar" }
             margin="normal"
             fullWidth
             onChange={addNewParagraph1} />
         }
 
         {
-          paragraphTypes == "img" &&
+          (paragraphTypes == "img" || paragraphTypes == "wikiHowStep") &&
 
           <TextField multiline
             id="Caption"
-            label="Caption"
+            label={paragraphTypes == "img" && "Caption" || "Isi Step"}
             margin="normal"
             fullWidth
             onChange={addNewParagraph2} />

@@ -5,7 +5,7 @@ import HeadingToku from "../component/heading";
 import ImageToku from "../component/image";
 import SyntaxHighlighter from "../component/syntax_highlighter";
 import { PrismLoadLanguages } from "../component/syntax_highlighter";
-import { urlBuilder } from "../constant";
+import { urlBuilder, contentHorizontalPadding } from "../constant";
 import Prism from 'prismjs';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import WarningIcon from '@mui/icons-material/Warning';
@@ -27,7 +27,8 @@ const paragraphType = {
     alertError: new ParagraphType("alertError", 1, ["isiTXT"]),
     listOrdered: new ParagraphType("listOrdered", -1, ["item1", "item2", "item3", "dst"]),
     listUnordered: new ParagraphType("listUnordered", -1, ["item1", "item2", "item3", "dst"]),
-    table: new ParagraphType("table", -1, ["jumlahKolom", "jumlah baris", "element1", "element2", "element3", "dst"]),
+    table: new ParagraphType("table", -1, ["jumlahKolom", "jumlah baris", "caption", "element1", "element2", "element3", "dst"]),
+    wikiHowStep: new ParagraphType("wikiHowStep", 4, ["step number", "step title", "step illustration", "step content"]),
 
     h1: new ParagraphType("h1", 1, ["judul"]),
     h2: new ParagraphType("h2", 1, ["judul"]),
@@ -189,6 +190,24 @@ function buildTable(baris, kolom, caption, data) {
     );
 }
 
+function buildWikiHowStep(number, title, illustration, content) {
+    return (
+        <Paper
+            elevation={3}>
+            <Box
+                src={illustration}
+                alt={title}
+                component="img"
+                width="100%" />
+            <Typography paragraph paddingX={contentHorizontalPadding} paddingY={"1em"}>
+                <Typography component="span" sx={{ fontSize: "2em", float: "left", marginRight: "0.5em", fontWeight: 900 }}>{number}</Typography>
+                <strong>{title} </strong>
+                {content}
+            </Typography>
+        </Paper>
+    );
+}
+
 function nextHeader(data, start = 0) {
     for (var x = start; x < data.length; x++) {
         if (data[x] == paragraphType.h2.name || data[x] == paragraphType.h3.name || data[x] == paragraphType.h4.name) {
@@ -296,11 +315,15 @@ function buildIndividualSection(data, start = 0) {
             break;
         case paragraphType.table.name:
             size = data[start + 1] * data[start + 2];
-            for (var x = start+4; x < start+size + 4; x++) {
+            for (var x = start + 4; x < start + size + 4; x++) {
                 containItem.push(data[x]);
             }
             ret = buildTable(data[start + 1], data[start + 2], data[start + 3], containItem);
             nextStart += size + 1 + 3;
+            break;
+        case paragraphType.wikiHowStep.name:
+            ret = buildWikiHowStep(data[start + 1], data[start + 2], data[start + 3], data[start + 4]);
+            nextStart += paragraphType.wikiHowStep.dataCount + 1;
             break;
         default:
             throw `Tag "${data[start]}" tidak dikenali`;
@@ -417,11 +440,9 @@ export default function PageBuilderFunction2(data) {
     return obj;
 }
 
-function test() {
-    var bbhbhaA = ["table", 3, 4, "API documentation for the React TableFooter component. Learn about the available props and the CSS API.", "h-1", "h-2", "h-3", "b1", "b2", "b3", "b4", "b5", "b6", "b7", "b8", "b9"];
-
-    var bbhbhaA2 = ["p", "ini p", "p", "ini juga p"];
-    return PageBuilderFunction2(bbhbhaA).Hasil;
+function Test() {
+    const content = "Ikan adalah anggota vertebrata poikilotermik (berdarah dingin)[1] yang hidup di air dan bernapas dengan insang. Ikan merupakan kelompok vertebrata yang paling beraneka ragam dengan jumlah spesies lebih dari 27,000 di seluruh dunia. Secara taksonomi, ikan tergolong kelompok paraphyletic yang hubungan kekerabatannya masih diperdebatkan; biasanya ikan dibagi menjadi ikan tanpa rahang (kelas Agnatha, 75 spesies termasuk lamprey dan ikan hag), ikan bertulang rawan (kelas Chondrichthyes, 800 spesies termasuk hiu dan pari), dan sisanya tergolong ikan bertulang keras (kelas Osteichthyes). Ikan dalam berbagai bahasa daerah disebut iwak (jv, bjn), jukut (vkt).";
+    return buildWikiHowStep(2, "Judul step", "https://upload.wikimedia.org/wikipedia/commons/7/73/Guppy-male.jpg", content);
 }
 
-export { getTagRef };
+export { getTagRef, Test };
