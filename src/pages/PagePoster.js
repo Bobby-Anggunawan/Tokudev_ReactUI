@@ -1,4 +1,4 @@
-import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid, Alert, formLabelClasses, Autocomplete } from '@mui/material'
+import { Box, Button, MenuItem, Stack, TextField, Toolbar, Card, Typography, Grid, Alert, formLabelClasses, Autocomplete, AlertTitle } from '@mui/material'
 import React from 'react'
 import AppBarToku from '../component/general/app_bar'
 import FooterToku from '../component/general/footer'
@@ -7,7 +7,6 @@ import PageBuilderFunction from '../myLib/pageBuilderFunction';
 import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } from "firebase/firestore";
 import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
 import PageBuilderFunction2, { getTagRef } from '../myLib/pageBuilderFunction2';
-
 
 async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
   const docData = {
@@ -140,6 +139,46 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
       });
     }
   }
+}
+
+
+
+function PTagList() {
+  const citasi = `<sup data-reftitle="x" data-link="x" class="citation"><a>[x]</a></sup>`;
+
+  const code = `<code class="inlineCode">x</code>`;
+
+  const listTag = [
+    citasi,
+    code
+  ];
+
+  return (
+    <Alert severity="info">
+      <AlertTitle>List tag penting untuk diletak di P</AlertTitle>
+      <ul>
+        {listTag.map((data) => {
+          return (
+            <li>
+              {data}
+            </li>
+          );
+        })}
+      </ul>
+      <AlertTitle>Kalo masukin kode html ke dalam tag {"<code/>"} ingat gunakan karakter escape berikut:</AlertTitle>
+      <ul>
+        <li>
+          {"& : &amp;"}
+        </li>
+        <li>
+          {"< : &lt;"}
+        </li>
+        <li>
+          {"> : &gt;"}
+        </li>
+      </ul>
+    </Alert>
+  );
 }
 
 
@@ -336,7 +375,7 @@ export default function PagePoster() {
         contentAdded = true;
       }
     }
-    else if(paragraphTypes == "wikiHowStep"){
+    else if (paragraphTypes == "wikiHowStep") {
       var contain = contents;
       contain.push("wikiHowStep");
       contain.push(newParagraphNum);
@@ -557,6 +596,8 @@ export default function PagePoster() {
         </Box>
       </Box>
 
+      {paragraphTypes == "p" && <PTagList />}
+
       <TextField id="paragraphType"
         select
         label="Paragraph Type"
@@ -602,14 +643,14 @@ export default function PagePoster() {
         }
 
         {
-          paragraphTypes == "wikiHowStep" && 
+          paragraphTypes == "wikiHowStep" &&
           <TextField
             inputProps={{ inputMode: 'numeric', pattern: '[0-9]*' }}
             fullWidth
             label="Nomor"
             margin="normal"
             onChange={addNewParagraphNum}
-            value={newParagraphNum}/>
+            value={newParagraphNum} />
         }
 
         <TextField multiline
@@ -625,7 +666,7 @@ export default function PagePoster() {
 
           <TextField multiline
             id="Alt"
-            label= {paragraphTypes == "img" && "Alt" || paragraphTypes == "table" && "Caption" || "Url Gambar" }
+            label={paragraphTypes == "img" && "Alt" || paragraphTypes == "table" && "Caption" || "Url Gambar"}
             margin="normal"
             fullWidth
             onChange={addNewParagraph1} />

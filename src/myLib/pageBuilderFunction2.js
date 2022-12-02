@@ -42,7 +42,15 @@ function buildP(isi, keyCounter) {
             paragraph
             align="justify"
             key={keyCounter}
-            dangerouslySetInnerHTML={{ __html: isi }} />
+            dangerouslySetInnerHTML={{ __html: isi }}
+            sx={{
+                ".inlineCode": {
+                    backgroundColor: "primary.light",
+                    borderRadius: "0.3em",
+                    color: "primary.contrastText",
+                    paddingX: "0.2em"
+                }
+            }}/>
     );
 }
 
@@ -224,7 +232,7 @@ function nextHeader(data, start = 0) {
     }
     var obj2 = {
         index: data.length,
-        level: 100
+        level: 1000
     };
     console.log(obj2);
     return obj2;
@@ -371,14 +379,22 @@ function buildWhole(data) {
         counter = nextHeading.index;
     }
 
-    while (counter <= data.length) {
+    while (counter < data.length) {
         console.log(counter);
         var aSection = [];
         aSection.push(<HeadingToku variant={nextHeading.level} title={data[counter + 1]} key={counter} />);
         const prefHeading = nextHeading.index;
         nextHeading = nextHeader(data, counter + 1);
         aSection = aSection.concat(buildSection(data, nextHeading.index, counter + 2));
-        ret.push(<section key={counter} id={urlBuilder(data[prefHeading + 1])}>{aSection}</section>);
+
+        try{
+            ret.push(<section key={counter} id={urlBuilder(data[prefHeading + 1])}>{aSection}</section>);
+        }
+        catch(e){
+            console.log(`${nextHeading.index} - ${data.length} ERROR ${e}`);
+            console.log(aSection);
+            break;
+        }
 
         counter = nextHeading.index;
     }

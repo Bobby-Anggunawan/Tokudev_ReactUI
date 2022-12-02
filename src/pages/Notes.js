@@ -5,7 +5,7 @@ import {Test} from '../myLib/pageBuilderFunction2'
 export default function Notes() {
 
   return (
-    <Box sx={{ minHeight: "100vh" }}>
+    <Box sx={{ minHeight: "100vh"}}>
       <p>TEST</p>
       <Test/>
     </Box>
