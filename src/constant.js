@@ -161,11 +161,9 @@ function getTagProps(data, targetProp) {
       //kalo masuk ke string, keluar(cari end stringnya)
       var apaMasukString = false;
       if(dataArr[y] == "'" || dataArr[y] == '"'){
-        console.log(`masuk string di ${y}`);
         while(true){
           y++;
           if(dataArr[y] == "'" || dataArr[y] == '"'){
-            console.log(`keluar string di ${y}`);
             y++;
             x = y;
             apaMasukString= true;

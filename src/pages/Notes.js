@@ -13,7 +13,8 @@ export default function Notes() {
   ini yang keempat dam data baru <sup data-ref-title="JavaScript Class Reference" data-link="https://www.w3schools.com/jsref/jsref_classes.asp" class="citation">[xCitNum]</sup>
   ini yang kelima data yang keempat <sup data-ref-title="JavaScript Class Reference" data-link="https://www.w3schools.com/jsref/jsref_classes.asp" class="citation">[xCitNum]</sup>`
 
-  const hasil = refBuilder(test)
+  
+  const hasil = refBuilder(test, ["Mozilla Array.prototype.map()", "JavaScript Class Reference"], ["https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map", "https://www.w3schools.com/jsref/jsref_classes.asp"])
 
   return (
     <Box sx={{ minHeight: "100vh" }}>
@@ -26,6 +27,8 @@ export default function Notes() {
           );
         })
       }
+
+      <p>{hasil.processedData}</p>
     </Box>
   )
 }

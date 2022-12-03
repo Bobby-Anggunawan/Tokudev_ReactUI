@@ -144,7 +144,7 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
 
 
 function PTagList() {
-  const citasi = `<sup data-reftitle="x" data-link="x" class="citation"><a>[x]</a></sup>`;
+  const citasi = `<sup data-ref-title="xTITLE" data-link="xLINK" class="citation">[xCitNum]</sup>`;
 
   const code = `<code class="inlineCode">x</code>`;
 

@@ -6,7 +6,7 @@ import HeadingToku from '../component/heading';
 import ImageToku from '../component/image';
 import PostHeaderToku from '../component/post_header';
 import Box from '@mui/material/Box';
-import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString, tutorialList } from '../constant';
+import { tableOfContentsWidth, muiToolbarHeight, contentHorizontalPadding, contentVerticalPadding, borderRadius, db, ConvertDateToString, tutorialList, urlBuilder } from '../constant';
 import Link from '@mui/material/Link';
 import ScrollSpy from 'react-scrollspy-navigation';
 import PageBuilderFunction2 from './pageBuilderFunction2';
@@ -96,6 +96,29 @@ function PageBuilder(props) {
                         {subtitle}
                     </Alert>
                     {hasil}
+
+                    {
+                        pageResult.citasi.title.length > 0 &&
+
+                        <Box component="section">
+                            <HeadingToku variant={2} title="Reference" />
+                            <ol>
+                                {
+                                    pageResult.citasi.title.map((citeData, citeIndex) => {
+                                        const refIndex = pageResult.citasi.title.indexOf(citeData) + 1;
+                                        return (
+                                            <Typography component="li" id={`reference_${refIndex}_${urlBuilder(citeData)}`}>
+                                                {
+                                                    pageResult.citasi.link[citeIndex] == null && citeData || <a href={pageResult.citasi.link[citeIndex]}>{citeData}</a>
+                                                }
+                                            </Typography>
+                                        );
+                                    })
+                                }
+                            </ol>
+                        </Box>
+                    }
+
                 </Box>
 
 

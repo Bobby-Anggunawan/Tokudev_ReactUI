@@ -10,6 +10,7 @@ import Prism from 'prismjs';
 import LightbulbIcon from '@mui/icons-material/Lightbulb';
 import WarningIcon from '@mui/icons-material/Warning';
 import { styled } from '@mui/material/styles';
+import refBuilder from "./refBuilder";
 
 class ParagraphType {
     constructor(name, dataCount, propMap) {
@@ -402,6 +403,7 @@ function buildWhole(data) {
     return ret;
 }
 
+//untuk buat tombol hapus atau pindahkan paragraf di page builder
 function getTagRef(data) {
     var ret = [];
     const tagCollection = Object.keys(paragraphType);
@@ -449,9 +451,30 @@ function getTagRef(data) {
 }
 
 export default function PageBuilderFunction2(data) {
+
+    //ubah semua tag referensi di data
+    var refTitle = [];
+    var refLink = [];
+    const arrPT = Object.keys(paragraphType);
+    const formatedData = data.map((aData, anX, anArr) => {
+        if((anArr[anX-1] === "p") && ((arrPT.indexOf(anArr[anX+1]) != -1) || (anX+1 === data.length))){
+            const hasilProsesTag = refBuilder(anArr[anX], refTitle, refLink);
+            refTitle = hasilProsesTag.judul;
+            refLink = hasilProsesTag.link;
+            return hasilProsesTag.processedData;
+        }
+        return aData;
+    });
+
+    console.log(refTitle);
+
     const obj = {
-        Hasil: buildWhole(data),
-        ScrollSpyContent: buildScrollSpy(data),
+        Hasil: buildWhole(formatedData),
+        ScrollSpyContent: buildScrollSpy(formatedData),
+        citasi: {
+            title: refTitle,
+            link: refLink
+        }
     };
     return obj;
 }
