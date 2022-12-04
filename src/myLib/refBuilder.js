@@ -3,7 +3,7 @@ import { getTagList, getTagProps, urlBuilder } from "../constant";
 //param
 //data: html string yang ingin diperiksa
 //format tag citasi adalah seperti ini:
-//<sup data-ref-title="<xTITLE>" data-link="<xLINK>" class="citation">[xCitNum]</sup>
+//<sup data-ref-title="xTITLE" data-link="xLINK" class="citation">[xCitNum]</sup>
 export default function refBuilder(data, judul = [], link = []) {
     const listSup = getTagList(data, "sup");
 

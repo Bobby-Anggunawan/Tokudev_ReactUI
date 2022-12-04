@@ -40,7 +40,14 @@ function HeadingToku(props) {
                 </MyHeading>:
 
                 /*untuk render h1 */
-                <Typography component="h1" variant="h2" noWrap sx={{fontWeight: "normal"}}>{props.title}</Typography>
+                <Typography component="h1"
+                    variant="h2"
+                    noWrap
+                    sx={{fontWeight: "normal"}}
+                    itemprop="headline"
+                >
+                    {props.title}
+                </Typography>
             }
         </React.Fragment>
     );

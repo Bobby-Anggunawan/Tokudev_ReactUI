@@ -12,8 +12,7 @@ function TabPanel(props) {
     <Box
       role="tabpanel"
       hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      sx={{backgroundColor: "#302c2c"}}
+      itemscope itemtype="https://schema.org/SoftwareSourceCode"
     >
       {children}
     </Box>
@@ -70,11 +69,18 @@ function SyntaxHighlighter(props) {
       {
         props.code.map((data, x) => {
           return (
-            <TabPanel value={value} index={x} key={x}>
-              <pre className="line-numbers">
-                <code className={`language-${props.langList[x]}`} dangerouslySetInnerHTML={{ __html: data }}>
+            <TabPanel value={value}
+              index={x}
+              key={x}
+            >
+              <Box className="line-numbers" sx={{backgroundColor: "#302c2c"}} component="pre">
+                <code className={`language-${props.langList[x]}`}
+                  dangerouslySetInnerHTML={{ __html: data }}>
                 </code>
-              </pre>
+              </Box>
+              <span itemprop="codeSampleType">code snippet</span>
+              {" - "}
+              <span itemprop="programmingLanguage">{props.langList[x]}</span>
             </TabPanel>
           );
         })

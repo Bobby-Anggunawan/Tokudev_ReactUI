@@ -87,7 +87,7 @@ function PageBuilder(props) {
     }
 
     return (
-        <React.Fragment>
+        <Box itemscope="" itemtype="https://schema.org/WebPage">
             <PostHeaderToku title={title} date={updateDate} imgAlt={title} imgUrl={poster} />
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
@@ -95,12 +95,15 @@ function PageBuilder(props) {
                     <Alert icon={<TheaterComedyIcon />} variant="outlined" severity="info" sx={{ marginBottom: contentVerticalPadding }}>
                         {subtitle}
                     </Alert>
-                    {hasil}
+
+                    <Box itemprop="mainContentOfPage" component="article">
+                        {hasil}
+                    </Box>
 
                     {
                         pageResult.citasi.title.length > 0 &&
 
-                        <Box component="section">
+                        <Box component="section" itemprop="citation">
                             <HeadingToku variant={2} title="Reference" />
                             <ol>
                                 {
@@ -148,7 +151,7 @@ function PageBuilder(props) {
                     </section>
                 </Box>
             </Box>
-        </React.Fragment>
+        </Box>
     );
 }
 

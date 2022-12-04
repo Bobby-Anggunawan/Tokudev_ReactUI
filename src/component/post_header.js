@@ -11,7 +11,11 @@ function PostHeaderToku(props) {
 
             {/*Header Featured Image*/}
             <Box sx={{height: "100%", width:"100%"}}>
-                <img src={props.imgUrl} alt={props.imgAlt} style={{height: "100%", width:"100%", objectFit:"cover"}}/>
+                <img src={props.imgUrl}
+                    alt={props.imgAlt}
+                    style={{height: "100%", width:"100%", objectFit:"cover"}}
+                    itemprop="primaryImageOfPage"
+                />
                 <Box sx={{height: "100%", width:"100%", position: "absolute", top:0, backgroundColor: "common.black", opacity: "0.5"}}></Box>
             </Box>
 
@@ -20,7 +24,7 @@ function PostHeaderToku(props) {
                 <BreadcrumbsToku postTitle={props.title}/>
                 <Box sx={{flexGrow:1}}></Box>
                 <HeadingToku variant={1} title={props.title}/>
-                <Typography>Last update {props.date}</Typography>
+                <Typography>Last update <span itemprop="lastReviewed">{props.date}</span></Typography>
             </Box>
         </Box>
     );

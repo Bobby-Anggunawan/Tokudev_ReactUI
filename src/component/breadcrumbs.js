@@ -16,7 +16,11 @@ function BreadcrumbsToku(props) {
 
   if (location.pathname.split("/")[1] == "tutorial") {
     return (
-      <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />} sx={{ color: "primary.contrastText" }}>
+      <Breadcrumbs aria-label="breadcrumb"
+        separator={<NavigateNextIcon fontSize="small" />}
+        sx={{ color: "primary.contrastText" }}
+        itemprop="breadcrumb"
+      >
         <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
@@ -55,7 +59,10 @@ function BreadcrumbsToku(props) {
   }
   else {
     return (
-      <Breadcrumbs aria-label="breadcrumb" separator={<NavigateNextIcon fontSize="small" />} sx={{ color: "primary.contrastText" }}>
+      <Breadcrumbs aria-label="breadcrumb"
+        separator={<NavigateNextIcon fontSize="small" />}
+        sx={{ color: "primary.contrastText" }}
+        itemprop="breadcrumb">
         <Link
           underline="hover"
           sx={{ display: 'flex', alignItems: 'center' }}
