@@ -8,13 +8,14 @@ import { getFirestore, collection, getDoc, doc, setDoc, Timestamp, updateDoc } f
 import SyntaxHighlighter, { EnumType } from '../component/syntax_highlighter'
 import PageBuilderFunction2, { getTagRef } from '../myLib/pageBuilderFunction2';
 
-async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content) {
+async function postPage(category, division, subDivision, postTitle, postSubTitle, posterImage, content, deskripsi) {
   const docData = {
     title: postTitle,
     subTitle: postSubTitle,
     poster: posterImage,
     date: Timestamp.now(),
-    content: content
+    content: content,
+    deskripsi: deskripsi
   };
 
   let buildURL = urlBuilder(postTitle);
@@ -79,27 +80,34 @@ async function postPage(category, division, subDivision, postTitle, postSubTitle
     //====================
     //build preview paragraf
     const preview = docPagingPage.data().preview;
-    var ketemuP = false;
+
     var tempPreview = "";
-    const previewMaxWord = 25;
-    var tempPreviewWordCount = 0;
+    if (deskripsi == "") {
+      var ketemuP = false;
+      const previewMaxWord = 25;
+      var tempPreviewWordCount = 0;
 
-    for (var x = 0; x < content.length; x++) {
-      if (ketemuP) {
-        const myArray = content[x].split(" ");
-        for (var y = 0; y < myArray.length; y++) {
-          if (tempPreview == "") tempPreview += myArray[y];
-          else tempPreview += ` ${myArray[y]}`;
+      for (var x = 0; x < content.length; x++) {
+        if (ketemuP) {
+          const myArray = content[x].split(" ");
+          for (var y = 0; y < myArray.length; y++) {
+            if (tempPreview == "") tempPreview += myArray[y];
+            else tempPreview += ` ${myArray[y]}`;
 
-          tempPreviewWordCount += 1;
-          if (tempPreviewWordCount >= previewMaxWord) {
-            break;
+            tempPreviewWordCount += 1;
+            if (tempPreviewWordCount >= previewMaxWord) {
+              break;
+            }
           }
+          break;
         }
-        break;
+        if (content[x] == "p") ketemuP = true;
       }
-      if (content[x] == "p") ketemuP = true;
     }
+    else{
+      tempPreview = deskripsi;
+    }
+
     //======================
 
     const lastPageItems = docPagingPage.data().title;
@@ -225,6 +233,11 @@ export default function PagePoster() {
   const [urlCategory, setUrlCategory] = React.useState("Article");
   const addsetUrlCategory = (event) => {
     setUrlCategory(event.target.value);
+  };
+
+  const [postDeksripsi, setPostDeksripsi] = React.useState("");
+  const addPostDeksripsi = (event) => {
+    setPostDeksripsi(event.target.value);
   };
 
   const [paragraphTypes, setParagraphType] = React.useState("p");
@@ -455,7 +468,7 @@ export default function PagePoster() {
   const [successPosted, setSuccessPosted] = React.useState(false);
   const clickPost = () => {
     setSuccessPosted(false);
-    postPage(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents).then(() => {
+    postPage(urlCategory, urlTitleStore, subUrlTitleStore, postTitle, postSubTitle, postPoster, contents, postDeksripsi).then(() => {
       setSuccessPosted(true);
     });
   }
@@ -590,6 +603,12 @@ export default function PagePoster() {
             fullWidth
             onChange={addSetPostPoster}
             value={postPoster} />
+          <TextField id="postDeskripsi"
+            label="Deskripsi"
+            margin="normal"
+            fullWidth
+            onChange={addPostDeksripsi}
+            value={postDeksripsi} />
           <Button variant="contained" onClick={clickPost}>
             Post
           </Button>

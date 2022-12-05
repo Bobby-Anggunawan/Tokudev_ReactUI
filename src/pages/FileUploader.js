@@ -21,13 +21,19 @@ export default function FileUploader() {
     //0: Screenshot, 1: Edit Sendiri(foto sendiri atau hasil editan sendiri), 2: Company Product(logo & benda), 3: Nature, 4: Anime
     const [categoryCheck, setCategoryCheck] = React.useState([false, false, false, false, false]);
     const funsetCategoryCheck = (index) => {
-        var temp = categoryCheck;
+        var temp = categoryCheck.map(() => {
+            return(false);
+        });
         temp[index] = !temp[index];
         setCategoryCheck(temp);
     }
     const [description, setDescription] = React.useState("");
     const handleSetDescription = (event) => {
         setDescription(event.target.value);
+    };
+    const [source, setSource] = React.useState("");
+    const handleSetSource = (event) => {
+        setSource(event.target.value);
     };
     //=================
     const storage = getStorage();
@@ -55,6 +61,7 @@ export default function FileUploader() {
                         date: Timestamp.now(),
                         url: url,
                         fileType: "image",
+                        source: source,
 
                         isScreenshot: categoryCheck[0],
                         isPersonal: categoryCheck[1],
@@ -82,6 +89,7 @@ export default function FileUploader() {
                 {inputValue != null && <img src={URL.createObjectURL(inputValue)} height="200px" style={{ paddingRight: contentHorizontalPadding }} />}
                 <Stack spacing={2}>
                     <TextField label="Description" variant="outlined" multiline value={description} onChange={handleSetDescription} />
+                    <TextField label="Sumber (me/url)" variant="outlined" multiline value={source} onChange={handleSetSource} />
                     <FormGroup>
                         <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(0)} value={categoryCheck[0]} />} label="Screenshot" />
                         <FormControlLabel control={<Checkbox onChange={() => funsetCategoryCheck(1)} value={categoryCheck[0]} />} label="Edit Sendiri" />

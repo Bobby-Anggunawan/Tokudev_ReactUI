@@ -26,6 +26,7 @@ function PageBuilder(props) {
 
     const [data, setData] = React.useState(null);
     const [title, setTitle] = React.useState(null);
+    const [deskripsi, setDeskripsi] = React.useState(null);
     const [updateDate, setUpdateDate] = React.useState(null);
     const [poster, setPostere] = React.useState(null);
     const [subtitle, setSubtitle] = React.useState(null);
@@ -43,6 +44,7 @@ function PageBuilder(props) {
                 const pageTitle = doc.data().title;
                 setData(doc.data().content);
                 setTitle(pageTitle);
+                setDeskripsi(doc.data().deskripsi);
                 setSubtitle(doc.data().subTitle);
                 setPostere(doc.data().poster);
 
@@ -88,6 +90,19 @@ function PageBuilder(props) {
 
     return (
         <Box itemscope="" itemtype="https://schema.org/WebPage">
+
+            {
+                /*
+                <MetaTags>
+                <meta property="og:title" content={title} />
+                <meta property="og:description" content={(deskripsi == null) && "deskripsi tidak ada" || deskripsi} />
+                <meta property="og:image" content={poster} />
+
+                <meta name="description" content={(deskripsi == null) && "deskripsi tidak ada" || deskripsi}/>
+            </MetaTags>
+                */
+            }
+
             <PostHeaderToku title={title} date={updateDate} imgAlt={title} imgUrl={poster} />
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
