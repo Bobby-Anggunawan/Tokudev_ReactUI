@@ -100,7 +100,11 @@ function buildListComponent(items, isOrdered) {
             <ol>
                 {items.map((itemsData, x) => {
                     return (
-                        <Typography component="li" key={`${x}${items[x]}`}>{itemsData}</Typography>
+                        <Typography
+                            component="li"
+                            key={`${x}${itemsData}`}
+                            dangerouslySetInnerHTML={{ __html: itemsData }}
+                        />
                     );
                 })}
             </ol>
@@ -110,7 +114,11 @@ function buildListComponent(items, isOrdered) {
         <ul>
             {items.map((itemsData, x) => {
                 return (
-                    <Typography component="li" key={`${x}${items[x]}`}>{itemsData}</Typography>
+                    <Typography
+                            component="li"
+                            key={`${x}${itemsData}`}
+                            dangerouslySetInnerHTML={{ __html: itemsData }}
+                        />
                 );
             })}
         </ul>

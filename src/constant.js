@@ -6,8 +6,8 @@ import { getFirestore, collection, getDoc, doc } from "firebase/firestore";
 
 const url = "http://localhost:3000";
 
-//ENUMS
-const tutorialList = new Map([
+
+/*const tutorialList = new Map([
   ['cs', {
     title: "C#",
     poster: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0d/C_Sharp_wordmark.svg/1200px-C_Sharp_wordmark.svg.png",
@@ -20,6 +20,21 @@ const tutorialList = new Map([
     subTitle: "Subtitle js",
     urlTitle: "javascript"
   }]
+]); */
+//ENUMS
+const tutorialList = new Map([
+  ['seo', {
+    title: "SEO (Search Engine Optimization)",
+    poster: "https://firebasestorage.googleapis.com/v0/b/tokudev-c4305.appspot.com/o/images%2F1670257625_what_is_search-engine-optimization.jpg?alt=media&token=b758a3d1-43f1-4131-817e-e31affeea233",
+    subTitle: "Belajar jadi terkenal via Google",
+    urlTitle: "seo"
+  }],
+  ['gdscript', {
+    title: "GDScript",
+    poster: "https://firebasestorage.googleapis.com/v0/b/tokudev-c4305.appspot.com/o/images%2F1670580731_GDScript%20programming%20language%20logo.jpg?alt=media&token=f883c4a1-0549-4aa9-a13f-8f18a1b33256",
+    subTitle: "Bahasa program khusus Godot Engine",
+    urlTitle: "gdscript"
+  }],
 ]);
 
 

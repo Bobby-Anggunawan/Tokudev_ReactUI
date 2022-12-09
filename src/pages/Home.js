@@ -3,6 +3,7 @@ import { Box, Button, Card, CardActionArea, CardContent, CardMedia, CssBaseline,
 import AppBarToku from '../component/general/app_bar';
 import suya from '../MyImg/wallpaperSuya.png';
 import FooterToku from '../component/general/footer';
+import { MetaTags } from 'react-meta-tags';
 
 export default function Home() {
 
@@ -16,6 +17,17 @@ export default function Home() {
 
     return (
         <React.Fragment>
+
+            <MetaTags>
+                <meta property="og:title" content="Tokudev" />
+                <meta property="og:description" content="Coding Tutorial dan Software oleh Tokudev" />
+                <meta property="og:image" content="https://firebasestorage.googleapis.com/v0/b/tokudev-c4305.appspot.com/o/images%2F1670584305_screenshot%20react%20code.png?alt=media&token=32085553-a060-4b60-92f9-b7d68e9f5a6e" />
+
+                <meta
+                    name="description"
+                    content="Coding Tutorial dan Software oleh Tokudev"
+                />
+            </MetaTags>
 
             <img src={suya} style={{ width: "100vw", height: "100vh", position: "fixed", left: "0px", top: "0px", zIndex: -1 }}></img>
 

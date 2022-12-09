@@ -69,7 +69,7 @@ function AppBarToku(props) {
           >
             <MenuIcon />
           </IconButton>
-          <Link href="/" variant="h6" underline="none" color="common.white">TokuDev</Link>
+          <Link href="/" variant="h6" underline="none" color="common.white" rel="nofollow">TokuDev</Link>
           <Box sx={{ flexGrow: 1 }}></Box>
 
           <Typography>{checked ? 'Dark' : 'Light'} Mode</Typography>
@@ -93,12 +93,12 @@ function AppBarToku(props) {
             <Box width={contentHorizontalPadding}></Box>
           </Stack>
         }
-        <Link href="/" variant="h6" underline="none" color="common.white">TokuDev</Link>
+        <Link href="/" variant="h6" underline="none" color="common.white" rel="nofollow">TokuDev</Link>
 
         <Box sx={{ flexGrow: 1 }}></Box>
 
-        <Button color="inherit" href="/">Home</Button>
-        <Button color="inherit" href="/about">About</Button>
+        <Button color="inherit" href="/" rel="nofollow">Home</Button>
+        <Button color="inherit" href="/about" rel="nofollow">About</Button>
         <Button color="inherit">Contact</Button>
 
         <Box sx={{ flexGrow: 1 }}></Box>

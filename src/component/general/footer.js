@@ -18,7 +18,7 @@ function FooterToku(props) {
             </ListSubheader>
           }>
             <ListSubheader></ListSubheader>
-            <ListItemButton component="a" href="/about">
+            <ListItemButton component="a" href="/about" rel="nofollow">
               <ListItemText primary="About" primaryTypographyProps={{ align: "center", color: 'grey.400' }} />
             </ListItemButton>
             <ListItemButton component="a" href="#">
@@ -36,7 +36,7 @@ function FooterToku(props) {
               Legal
             </ListSubheader>
           }>
-            <ListItemButton component="a" href="/privacy_policy">
+            <ListItemButton component="a" href="/privacy_policy" rel="nofollow">
               <ListItemText primary="Privacy Policy" primaryTypographyProps={{ align: "center", color: 'grey.400' }} />
             </ListItemButton>
             <ListItemButton component="a" href="#">
@@ -53,7 +53,7 @@ function FooterToku(props) {
             Copyright © 2022 Y-Ang
           </Typography>
           <Typography align="center">
-            Build with <Link href="https://mui.com/">MUI</Link>, the <Link href="https://reactjs.org/">React</Link> UI library ~ Based on <Link href="https://material.io/">Google Material Design</Link> ~ Hosted on <Link href="https://cloud.google.com/">Google Cloud</Link>
+            Build with <Link href="https://mui.com/" rel="nofollow">MUI</Link>, the <Link href="https://reactjs.org/" rel="nofollow">React</Link> UI library ~ Based on <Link href="https://material.io/" rel="nofollow">Google Material Design</Link> ~ Hosted on <Link href="https://cloud.google.com/" rel="nofollow">Google Cloud</Link>
           </Typography>
         </Grid>
       </Grid>

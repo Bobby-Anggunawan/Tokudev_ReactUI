@@ -14,6 +14,7 @@ import LoadingPage from '../pages/Loading';
 import NotFound from '../pages/NotFound';
 import { Alert } from '@mui/material';
 import TheaterComedyIcon from '@mui/icons-material/TheaterComedy';
+import { MetaTags } from 'react-meta-tags';
 
 function PageBuilder(props) {
 
@@ -89,25 +90,24 @@ function PageBuilder(props) {
     }
 
     return (
-        <Box itemscope="" itemtype="https://schema.org/WebPage">
+        <Box itemscope=""
+            itemtype="https://schema.org/WebPage"
+            sx={{ marginBottom: contentVerticalPadding }}
+        >
 
-            {
-                /*
-                <MetaTags>
+            <MetaTags>
                 <meta property="og:title" content={title} />
                 <meta property="og:description" content={(deskripsi == null) && "deskripsi tidak ada" || deskripsi} />
                 <meta property="og:image" content={poster} />
 
-                <meta name="description" content={(deskripsi == null) && "deskripsi tidak ada" || deskripsi}/>
+                <meta name="description" content={(deskripsi == null) && "deskripsi tidak ada" || deskripsi} />
             </MetaTags>
-                */
-            }
 
             <PostHeaderToku title={title} date={updateDate} imgAlt={title} imgUrl={poster} />
             <Box sx={{ display: "flex", marginTop: contentVerticalPadding }}>
                 {/*Blog Post*/}
                 <Box sx={{ flexGrow: 1 }}>
-                    <Alert icon={<TheaterComedyIcon />} variant="outlined" severity="info" sx={{ marginBottom: contentVerticalPadding }}>
+                    <Alert icon={<TheaterComedyIcon />} variant="outlined" severity="info">
                         {subtitle}
                     </Alert>
 
